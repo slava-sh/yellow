@@ -10,7 +10,7 @@ namespace ProjectYellow
         private static Color EmptyCellColor = Color.Yellow;
         private static Color OccupiedCellColor = Color.Black;
 
-        private Game game = new Game(2017);
+        private Game game = new Game(randomSeed: 2017);
 
         private Button[,] buttons;
         private Timer ticker = new Timer();
@@ -62,9 +62,11 @@ namespace ProjectYellow
                     button.BackColor = cell.IsOccupied ? OccupiedCellColor : EmptyCellColor;
                 }
             }
-            foreach (var pos in game.currentShape.GetPositions())
+            foreach (var pos in game.block.GetPositions())
             {
-                buttons[pos.X, pos.Y].BackColor = OccupiedCellColor;
+                if (game.field.Contains(pos)) {
+                    buttons[pos.X, pos.Y].BackColor = OccupiedCellColor;
+                }
             }
         }
 

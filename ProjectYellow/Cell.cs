@@ -8,7 +8,7 @@ namespace ProjectYellow
     {
         public readonly int X;
         public readonly int Y;
-        public Shape Occupier = null;
+        public Block Occupier = null;
         public bool IsOccupied => Occupier != null;
 
         public Cell(int x, int y)

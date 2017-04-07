@@ -39,9 +39,9 @@ namespace ProjectYellow
             return 0 <= pos.X && pos.X < Width && 0 <= pos.Y && pos.Y < Height;
         }
 
-        public bool CanPlace(Shape shape)
+        public bool CanPlace(Block block)
         {
-            return shape.GetPositions().All(CanPlace);
+            return block.GetPositions().All(CanPlace);
         }
 
         private bool CanPlace(Position pos)
@@ -56,26 +56,26 @@ namespace ProjectYellow
             }
         }
 
-        public void Add(Shape shape)
+        public void Add(Block block)
         {
-            foreach (var pos in shape.GetPositions())
+            foreach (var pos in block.GetPositions())
             {
                 var cell = GetCell(pos);
                 if (cell != null)
                 {
-                    cell.Occupier = shape;
+                    cell.Occupier = block;
                 }
             }
         }
 
-        public void Remove(Shape shape)
+        public void Remove(Block block)
         {
-            foreach (var pos in shape.GetPositions())
+            foreach (var pos in block.GetPositions())
             {
                 var cell = GetCell(pos);
                 if (cell != null)
                 {
-                    if (cell.Occupier != shape)
+                    if (cell.Occupier != block)
                     {
                         throw new ArgumentException();
                     }

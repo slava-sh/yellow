@@ -6,18 +6,22 @@ using System.Threading.Tasks;
 
 namespace ProjectYellow
 {
-    class LShape : Shape
+    class Block
     {
-        public LShape(int x, int y, ShapeRotation rotation) : base(x, y, rotation)
+        public int CenterX;
+        public int CenterY;
+        public Shape Shape;
+        public Rotation Rotation;
+
+        public Block(int centerX, int centerY, Shape shape, Rotation rotation)
         {
+            this.CenterX = centerX;
+            this.CenterY = centerY;
+            this.Shape = shape;
+            this.Rotation = rotation;
         }
 
-        public override Shape New(int centerX, int centerY, ShapeRotation rotation)
-        {
-            return new LShape(centerX, centerY, rotation);
-        }
-
-        public override Position[] GetPositions()
+        public Position[] GetPositions()
         {
             var x = CenterX;
             var y = CenterY;
@@ -54,6 +58,16 @@ namespace ProjectYellow
                 default:
                     throw new ArgumentException();
             }
+        }
+
+        public Block Rotate()
+        {
+            return new Block(CenterX, CenterY, Shape, Rotation.Next());
+        }
+
+        public Block MoveDown()
+        {
+            return new Block(CenterX, CenterY + 1, Shape, Rotation);
         }
     }
 }

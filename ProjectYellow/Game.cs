@@ -9,42 +9,46 @@ namespace ProjectYellow
     class Game
     {
         public Field field;
-        public Shape currentShape;
-        private Random random;
-
+        public Block block;
         public bool IsOver { get; private set; } = false;
+        private Random random;
 
         public Game(int randomSeed)
         {
             random = new Random(randomSeed);
             field = new Field();
-            currentShape = new LShape(3, 3, new ShapeRotation(0));
+            block = NextBlock();
         }
 
         public void Tick()
         {
-            var nextShape = currentShape.MoveDown();
+            var nextShape = block.MoveDown();
             if (field.CanPlace(nextShape))
             {
-                currentShape = nextShape;
+                block = nextShape;
             }
             else
             {
-                field.Add(currentShape);
-                ShapeRotation rotation = new ShapeRotation(random.Next() % 4);
-                nextShape = new LShape(3, 3, rotation);
+                field.Add(block);
+                nextShape = NextBlock();
                 if (!field.CanPlace(nextShape))
                 {
                     IsOver = true;
                     return;
                 }
-                currentShape = nextShape;
+                block = nextShape;
             }
+        }
+
+        private Block NextBlock()
+        {
+            Rotation rotation = new Rotation(random.Next() % 4);
+            return new Block(3, 0, Shape.L, rotation);
         }
 
         public bool TryRotate()
         {
-            currentShape = currentShape.Rotate();
+            block = block.Rotate();
             return true; // TODO
         }
     }
