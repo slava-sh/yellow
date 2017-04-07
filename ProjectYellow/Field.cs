@@ -33,19 +33,42 @@ namespace ProjectYellow
             }
         }
 
-        public Cell GetCell(int x, int y)
+        public Cell GetCell(Position pos)
         {
-            if (0 <= x && x < FieldWidth && 0 <= y && y < FieldHeight)
+            if (!Contains(pos))
             {
-                return cells[x, y];
+                return null;
             }
-            return null;
+            return cells[pos.X, pos.Y];
+        }
+
+        public bool Contains(Position pos)
+        {
+            return 0 <= pos.X && pos.X < FieldWidth && 0 <= pos.Y && pos.Y < FieldHeight;
+        }
+
+        public bool CanPlace(Shape shape)
+        {
+            return shape.GetPositions().All(CanPlace);
+        }
+
+        private bool CanPlace(Position pos)
+        {
+            if (Contains(pos))
+            {
+                return !GetCell(pos).IsOccupied;
+            }
+            else
+            {
+                return 0 <= pos.X && pos.X < FieldWidth && pos.Y < FieldHeight;
+            }
         }
 
         public void Add(Shape shape)
         {
-            foreach (var cell in shape.GetCells(this))
+            foreach (var pos in shape.GetPositions())
             {
+                var cell = GetCell(pos);
                 if (cell != null)
                 {
                     cell.Occupier = shape;
@@ -55,8 +78,9 @@ namespace ProjectYellow
 
         public void Remove(Shape shape)
         {
-            foreach (var cell in shape.GetCells(this))
+            foreach (var pos in shape.GetPositions())
             {
+                var cell = GetCell(pos);
                 if (cell != null)
                 {
                     if (cell.Occupier != shape)

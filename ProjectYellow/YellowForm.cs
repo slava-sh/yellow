@@ -13,7 +13,7 @@ namespace ProjectYellow
     public partial class YellowForm : Form
     {
         private Field field;
-        private Shape shape;
+        private Shape currentShape;
         private Random random = new Random(2017);
         private Timer ticker = new Timer();
 
@@ -21,8 +21,7 @@ namespace ProjectYellow
         {
             InitializeComponent();
             field = new Field();
-            shape = new LShape(3, 3, new ShapeRotation(0));
-            field.Add(shape);
+            currentShape = new LShape(3, 3, new ShapeRotation(0));
         }
 
         private void YellowForm_Load(object sender, EventArgs e)
@@ -35,26 +34,38 @@ namespace ProjectYellow
 
         private void Tick(object sender, EventArgs e)
         {
-            if (!shape.MaybeFall(field))
+            var nextShape = currentShape.MoveDown();
+            if (field.CanPlace(nextShape))
             {
+                currentShape = nextShape;
+            }
+            else
+            {
+                field.Add(currentShape);
                 ShapeRotation rotation = new ShapeRotation(random.Next() % 4);
-                shape = new LShape(3, 3, rotation);
-                if (!shape.MaybeFall(field))
+                nextShape = new LShape(3, 3, rotation);
+                if (!field.CanPlace(nextShape))
                 {
                     ticker.Stop();
                     return;
                 }
-                field.Add(shape);
+                currentShape = nextShape;
             }
             Render();
+        }
+
+        private void Render()
+        {
+            field.Add(currentShape);
+            field.Render(this);
+            field.Remove(currentShape);
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             if (keyData == Keys.Up)
             {
-                Shape nextShape = shape;
-                shape.Rotation = shape.Rotation.Next();
+                currentShape = currentShape.Rotate();
                 Render();
                 return true;
             }
@@ -62,11 +73,6 @@ namespace ProjectYellow
             {
                 return base.ProcessCmdKey(ref msg, keyData);
             }
-        }
-
-        private void Render()
-        {
-            field.Render(this);
         }
     }
 }

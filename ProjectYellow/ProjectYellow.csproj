@@ -51,6 +51,7 @@
     <Compile Include="Cell.cs" />
     <Compile Include="Field.cs" />
     <Compile Include="LShape.cs" />
+    <Compile Include="Position.cs" />
     <Compile Include="Shape.cs" />
     <Compile Include="YellowForm.cs">
       <SubType>Form</SubType>

@@ -8,41 +8,30 @@ namespace ProjectYellow
 {
     abstract class Shape
     {
-        public int X;
-        public int Y;
+        public int CenterX;
+        public int CenterY;
         public ShapeRotation Rotation;
 
-        public Shape(int x, int y, ShapeRotation rotation)
+        public Shape(int centerX, int centerY, ShapeRotation rotation)
         {
-            X = x;
-            Y = y;
+            CenterX = centerX;
+            CenterY = centerY;
             Rotation = rotation;
         }
 
-        public bool MaybeFall(Field field)
+        public abstract Position[] GetPositions();
+
+        public abstract Shape New(int centerX, int centerY, ShapeRotation rotation);
+
+        public Shape Rotate()
         {
-            var currentCells = GetCells(field);
-            if (currentCells.Any(cell => cell == null))
-            {
-                return false;
-            }
-            var nextCells = GetCells(field, X, Y + 1);
-            if (nextCells.Any(cell => cell == null || (cell.State != CellState.Empty && cell.Occupier != this)))
-            {
-                return false;
-            }
-            field.Remove(this);
-            ++Y;
-            field.Add(this);
-            return true;
+            return New(CenterX, CenterY, Rotation.Next());
         }
 
-        public Cell[] GetCells(Field field)
+        public Shape MoveDown()
         {
-            return GetCells(field, X, Y);
+            return New(CenterX, CenterY + 1, Rotation);
         }
-
-        protected abstract Cell[] GetCells(Field field, int x, int y);
     }
 
     public struct ShapeRotation
@@ -54,10 +43,9 @@ namespace ProjectYellow
             this.Number = number;
         }
 
-        public ShapeRotation Next() {
+        public ShapeRotation Next()
+        {
             return new ShapeRotation(Number + 1);
         }
-
-
     }
 }
