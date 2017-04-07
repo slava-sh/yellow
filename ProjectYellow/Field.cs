@@ -7,79 +7,45 @@ using System.Windows.Forms;
 
 namespace ProjectYellow
 {
-    internal class Field
+    class Field
     {
-        public readonly int Height = 19;
-        public readonly int Width = 7;
-        private Cell[,] cells;
+        public readonly int Width;
+        public readonly int Height;
+        private bool[,] cells;
 
-        public Field()
+        public Field(int width, int height)
         {
-            cells = new Cell[Width, Height];
-            for (int x = 0; x < Width; ++x)
-            {
-                for (int y = 0; y < Height; ++y)
-                {
-                    cells[x, y] = new Cell(x, y);
-                }
-            }
+            this.Width = width;
+            this.Height = height;
+            cells = new bool[Width, Height];
         }
 
-        public Cell GetCell(Position pos)
+        public bool IsOccupied(Cell cell)
         {
-            if (!Contains(pos))
-            {
-                return null;
-            }
-            return cells[pos.X, pos.Y];
+            return Contains(cell) ? cells[cell.X, cell.Y] : cell.Y >= 0;
         }
 
-        public bool Contains(Position pos)
+        public bool Contains(Cell cell)
         {
-            return 0 <= pos.X && pos.X < Width && 0 <= pos.Y && pos.Y < Height;
+            return 0 <= cell.X && cell.X < Width && 0 <= cell.Y && cell.Y < Height;
         }
 
         public bool CanPlace(Block block)
         {
-            return block.GetPositions().All(CanPlace);
+            return block.GetCells().All(cell => !IsOccupied(cell));
         }
 
-        private bool CanPlace(Position pos)
+        public void Place(Block block)
         {
-            if (Contains(pos))
+            foreach (var cell in block.GetCells())
             {
-                return !GetCell(pos).IsOccupied;
-            }
-            else
-            {
-                return 0 <= pos.X && pos.X < Width && pos.Y < Height;
-            }
-        }
-
-        public void Add(Block block)
-        {
-            foreach (var pos in block.GetPositions())
-            {
-                var cell = GetCell(pos);
-                if (cell != null)
+                if (Contains(cell))
                 {
-                    cell.Occupier = block;
-                }
-            }
-        }
-
-        public void Remove(Block block)
-        {
-            foreach (var pos in block.GetPositions())
-            {
-                var cell = GetCell(pos);
-                if (cell != null)
-                {
-                    if (cell.Occupier != block)
+                    if (cells[cell.X, cell.Y])
                     {
-                        throw new ArgumentException();
+                        throw new ArgumentException("The cell is already occupied.");
                     }
-                    cell.Occupier = null;
+                    cells[cell.X, cell.Y] = true;
                 }
             }
         }

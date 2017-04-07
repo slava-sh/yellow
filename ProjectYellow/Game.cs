@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProjectYellow
 {
-    class Game
+    public class Game
     {
         public Field field;
         public Block block;
@@ -16,7 +16,7 @@ namespace ProjectYellow
         public Game(int randomSeed)
         {
             random = new Random(randomSeed);
-            field = new Field();
+            field = new Field(6, 9);
             block = NextBlock();
         }
 
@@ -29,7 +29,7 @@ namespace ProjectYellow
             }
             else
             {
-                field.Add(block);
+                field.Place(block);
                 nextShape = NextBlock();
                 if (!field.CanPlace(nextShape))
                 {

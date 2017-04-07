@@ -57,15 +57,15 @@ namespace ProjectYellow
             {
                 for (int y = 0; y < game.field.Height; ++y)
                 {
+                    var cell = new Cell(x, y);
                     var button = buttons[x, y];
-                    var cell = game.field.GetCell(new Position(x, y));
-                    button.BackColor = cell.IsOccupied ? OccupiedCellColor : EmptyCellColor;
+                    button.BackColor = game.field.IsOccupied(cell) ? OccupiedCellColor : EmptyCellColor;
                 }
             }
-            foreach (var pos in game.block.GetPositions())
+            foreach (var cell in game.block.GetCells())
             {
-                if (game.field.Contains(pos)) {
-                    buttons[pos.X, pos.Y].BackColor = OccupiedCellColor;
+                if (game.field.Contains(cell)) {
+                    buttons[cell.X, cell.Y].BackColor = OccupiedCellColor;
                 }
             }
         }

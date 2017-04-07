@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProjectYellow
 {
-    public struct Rotation
+    struct Rotation
     {
         public readonly int Number;
 

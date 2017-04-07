@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProjectYellow
 {
-    public enum Shape
+    enum Shape
     {
         L,
     }

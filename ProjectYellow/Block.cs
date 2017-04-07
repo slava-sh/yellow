@@ -21,39 +21,39 @@ namespace ProjectYellow
             this.Rotation = rotation;
         }
 
-        public Position[] GetPositions()
+        public Cell[] GetCells()
         {
             var x = CenterX;
             var y = CenterY;
             switch (Rotation.Number % 4)
             {
                 case 0:
-                    return new Position[] {
-                        new Position(x - 1, y),
-                        new Position(x - 1, y + 1),
-                        new Position(x, y + 1),
-                        new Position(x + 1, y + 1),
+                    return new Cell[] {
+                        new Cell(x - 1, y),
+                        new Cell(x - 1, y + 1),
+                        new Cell(x, y + 1),
+                        new Cell(x + 1, y + 1),
                     };
                 case 1:
-                    return new Position[] {
-                        new Position(x, y - 1),
-                        new Position(x - 1, y - 1),
-                        new Position(x - 1, y),
-                        new Position(x - 1, y + 1),
+                    return new Cell[] {
+                        new Cell(x, y - 1),
+                        new Cell(x - 1, y - 1),
+                        new Cell(x - 1, y),
+                        new Cell(x - 1, y + 1),
                     };
                 case 2:
-                    return new Position[] {
-                        new Position(x + 1, y),
-                        new Position(x + 1, y - 1),
-                        new Position(x, y - 1),
-                        new Position(x - 1, y - 1),
+                    return new Cell[] {
+                        new Cell(x + 1, y),
+                        new Cell(x + 1, y - 1),
+                        new Cell(x, y - 1),
+                        new Cell(x - 1, y - 1),
                     };
                 case 3:
-                    return new Position[] {
-                        new Position(x, y + 1),
-                        new Position(x + 1, y + 1),
-                        new Position(x + 1, y),
-                        new Position(x + 1, y - 1),
+                    return new Cell[] {
+                        new Cell(x, y + 1),
+                        new Cell(x + 1, y + 1),
+                        new Cell(x + 1, y),
+                        new Cell(x + 1, y - 1),
                     };
                 default:
                     throw new ArgumentException();
