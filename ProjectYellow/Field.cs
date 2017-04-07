@@ -9,16 +9,16 @@ namespace ProjectYellow
 {
     internal class Field
     {
-        public const int FieldHeight = 19;
-        public const int FieldWidth = 7;
-
-        private Cell[,] cells = new Cell[FieldWidth, FieldHeight];
+        public readonly int Height = 19;
+        public readonly int Width = 7;
+        private Cell[,] cells;
 
         public Field()
         {
-            for (int x = 0; x < FieldWidth; ++x)
+            cells = new Cell[Width, Height];
+            for (int x = 0; x < Width; ++x)
             {
-                for (int y = 0; y < FieldHeight; ++y)
+                for (int y = 0; y < Height; ++y)
                 {
                     cells[x, y] = new Cell(x, y);
                 }
@@ -36,7 +36,7 @@ namespace ProjectYellow
 
         public bool Contains(Position pos)
         {
-            return 0 <= pos.X && pos.X < FieldWidth && 0 <= pos.Y && pos.Y < FieldHeight;
+            return 0 <= pos.X && pos.X < Width && 0 <= pos.Y && pos.Y < Height;
         }
 
         public bool CanPlace(Shape shape)
@@ -52,7 +52,7 @@ namespace ProjectYellow
             }
             else
             {
-                return 0 <= pos.X && pos.X < FieldWidth && pos.Y < FieldHeight;
+                return 0 <= pos.X && pos.X < Width && pos.Y < Height;
             }
         }
 

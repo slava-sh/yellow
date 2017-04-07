@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ProjectYellow
@@ -16,21 +10,18 @@ namespace ProjectYellow
         private static Color EmptyCellColor = Color.Yellow;
         private static Color OccupiedCellColor = Color.Black;
 
+        private Game game = new Game(2017);
+
         private Button[,] buttons;
-        private Field field;
-        private Shape currentShape;
-        private Random random = new Random(2017);
         private Timer ticker = new Timer();
 
         public YellowForm()
         {
             InitializeComponent();
-            field = new Field();
-            currentShape = new LShape(3, 3, new ShapeRotation(0));
-            buttons = new Button[Field.FieldWidth, Field.FieldHeight];
-            for (int x = 0; x < Field.FieldWidth; ++x)
+            buttons = new Button[game.field.Width, game.field.Height];
+            for (int x = 0; x < game.field.Width; ++x)
             {
-                for (int y = 0; y < Field.FieldHeight; ++y)
+                for (int y = 0; y < game.field.Height; ++y)
                 {
                     var button = new Button();
                     button.Size = new Size(CellSize, CellSize);
@@ -52,37 +43,26 @@ namespace ProjectYellow
 
         private void Tick(object sender, EventArgs e)
         {
-            var nextShape = currentShape.MoveDown();
-            if (field.CanPlace(nextShape))
+            game.Tick();
+            if (game.IsOver)
             {
-                currentShape = nextShape;
-            }
-            else
-            {
-                field.Add(currentShape);
-                ShapeRotation rotation = new ShapeRotation(random.Next() % 4);
-                nextShape = new LShape(3, 3, rotation);
-                if (!field.CanPlace(nextShape))
-                {
-                    ticker.Stop();
-                    return;
-                }
-                currentShape = nextShape;
+                ticker.Stop();
             }
             Render();
         }
 
         private void Render()
         {
-            for (int x = 0; x < Field.FieldWidth; ++x)
+            for (int x = 0; x < game.field.Width; ++x)
             {
-                for (int y = 0; y < Field.FieldHeight; ++y)
+                for (int y = 0; y < game.field.Height; ++y)
                 {
                     var button = buttons[x, y];
-                    button.BackColor = field.GetCell(new Position(x, y)).IsOccupied ? OccupiedCellColor : EmptyCellColor;
+                    var cell = game.field.GetCell(new Position(x, y));
+                    button.BackColor = cell.IsOccupied ? OccupiedCellColor : EmptyCellColor;
                 }
             }
-            foreach (var pos in currentShape.GetPositions())
+            foreach (var pos in game.currentShape.GetPositions())
             {
                 buttons[pos.X, pos.Y].BackColor = OccupiedCellColor;
             }
@@ -92,7 +72,7 @@ namespace ProjectYellow
         {
             if (keyData == Keys.Up)
             {
-                currentShape = currentShape.Rotate();
+                game.TryRotate();
                 Render();
                 return true;
             }
