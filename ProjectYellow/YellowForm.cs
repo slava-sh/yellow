@@ -12,6 +12,11 @@ namespace ProjectYellow
 {
     public partial class YellowForm : Form
     {
+        private const int CellSize = 30;
+        private static Color EmptyCellColor = Color.Yellow;
+        private static Color OccupiedCellColor = Color.Black;
+
+        private Button[,] buttons;
         private Field field;
         private Shape currentShape;
         private Random random = new Random(2017);
@@ -22,6 +27,19 @@ namespace ProjectYellow
             InitializeComponent();
             field = new Field();
             currentShape = new LShape(3, 3, new ShapeRotation(0));
+            buttons = new Button[Field.FieldWidth, Field.FieldHeight];
+            for (int x = 0; x < Field.FieldWidth; ++x)
+            {
+                for (int y = 0; y < Field.FieldHeight; ++y)
+                {
+                    var button = new Button();
+                    button.Size = new Size(CellSize, CellSize);
+                    button.Location = new Point(x * CellSize, y * CellSize);
+                    button.Enabled = false;
+                    Controls.Add(button);
+                    buttons[x, y] = button;
+                }
+            }
         }
 
         private void YellowForm_Load(object sender, EventArgs e)
@@ -56,9 +74,18 @@ namespace ProjectYellow
 
         private void Render()
         {
-            field.Add(currentShape);
-            field.Render(this);
-            field.Remove(currentShape);
+            for (int x = 0; x < Field.FieldWidth; ++x)
+            {
+                for (int y = 0; y < Field.FieldHeight; ++y)
+                {
+                    var button = buttons[x, y];
+                    button.BackColor = field.GetCell(new Position(x, y)).IsOccupied ? OccupiedCellColor : EmptyCellColor;
+                }
+            }
+            foreach (var pos in currentShape.GetPositions())
+            {
+                buttons[pos.X, pos.Y].BackColor = OccupiedCellColor;
+            }
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)

@@ -25,14 +25,6 @@ namespace ProjectYellow
             }
         }
 
-        public void Render(Form form)
-        {
-            foreach (var cell in cells)
-            {
-                cell.Render(form);
-            }
-        }
-
         public Cell GetCell(Position pos)
         {
             if (!Contains(pos))
