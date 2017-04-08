@@ -13,6 +13,7 @@ namespace ProjectYellow
         private Field field;
         private Block block;
         private IBlockGenerator blockGenerator;
+        private readonly Cell newBlockOrigin = new Cell(3, 0);
 
         public Game(int fieldWidth, int fieldHeight, int randomSeed) :
             this(fieldWidth, fieldHeight, new RandomBlockGenerator(randomSeed))
@@ -23,7 +24,7 @@ namespace ProjectYellow
         {
             field = new Field(fieldWidth, fieldHeight);
             this.blockGenerator = blockGenerator;
-            block = blockGenerator.NextBlock();
+            block = blockGenerator.NextBlock().MoveTo(newBlockOrigin);
         }
 
         public void Tick()
@@ -36,7 +37,7 @@ namespace ProjectYellow
             else
             {
                 field.Place(block);
-                nextBlock = blockGenerator.NextBlock();
+                nextBlock = blockGenerator.NextBlock().MoveTo(newBlockOrigin);
                 if (!field.CanPlace(nextBlock))
                 {
                     IsOver = true;

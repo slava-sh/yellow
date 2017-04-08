@@ -10,23 +10,28 @@ namespace ProjectYellow
 {
     struct Block
     {
-        public readonly int CenterX;
-        public readonly int CenterY;
+        public readonly Cell Center;
         public readonly Shape Shape;
         public readonly Rotation Rotation;
 
-        public Block(int centerX, int centerY, Shape shape, Rotation rotation)
+        public Block(Shape shape, Rotation rotation)
         {
-            this.CenterX = centerX;
-            this.CenterY = centerY;
+            Center = new Cell(0, 0);
+            this.Shape = shape;
+            this.Rotation = rotation;
+        }
+
+        public Block(Cell center, Shape shape, Rotation rotation)
+        {
+            this.Center = center;
             this.Shape = shape;
             this.Rotation = rotation;
         }
 
         public Cell[] GetCells()
         {
-            var x = CenterX;
-            var y = CenterY;
+            var x = Center.X;
+            var y = Center.Y;
             switch (Rotation.Number % 4)
             {
                 case 0:
@@ -64,12 +69,17 @@ namespace ProjectYellow
 
         public Block Rotate()
         {
-            return new Block(CenterX, CenterY, Shape, Rotation.Next());
+            return new Block(Center, Shape, Rotation.Next());
         }
 
         public Block MoveDown()
         {
-            return new Block(CenterX, CenterY + 1, Shape, Rotation);
+            return new Block(new Cell(Center.X, Center.Y + 1), Shape, Rotation);
+        }
+
+        internal Block MoveTo(Cell newCenter)
+        {
+            return new Block(newCenter, Shape, Rotation);
         }
     }
 }

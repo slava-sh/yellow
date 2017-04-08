@@ -18,7 +18,7 @@ namespace ProjectYellow
         public Block NextBlock()
         {
             Rotation rotation = new Rotation(random.Next() % 4);
-            return new Block(3, 0, Shape.L, rotation);
+            return new Block(Shape.L, rotation);
         }
     }
 }

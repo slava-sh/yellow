@@ -24,10 +24,10 @@ namespace ProjectYellow.Tests
         {
             var game = new Game(7, 6, blockGenerator: new MockBlockGenerator
             {
-                new Block(3, 0, Shape.L, new Rotation(0)),
-                new Block(3, 0, Shape.L, new Rotation(0)),
-                new Block(3, 0, Shape.L, new Rotation(0)),
-                new Block(3, 0, Shape.L, new Rotation(0)),
+                new Block(Shape.L, new Rotation(0)),
+                new Block(Shape.L, new Rotation(0)),
+                new Block(Shape.L, new Rotation(0)),
+                new Block(Shape.L, new Rotation(0)),
             });
             for (int i = 0; i < 9; ++i)
             {
