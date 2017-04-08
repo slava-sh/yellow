@@ -1,68 +1,65 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 [assembly: InternalsVisibleTo("ProjectYellowTests")]
+
 namespace ProjectYellow
 {
-    struct Block
+    internal struct Block
     {
-        public readonly Cell Center;
-        public readonly Tetromino Tetromino;
-        public readonly Rotation Rotation;
+        private readonly Cell center;
+        private readonly Tetromino tetromino;
+        private readonly Rotation rotation;
 
-        public Block(Tetromino shape)
+        public Block(Tetromino tetromino)
         {
-            Center = new Cell(0, 0);
-            this.Tetromino = shape;
-            this.Rotation = new Rotation();
+            center = new Cell(0, 0);
+            this.tetromino = tetromino;
+            rotation = new Rotation();
         }
 
-        private Block(Cell center, Tetromino shape, Rotation rotation)
+        private Block(Cell center, Tetromino tetromino, Rotation rotation)
         {
-            this.Center = center;
-            this.Tetromino = shape;
-            this.Rotation = rotation;
+            this.center = center;
+            this.tetromino = tetromino;
+            this.rotation = rotation;
         }
 
         public Block Rotate()
         {
-            return new Block(Center, this.Tetromino, Rotation.Next());
+            return new Block(center, tetromino, rotation.Next());
         }
 
         public Block MoveDown()
         {
-            return new Block(new Cell(Center.X, Center.Y + 1), this.Tetromino, Rotation);
+            return new Block(new Cell(center.X, center.Y + 1), tetromino, rotation);
         }
 
         public Block MoveLeft()
         {
-            return new Block(new Cell(Center.X - 1, Center.Y), this.Tetromino, Rotation);
+            return new Block(new Cell(center.X - 1, center.Y), tetromino, rotation);
         }
 
         public Block MoveRight()
         {
-            return new Block(new Cell(Center.X + 1, Center.Y), this.Tetromino, Rotation);
+            return new Block(new Cell(center.X + 1, center.Y), tetromino, rotation);
         }
 
         internal Block MoveTo(Cell newCenter)
         {
-            return new Block(newCenter, this.Tetromino, Rotation);
+            return new Block(newCenter, tetromino, rotation);
         }
 
         public IEnumerable<Cell> GetCells()
         {
             var cells = new List<Cell>();
-            var origin = new Cell(Center.X - this.Tetromino.Center.X, Center.Y - this.Tetromino.Center.Y);
-            bool[,] rotationMask = this.Tetromino.GetRotationMask(Rotation);
-            int width = rotationMask.GetLength(0);
-            int height = rotationMask.GetLength(1);
-            for (int x = 0; x < width; ++x)
+            var origin = new Cell(center.X - tetromino.Center.X, center.Y - tetromino.Center.Y);
+            var rotationMask = tetromino.GetRotationMask(rotation);
+            var width = rotationMask.GetLength(0);
+            var height = rotationMask.GetLength(1);
+            for (var x = 0; x < width; ++x)
             {
-                for (int y = 0; y < height; ++y)
+                for (var y = 0; y < height; ++y)
                 {
                     if (rotationMask[x, y])
                     {

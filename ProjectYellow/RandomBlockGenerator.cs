@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProjectYellow
 {
-    class RandomBlockGenerator : IBlockGenerator
+    internal class RandomBlockGenerator : IBlockGenerator
     {
-        private Random random;
+        private readonly Random random;
 
         public RandomBlockGenerator(int randomSeed)
         {
@@ -17,7 +13,7 @@ namespace ProjectYellow
 
         public Block NextBlock()
         {
-            var tetrimono = Tetrimono.All[random.Next() % Tetrimono.All.Length];
+            var tetrimono = Tetromino.All[random.Next() % Tetromino.All.Length];
             return new Block(tetrimono);
         }
     }

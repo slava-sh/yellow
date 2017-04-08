@@ -1,22 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 [assembly: InternalsVisibleTo("ProjectYellowTests")]
+
 namespace ProjectYellow
 {
-    struct Rotation
+    internal struct Rotation
     {
         public readonly int Number;
 
-        public Rotation(int number)
+        private Rotation(int number)
         {
-            this.Number = number;
+            Number = number;
         }
 
+        [Pure]
         public Rotation Next()
         {
             return new Rotation(Number + 1);

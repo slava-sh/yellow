@@ -9,27 +9,27 @@ namespace ProjectYellow
         private const int FieldWidth = 10;
         private const int FieldHeight = 20;
         private const int CellSize = 25;
-        private static Color EmptyCellColor = Color.Yellow;
-        private static Color OccupiedCellColor = Color.Black;
+        private static readonly Color EmptyCellColor = Color.Yellow;
+        private static readonly Color OccupiedCellColor = Color.Black;
 
-        private Game game = new Game(fieldWidth: FieldWidth, fieldHeight: FieldHeight, randomSeed: 2017);
+        private readonly Button[,] buttons;
 
-        private Button[,] buttons;
-        private Timer ticker = new Timer();
+        private readonly Game game = new Game(FieldWidth, FieldHeight, 2017);
+        private readonly Timer ticker = new Timer();
 
         public YellowForm()
         {
             InitializeComponent();
             buttons = new Button[FieldWidth, FieldHeight];
-            for (int x = 0; x < FieldWidth; ++x)
+            for (var x = 0; x < FieldWidth; ++x)
             {
-                for (int y = 0; y < FieldHeight; ++y)
+                for (var y = 0; y < FieldHeight; ++y)
                 {
-                    buttons[x, y] = new Button()
+                    buttons[x, y] = new Button
                     {
                         Size = new Size(CellSize, CellSize),
                         Location = new Point(x * CellSize, y * CellSize),
-                        Enabled = false,
+                        Enabled = false
                     };
                     Controls.Add(buttons[x, y]);
                 }
@@ -56,10 +56,10 @@ namespace ProjectYellow
 
         private void Render()
         {
-            bool[,] mask = game.GetFieldMask();
-            for (int x = 0; x < mask.GetLength(0); ++x)
+            var mask = game.GetFieldMask();
+            for (var x = 0; x < mask.GetLength(0); ++x)
             {
-                for (int y = 0; y < mask.GetLength(1); ++y)
+                for (var y = 0; y < mask.GetLength(1); ++y)
                 {
                     buttons[x, y].BackColor = mask[x, y] ? OccupiedCellColor : EmptyCellColor;
                 }
@@ -68,33 +68,26 @@ namespace ProjectYellow
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (keyData == Keys.Up)
+            switch (keyData)
             {
-                game.TryRotate();
-                Render();
-                return true;
-            }
-            else if (keyData == Keys.Left)
-            {
-                game.TryMoveLeft();
-                Render();
-                return true;
-            }
-            else if (keyData == Keys.Right)
-            {
-                game.TryMoveRight();
-                Render();
-                return true;
-            }
-            else if (keyData == Keys.Down)
-            {
-                game.TryMoveDown();
-                Render();
-                return true;
-            }
-            else
-            {
-                return base.ProcessCmdKey(ref msg, keyData);
+                case Keys.Up:
+                    game.TryRotate();
+                    Render();
+                    return true;
+                case Keys.Left:
+                    game.TryMoveLeft();
+                    Render();
+                    return true;
+                case Keys.Right:
+                    game.TryMoveRight();
+                    Render();
+                    return true;
+                case Keys.Down:
+                    game.TryMoveDown();
+                    Render();
+                    return true;
+                default:
+                    return base.ProcessCmdKey(ref msg, keyData);
             }
         }
     }

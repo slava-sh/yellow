@@ -1,22 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ProjectYellow
+﻿namespace ProjectYellow
 {
     public class Game
     {
-        public bool IsOver { get; private set; } = false;
-
-        private Field field;
-        private Block block;
-        private IBlockGenerator blockGenerator;
+        private readonly IBlockGenerator blockGenerator;
+        private readonly Field field;
         private readonly Cell newBlockOrigin = new Cell(3, 0);
+        private Block block;
 
-        public Game(int fieldWidth, int fieldHeight, int randomSeed) :
-            this(fieldWidth, fieldHeight, new RandomBlockGenerator(randomSeed))
+        public Game(int fieldWidth, int fieldHeight, int randomSeed) : this(fieldWidth, fieldHeight,
+            new RandomBlockGenerator(randomSeed))
         {
         }
 
@@ -26,6 +18,8 @@ namespace ProjectYellow
             this.blockGenerator = blockGenerator;
             block = blockGenerator.NextBlock().MoveTo(newBlockOrigin);
         }
+
+        public bool IsOver { get; private set; }
 
         public void Tick()
         {
@@ -80,9 +74,9 @@ namespace ProjectYellow
         public bool[,] GetFieldMask()
         {
             var mask = new bool[field.Width, field.Height];
-            for (int x = 0; x < field.Width; ++x)
+            for (var x = 0; x < field.Width; ++x)
             {
-                for (int y = 0; y < field.Height; ++y)
+                for (var y = 0; y < field.Height; ++y)
                 {
                     if (field.IsOccupied(new Cell(x, y)))
                     {

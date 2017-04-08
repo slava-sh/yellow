@@ -1,22 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace ProjectYellow
 {
-    class Field
+    internal class Field
     {
-        public readonly int Width;
         public readonly int Height;
-        private bool[,] cells;
+        public readonly int Width;
+        private readonly bool[,] cells;
 
         public Field(int width, int height)
         {
-            this.Width = width;
-            this.Height = height;
+            Width = width;
+            Height = height;
             cells = new bool[Width, Height];
         }
 

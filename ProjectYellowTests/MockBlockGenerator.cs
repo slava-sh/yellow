@@ -1,16 +1,12 @@
-﻿using ProjectYellow;
-using System;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections;
+using ProjectYellow;
 
 namespace ProjectYellowTests
 {
-    class MockBlockGenerator : IBlockGenerator, IEnumerable<Block>
+    internal class MockBlockGenerator : IBlockGenerator, IEnumerable<Block>
     {
-        private Queue<Block> blocks = new Queue<Block>();
+        private readonly Queue<Block> blocks = new Queue<Block>();
 
         public Block NextBlock()
         {

@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("ProjectYellowTests")]
+
 namespace ProjectYellow
 {
-    interface IBlockGenerator
+    internal interface IBlockGenerator
     {
         Block NextBlock();
     }
