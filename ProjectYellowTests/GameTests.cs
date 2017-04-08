@@ -137,6 +137,58 @@ namespace ProjectYellowTests
                 "###....");
         }
 
+        [TestMethod]
+        public void FullLineAreRemoved()
+        {
+            var game = new Game(6, 4, new MockBlockGenerator
+            {
+                new Block(Tetromino.O),
+                new Block(Tetromino.O),
+                new Block(Tetromino.O),
+                new Block(Tetromino.O)
+            });
+            game.Tick();
+            AssertFieldMask(game,
+                "..##..",
+                "..##..",
+                "......",
+                "......");
+            game.TryMoveLeft(); game.TryMoveLeft();
+            game.Tick();
+            game.Tick();
+            game.Tick();
+            game.Tick();
+            AssertFieldMask(game,
+                "..##..",
+                "..##..",
+                "##....",
+                "##....");
+            game.TryMoveRight();
+            game.TryMoveRight();
+            game.Tick();
+            game.Tick();
+            game.Tick();
+            game.Tick();
+            AssertFieldMask(game,
+                "..##..",
+                "..##..",
+                "##..##",
+                "##..##");
+            game.Tick();
+            game.Tick();
+            AssertFieldMask(game,
+                "......",
+                "......",
+                "######",
+                "######");
+            game.Tick();
+            AssertFieldMask(game,
+                "..##..",
+                "......",
+                "......",
+                "......");
+        }
+
         private static void AssertFieldMask(Game game, params string[] verboseFieldMaskLines)
         {
             var verboseFieldMask = string.Join(Environment.NewLine, verboseFieldMaskLines);

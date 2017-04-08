@@ -7,7 +7,7 @@ namespace ProjectYellow
     {
         public readonly int Height;
         public readonly int Width;
-        private readonly bool[,] cells;
+        private bool[,] cells;
 
         public Field(int width, int height)
         {
@@ -44,6 +44,42 @@ namespace ProjectYellow
                     cells[cell.X, cell.Y] = true;
                 }
             }
+        }
+
+        public void MaybeRemoveLines()
+        {
+            var lineIsFull = new bool[Height];
+            for (var y = 0; y < Height; ++y)
+            {
+                lineIsFull[y] = true;
+                for (var x = 0; x < Width; ++x)
+                {
+                    if (!cells[x, y])
+                    {
+                        lineIsFull[y] = false;
+                        break;
+                    }
+                }
+            }
+            if (!lineIsFull.Any(x => x))
+            {
+                return;
+            }
+            var newCells = new bool[Width, Height];
+            var numFullLines = 0;
+            for (var y = Height - 1; y >= 0; --y)
+            {
+                if (lineIsFull[y])
+                {
+                    ++numFullLines;
+                    continue;
+                }
+                for (var x = 0; x < Width; ++x)
+                {
+                    newCells[x, y + numFullLines] = cells[x, y];
+                }
+            }
+            cells = newCells;
         }
     }
 }

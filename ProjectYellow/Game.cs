@@ -27,17 +27,20 @@
             if (field.CanPlace(nextBlock))
             {
                 block = nextBlock;
+                return;
+            }
+
+            field.Place(block);
+            field.MaybeRemoveLines();
+
+            nextBlock = blockGenerator.NextBlock().MoveTo(newBlockOrigin);
+            if (field.CanPlace(nextBlock))
+            {
+                block = nextBlock;
             }
             else
             {
-                field.Place(block);
-                nextBlock = blockGenerator.NextBlock().MoveTo(newBlockOrigin);
-                if (!field.CanPlace(nextBlock))
-                {
-                    IsOver = true;
-                    return;
-                }
-                block = nextBlock;
+                IsOver = true;
             }
         }
 
