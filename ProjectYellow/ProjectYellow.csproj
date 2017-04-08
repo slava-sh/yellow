@@ -49,7 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Field.cs" />
-    <Compile Include="Position.cs" />
+    <Compile Include="Cell.cs" />
     <Compile Include="Block.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Rotation.cs" />
