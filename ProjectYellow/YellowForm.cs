@@ -23,12 +23,13 @@ namespace ProjectYellow
             {
                 for (int y = 0; y < game.field.Height; ++y)
                 {
-                    var button = new Button();
-                    button.Size = new Size(CellSize, CellSize);
-                    button.Location = new Point(x * CellSize, y * CellSize);
-                    button.Enabled = false;
-                    Controls.Add(button);
-                    buttons[x, y] = button;
+                    buttons[x, y] = new Button()
+                    {
+                        Size = new Size(CellSize, CellSize),
+                        Location = new Point(x * CellSize, y * CellSize),
+                        Enabled = false,
+                    };
+                    Controls.Add(buttons[x, y]);
                 }
             }
         }

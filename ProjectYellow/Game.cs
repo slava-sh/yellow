@@ -8,8 +8,8 @@ namespace ProjectYellow
 {
     public class Game
     {
-        public Field field;
-        public Block block;
+        internal Field field;
+        internal Block block;
         public bool IsOver { get; private set; } = false;
         private Random random;
 
@@ -22,21 +22,21 @@ namespace ProjectYellow
 
         public void Tick()
         {
-            var nextShape = block.MoveDown();
-            if (field.CanPlace(nextShape))
+            var nextBlock = block.MoveDown();
+            if (field.CanPlace(nextBlock))
             {
-                block = nextShape;
+                block = nextBlock;
             }
             else
             {
                 field.Place(block);
-                nextShape = NextBlock();
-                if (!field.CanPlace(nextShape))
+                nextBlock = NextBlock();
+                if (!field.CanPlace(nextBlock))
                 {
                     IsOver = true;
                     return;
                 }
-                block = nextShape;
+                block = nextBlock;
             }
         }
 

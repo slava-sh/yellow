@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace ProjectYellow
 {
-    class Block
+    struct Block
     {
-        public int CenterX;
-        public int CenterY;
-        public Shape Shape;
-        public Rotation Rotation;
+        public readonly int CenterX;
+        public readonly int CenterY;
+        public readonly Shape Shape;
+        public readonly Rotation Rotation;
 
         public Block(int centerX, int centerY, Shape shape, Rotation rotation)
         {
