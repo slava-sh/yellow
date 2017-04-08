@@ -49,8 +49,32 @@ namespace ProjectYellow
 
         public bool TryRotate()
         {
-            block = block.Rotate();
-            return true; // TODO
+            return TryNewBlock(block.Rotate());
+        }
+
+        public bool TryMoveLeft()
+        {
+            return TryNewBlock(block.MoveLeft());
+        }
+
+        public bool TryMoveRight()
+        {
+            return TryNewBlock(block.MoveRight());
+        }
+
+        public bool TryMoveDown()
+        {
+            return TryNewBlock(block.MoveDown());
+        }
+
+        private bool TryNewBlock(Block newBlock)
+        {
+            if (!field.CanPlace(newBlock))
+            {
+                return false;
+            }
+            block = newBlock;
+            return true;
         }
 
         public bool[,] GetFieldMask()

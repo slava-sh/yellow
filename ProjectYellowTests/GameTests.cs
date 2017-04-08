@@ -20,7 +20,7 @@ namespace ProjectYellow.Tests
         }
 
         [TestMethod()]
-        public void SampleGame()
+        public void SimpleGame()
         {
             var game = new Game(7, 6, blockGenerator: new MockBlockGenerator
             {
@@ -42,6 +42,96 @@ namespace ProjectYellow.Tests
                 "__bbb__",
                 "__a____",
                 "__aaa__");
+        }
+
+        [TestMethod()]
+        public void ArrowKeys()
+        {
+            var game = new Game(7, 6, blockGenerator: new MockBlockGenerator
+            {
+                new Block(Shape.L, new Rotation(0)),
+                new Block(Shape.L, new Rotation(0)),
+            });
+            AssertFieldMask(game,
+                "__#____",
+                "__###__",
+                "_______",
+                "_______",
+                "_______",
+                "_______");
+            game.Tick();
+            AssertFieldMask(game,
+                "_______",
+                "__#____",
+                "__###__",
+                "_______",
+                "_______",
+                "_______");
+            game.TryMoveLeft();
+            game.Tick();
+            AssertFieldMask(game,
+                "_______",
+                "_______",
+                "_#_____",
+                "_###___",
+                "_______",
+                "_______");
+            game.Tick();
+            game.TryMoveLeft();
+            AssertFieldMask(game,
+                "_______",
+                "_______",
+                "_______",
+                "#______",
+                "###____",
+                "_______");
+            game.Tick();
+            game.TryMoveLeft();
+            AssertFieldMask(game,
+                "_______",
+                "_______",
+                "_______",
+                "_______",
+                "#______",
+                "###____");
+            game.Tick();
+            game.TryMoveRight();
+            game.TryMoveRight();
+            AssertFieldMask(game,
+                "____#__",
+                "____###",
+                "_______",
+                "_______",
+                "#______",
+                "###____");
+            game.Tick();
+            game.TryRotate();
+            AssertFieldMask(game,
+                "____##_",
+                "____#__",
+                "____#__",
+                "_______",
+                "#______",
+                "###____");
+            game.Tick();
+            game.TryMoveRight();
+            game.TryRotate();
+            game.Tick();
+            AssertFieldMask(game,
+                "_______",
+                "_______",
+                "_____##",
+                "_____#_",
+                "#____#_",
+                "###____");
+            game.TryMoveDown();
+            AssertFieldMask(game,
+                "_______",
+                "_______",
+                "_______",
+                "_____##",
+                "#____#_",
+                "###__#_");
         }
 
         private void AssertFieldMask(Game game, params string[] verboseFieldMaskLines)

@@ -77,6 +77,16 @@ namespace ProjectYellow
             return new Block(new Cell(Center.X, Center.Y + 1), Shape, Rotation);
         }
 
+        public Block MoveLeft()
+        {
+            return new Block(new Cell(Center.X - 1, Center.Y), Shape, Rotation);
+        }
+
+        public Block MoveRight()
+        {
+            return new Block(new Cell(Center.X + 1, Center.Y), Shape, Rotation);
+        }
+
         internal Block MoveTo(Cell newCenter)
         {
             return new Block(newCenter, Shape, Rotation);

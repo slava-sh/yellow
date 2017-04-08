@@ -74,6 +74,24 @@ namespace ProjectYellow
                 Render();
                 return true;
             }
+            else if (keyData == Keys.Left)
+            {
+                game.TryMoveLeft();
+                Render();
+                return true;
+            }
+            else if (keyData == Keys.Right)
+            {
+                game.TryMoveRight();
+                Render();
+                return true;
+            }
+            else if (keyData == Keys.Down)
+            {
+                game.TryMoveDown();
+                Render();
+                return true;
+            }
             else
             {
                 return base.ProcessCmdKey(ref msg, keyData);
