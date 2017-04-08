@@ -8,16 +8,22 @@ namespace ProjectYellow
 {
     public class Game
     {
-        internal Field field;
-        internal Block block;
         public bool IsOver { get; private set; } = false;
-        private Random random;
 
-        public Game(int randomSeed)
+        private Field field;
+        private Block block;
+        private IBlockGenerator blockGenerator;
+
+        public Game(int fieldWidth, int fieldHeight, int randomSeed) :
+            this(fieldWidth, fieldHeight, new RandomBlockGenerator(randomSeed))
         {
-            random = new Random(randomSeed);
-            field = new Field(6, 9);
-            block = NextBlock();
+        }
+
+        internal Game(int fieldWidth, int fieldHeight, IBlockGenerator blockGenerator)
+        {
+            field = new Field(fieldWidth, fieldHeight);
+            this.blockGenerator = blockGenerator;
+            block = blockGenerator.NextBlock();
         }
 
         public void Tick()
@@ -30,7 +36,7 @@ namespace ProjectYellow
             else
             {
                 field.Place(block);
-                nextBlock = NextBlock();
+                nextBlock = blockGenerator.NextBlock();
                 if (!field.CanPlace(nextBlock))
                 {
                     IsOver = true;
@@ -40,16 +46,33 @@ namespace ProjectYellow
             }
         }
 
-        private Block NextBlock()
-        {
-            Rotation rotation = new Rotation(random.Next() % 4);
-            return new Block(3, 0, Shape.L, rotation);
-        }
-
         public bool TryRotate()
         {
             block = block.Rotate();
             return true; // TODO
+        }
+
+        public bool[,] GetFieldMask()
+        {
+            var mask = new bool[field.Width, field.Height];
+            for (int x = 0; x < field.Width; ++x)
+            {
+                for (int y = 0; y < field.Height; ++y)
+                {
+                    if (field.IsOccupied(new Cell(x, y)))
+                    {
+                        mask[x, y] = true;
+                    }
+                }
+            }
+            foreach (var cell in block.GetCells())
+            {
+                if (field.Contains(cell))
+                {
+                    mask[cell.X, cell.Y] = true;
+                }
+            }
+            return mask;
         }
     }
 }

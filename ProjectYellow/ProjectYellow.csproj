@@ -52,6 +52,8 @@
     <Compile Include="Cell.cs" />
     <Compile Include="Block.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="IBlockGenerator.cs" />
+    <Compile Include="RandomBlockGenerator.cs" />
     <Compile Include="Rotation.cs" />
     <Compile Include="Shape.cs" />
     <Compile Include="YellowForm.cs">

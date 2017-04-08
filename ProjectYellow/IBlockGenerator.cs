@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 [assembly: InternalsVisibleTo("ProjectYellowTests")]
 namespace ProjectYellow
 {
-    enum Shape
+    interface IBlockGenerator
     {
-        L,
+        Block NextBlock();
     }
 }

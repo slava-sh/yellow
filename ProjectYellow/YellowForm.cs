@@ -6,11 +6,13 @@ namespace ProjectYellow
 {
     public partial class YellowForm : Form
     {
+        private const int FieldWidth = 6;
+        private const int FieldHeight = 9;
         private const int CellSize = 30;
         private static Color EmptyCellColor = Color.Yellow;
         private static Color OccupiedCellColor = Color.Black;
 
-        private Game game = new Game(randomSeed: 2017);
+        private Game game = new Game(fieldWidth: FieldWidth, fieldHeight: FieldHeight, randomSeed: 2017);
 
         private Button[,] buttons;
         private Timer ticker = new Timer();
@@ -18,10 +20,10 @@ namespace ProjectYellow
         public YellowForm()
         {
             InitializeComponent();
-            buttons = new Button[game.field.Width, game.field.Height];
-            for (int x = 0; x < game.field.Width; ++x)
+            buttons = new Button[FieldWidth, FieldHeight];
+            for (int x = 0; x < FieldWidth; ++x)
             {
-                for (int y = 0; y < game.field.Height; ++y)
+                for (int y = 0; y < FieldHeight; ++y)
                 {
                     buttons[x, y] = new Button()
                     {
@@ -54,19 +56,12 @@ namespace ProjectYellow
 
         private void Render()
         {
-            for (int x = 0; x < game.field.Width; ++x)
+            bool[,] mask = game.GetFieldMask();
+            for (int x = 0; x < mask.GetLength(0); ++x)
             {
-                for (int y = 0; y < game.field.Height; ++y)
+                for (int y = 0; y < mask.GetLength(1); ++y)
                 {
-                    var cell = new Cell(x, y);
-                    var button = buttons[x, y];
-                    button.BackColor = game.field.IsOccupied(cell) ? OccupiedCellColor : EmptyCellColor;
-                }
-            }
-            foreach (var cell in game.block.GetCells())
-            {
-                if (game.field.Contains(cell)) {
-                    buttons[cell.X, cell.Y].BackColor = OccupiedCellColor;
+                    buttons[x, y].BackColor = mask[x, y] ? OccupiedCellColor : EmptyCellColor;
                 }
             }
         }
