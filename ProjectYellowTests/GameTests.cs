@@ -24,12 +24,12 @@ namespace ProjectYellow.Tests
         {
             var game = new Game(7, 6, blockGenerator: new MockBlockGenerator
             {
-                new Block(Shape.L, new Rotation(0)),
-                new Block(Shape.L, new Rotation(0)),
-                new Block(Shape.L, new Rotation(0)),
-                new Block(Shape.L, new Rotation(0)),
+                new Block(Tetrimono.J),
+                new Block(Tetrimono.J),
+                new Block(Tetrimono.J),
+                new Block(Tetrimono.J),
             });
-            for (int i = 0; i < 9; ++i)
+            for (int i = 0; i < 12; ++i)
             {
                 Assert.IsFalse(game.IsOver);
                 game.Tick();
@@ -49,16 +49,17 @@ namespace ProjectYellow.Tests
         {
             var game = new Game(7, 6, blockGenerator: new MockBlockGenerator
             {
-                new Block(Shape.L, new Rotation(0)),
-                new Block(Shape.L, new Rotation(0)),
+                new Block(Tetrimono.J),
+                new Block(Tetrimono.J),
             });
             AssertFieldMask(game,
-                "__#____",
                 "__###__",
                 "_______",
                 "_______",
                 "_______",
+                "_______",
                 "_______");
+            game.Tick();
             game.Tick();
             AssertFieldMask(game,
                 "_______",
@@ -98,40 +99,47 @@ namespace ProjectYellow.Tests
             game.TryMoveRight();
             game.TryMoveRight();
             AssertFieldMask(game,
+                "____###",
+                "_______",
+                "_______",
+                "_______",
+                "#______",
+                "###____");
+            game.Tick();
+            AssertFieldMask(game,
                 "____#__",
                 "____###",
                 "_______",
                 "_______",
                 "#______",
                 "###____");
-            game.Tick();
+            game.TryRotate();
+            game.TryRotate();
             game.TryRotate();
             AssertFieldMask(game,
+                "_____#_",
+                "_____#_",
                 "____##_",
-                "____#__",
-                "____#__",
                 "_______",
                 "#______",
                 "###____");
             game.Tick();
             game.TryMoveRight();
-            game.TryRotate();
-            game.Tick();
             AssertFieldMask(game,
                 "_______",
-                "_______",
+                "______#",
+                "______#",
                 "_____##",
-                "_____#_",
-                "#____#_",
+                "#______",
                 "###____");
-            game.TryMoveDown();
+            game.TryRotate();
             AssertFieldMask(game,
                 "_______",
-                "_______",
-                "_______",
+                "______#",
+                "______#",
                 "_____##",
-                "#____#_",
-                "###__#_");
+                "#______",
+                "###____");
         }
 
         private void AssertFieldMask(Game game, params string[] verboseFieldMaskLines)
@@ -142,7 +150,8 @@ namespace ProjectYellow.Tests
             {
                 fieldMask = fieldMask.Replace(c, '#');
             }
-            Assert.AreEqual(fieldMask, GetFieldMaskString(game));
+            Assert.AreEqual(Environment.NewLine + fieldMask + Environment.NewLine,
+                Environment.NewLine + GetFieldMaskString(game) + Environment.NewLine);
         }
 
         private string GetFieldMaskString(Game game)

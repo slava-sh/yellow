@@ -55,7 +55,7 @@
     <Compile Include="IBlockGenerator.cs" />
     <Compile Include="RandomBlockGenerator.cs" />
     <Compile Include="Rotation.cs" />
-    <Compile Include="Shape.cs" />
+    <Compile Include="Tetrimono.cs" />
     <Compile Include="YellowForm.cs">
       <SubType>Form</SubType>
     </Compile>

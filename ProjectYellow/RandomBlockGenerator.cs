@@ -17,8 +17,8 @@ namespace ProjectYellow
 
         public Block NextBlock()
         {
-            Rotation rotation = new Rotation(random.Next() % 4);
-            return new Block(Shape.L, rotation);
+            var tetrimono = Tetrimono.All[random.Next() % Tetrimono.All.Length];
+            return new Block(tetrimono);
         }
     }
 }

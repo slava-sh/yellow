@@ -6,9 +6,9 @@ namespace ProjectYellow
 {
     public partial class YellowForm : Form
     {
-        private const int FieldWidth = 6;
-        private const int FieldHeight = 9;
-        private const int CellSize = 30;
+        private const int FieldWidth = 10;
+        private const int FieldHeight = 20;
+        private const int CellSize = 25;
         private static Color EmptyCellColor = Color.Yellow;
         private static Color OccupiedCellColor = Color.Black;
 
