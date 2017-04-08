@@ -24,10 +24,10 @@ namespace ProjectYellow.Tests
         {
             var game = new Game(7, 6, blockGenerator: new MockBlockGenerator
             {
-                new Block(Tetrimono.J),
-                new Block(Tetrimono.J),
-                new Block(Tetrimono.J),
-                new Block(Tetrimono.J),
+                new Block(Tetromino.J),
+                new Block(Tetromino.J),
+                new Block(Tetromino.J),
+                new Block(Tetromino.J),
             });
             for (int i = 0; i < 12; ++i)
             {
@@ -49,8 +49,8 @@ namespace ProjectYellow.Tests
         {
             var game = new Game(7, 6, blockGenerator: new MockBlockGenerator
             {
-                new Block(Tetrimono.J),
-                new Block(Tetrimono.J),
+                new Block(Tetromino.J),
+                new Block(Tetromino.J),
             });
             AssertFieldMask(game,
                 "__###__",

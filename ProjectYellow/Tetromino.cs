@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 [assembly: InternalsVisibleTo("ProjectYellowTests")]
 namespace ProjectYellow
 {
-    sealed class Tetrimono
+    sealed class Tetromino
     {
         // Rotations according to the Super Rotation System.
         // See http://tetris.wikia.com/wiki/SRS
-        public static readonly Tetrimono I = new Tetrimono(
+        public static readonly Tetromino I = new Tetromino(
     new Cell(1, 1),
     new string[][] {
                 new string[] {
@@ -40,7 +40,7 @@ namespace ProjectYellow
                     ".#..",
                 },
     });
-        public static readonly Tetrimono J = new Tetrimono(
+        public static readonly Tetromino J = new Tetromino(
     new Cell(1, 1),
     new string[][] {
                 new string[] {
@@ -64,7 +64,7 @@ namespace ProjectYellow
                     "##.",
                 },
     });
-        public static readonly Tetrimono L = new Tetrimono(
+        public static readonly Tetromino L = new Tetromino(
             new Cell(1, 1),
             new string[][] {
                 new string[] {
@@ -88,7 +88,7 @@ namespace ProjectYellow
                     ".#.",
                 },
             });
-        public static readonly Tetrimono O = new Tetrimono(
+        public static readonly Tetromino O = new Tetromino(
             new Cell(1, 1),
             new string[][] {
                 new string[] {
@@ -96,7 +96,7 @@ namespace ProjectYellow
                     "##",
                 },
             });
-        public static readonly Tetrimono S = new Tetrimono(
+        public static readonly Tetromino S = new Tetromino(
             new Cell(1, 1),
             new string[][] {
                 new string[] {
@@ -120,7 +120,7 @@ namespace ProjectYellow
                     ".#.",
                 },
             });
-        public static readonly Tetrimono T = new Tetrimono(
+        public static readonly Tetromino T = new Tetromino(
             new Cell(1, 1),
             new string[][] {
                 new string[] {
@@ -144,7 +144,7 @@ namespace ProjectYellow
                     ".#.",
                 },
             });
-        public static readonly Tetrimono Z = new Tetrimono(
+        public static readonly Tetromino Z = new Tetromino(
             new Cell(1, 1),
             new string[][] {
                 new string[] {
@@ -169,14 +169,14 @@ namespace ProjectYellow
                 },
             });
 
-        public static readonly Tetrimono[] All = new Tetrimono[] {
+        public static readonly Tetromino[] All = new Tetromino[] {
             I, J, L, O, S, T, Z,
         };
 
         public readonly Cell Center;
         private readonly bool[][,] rotationMasks;
 
-        private Tetrimono(Cell center, string[][] rotations)
+        private Tetromino(Cell center, string[][] rotations)
         {
             this.Center = center;
             rotationMasks = rotations.Select(ParseMask).ToArray();
