@@ -105,7 +105,7 @@ namespace ProjectYellow
             });
 
         public static readonly Tetromino O = new Tetromino(
-            new Cell(1, 1),
+            new Cell(0, 1),
             new[]
             {
                 new[]
@@ -207,12 +207,16 @@ namespace ProjectYellow
 
         public static readonly Tetromino[] All = {I, J, L, O, S, T, Z};
 
-        public readonly Cell Center;
+        /// <summary>
+        ///     Left-middle cell of the first rotation.
+        /// </summary>
+        public readonly Cell Pivot;
+
         private readonly bool[][,] rotationMasks;
 
-        private Tetromino(Cell center, IEnumerable<string[]> rotations)
+        private Tetromino(Cell pivot, IEnumerable<string[]> rotations)
         {
-            Center = center;
+            Pivot = pivot;
             rotationMasks = rotations.Select(ParseMask).ToArray();
         }
 

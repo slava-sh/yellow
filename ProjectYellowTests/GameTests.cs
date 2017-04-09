@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ProjectYellow;
 
@@ -19,10 +20,10 @@ namespace ProjectYellowTests
         {
             var game = new Game(7, 6, new MockBlockGenerator
             {
-                new Block(Tetromino.J),
-                new Block(Tetromino.J),
-                new Block(Tetromino.J),
-                new Block(Tetromino.J)
+                Tetromino.J,
+                Tetromino.J,
+                Tetromino.J,
+                Tetromino.J
             });
             for (var i = 0; i < 12; ++i)
             {
@@ -44,8 +45,8 @@ namespace ProjectYellowTests
         {
             var game = new Game(7, 6, new MockBlockGenerator
             {
-                new Block(Tetromino.J),
-                new Block(Tetromino.J)
+                Tetromino.J,
+                Tetromino.J
             });
             AssertFieldMask(game,
                 "..###..",
@@ -142,10 +143,10 @@ namespace ProjectYellowTests
         {
             var game = new Game(6, 4, new MockBlockGenerator
             {
-                new Block(Tetromino.O),
-                new Block(Tetromino.O),
-                new Block(Tetromino.O),
-                new Block(Tetromino.O)
+                Tetromino.O,
+                Tetromino.O,
+                Tetromino.O,
+                Tetromino.O
             });
             game.Tick();
             AssertFieldMask(game,
@@ -195,30 +196,67 @@ namespace ProjectYellowTests
         {
             var game = new Game(6, 4, new MockBlockGenerator
             {
-                new Block(Tetromino.Z)
+                Tetromino.Z
             });
             game.Tick();
             AssertFieldMask(game,
+                ".##...",
                 "..##..",
-                "...##.",
                 "......",
                 "......");
             game.HardDrop();
             AssertFieldMask(game,
                 "......",
                 "......",
-                "..##..",
-                "...##.");
+                ".##...",
+                "..##..");
+        }
+
+        [TestMethod]
+        public void BlocksSpawnInTheCenter()
+        {
+            var game = new Game(10, 20, new MockBlockGenerator
+            {
+                Tetromino.I,
+                Tetromino.J,
+                Tetromino.L,
+                Tetromino.T,
+                Tetromino.O,
+                Tetromino.S,
+                Tetromino.Z
+            });
+            for (var i = 0; i < 7; ++i)
+            {
+                game.Tick();
+                game.HardDrop();
+            }
+            AssertFieldMask(game,
+                "..........",
+                "..........",
+                "..........",
+                "..........",
+                "..........",
+                "..........",
+                "..........",
+                "...ZZ.....",
+                "....ZZ....",
+                "....SS....",
+                "...SS.....",
+                "....OO....",
+                "....OO....",
+                "....T.....",
+                "...TTT....",
+                ".....L....",
+                "...LLL....",
+                "...J......",
+                "...JJJ....",
+                "...IIII...");
         }
 
         private static void AssertFieldMask(Game game, params string[] verboseFieldMaskLines)
         {
             var verboseFieldMask = string.Join(Environment.NewLine, verboseFieldMaskLines);
-            var fieldMask = verboseFieldMask;
-            foreach (var c in "abcdefghijklmopqrstuvwxyz0123456789")
-            {
-                fieldMask = fieldMask.Replace(c, '#');
-            }
+            var fieldMask = Regex.Replace(verboseFieldMask, @"[^.\s]", "#");
             Assert.AreEqual(
                 Environment.NewLine + fieldMask + Environment.NewLine,
                 Environment.NewLine + GetFieldMaskString(game) + Environment.NewLine);

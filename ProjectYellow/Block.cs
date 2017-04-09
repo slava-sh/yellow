@@ -7,53 +7,57 @@ namespace ProjectYellow
 {
     internal struct Block
     {
-        private readonly Cell center;
         private readonly Tetromino tetromino;
         private readonly Rotation rotation;
 
+        /// <summary>
+        ///     Position of the tetromino's pivot on the field.
+        /// </summary>
+        private readonly Cell pivot;
+
         public Block(Tetromino tetromino)
         {
-            center = new Cell(0, 0);
+            pivot = new Cell(0, 0);
             this.tetromino = tetromino;
             rotation = new Rotation();
         }
 
-        private Block(Cell center, Tetromino tetromino, Rotation rotation)
+        private Block(Cell pivot, Tetromino tetromino, Rotation rotation)
         {
-            this.center = center;
+            this.pivot = pivot;
             this.tetromino = tetromino;
             this.rotation = rotation;
         }
 
         public Block Rotate()
         {
-            return new Block(center, tetromino, rotation.Next());
+            return new Block(pivot, tetromino, rotation.Next());
         }
 
         public Block MoveDown()
         {
-            return new Block(new Cell(center.X, center.Y + 1), tetromino, rotation);
+            return new Block(new Cell(pivot.X, pivot.Y + 1), tetromino, rotation);
         }
 
         public Block MoveLeft()
         {
-            return new Block(new Cell(center.X - 1, center.Y), tetromino, rotation);
+            return new Block(new Cell(pivot.X - 1, pivot.Y), tetromino, rotation);
         }
 
         public Block MoveRight()
         {
-            return new Block(new Cell(center.X + 1, center.Y), tetromino, rotation);
+            return new Block(new Cell(pivot.X + 1, pivot.Y), tetromino, rotation);
         }
 
-        internal Block MoveTo(Cell newCenter)
+        internal Block MoveTo(Cell newPivot)
         {
-            return new Block(newCenter, tetromino, rotation);
+            return new Block(newPivot, tetromino, rotation);
         }
 
         public IEnumerable<Cell> GetCells()
         {
             var cells = new List<Cell>();
-            var origin = new Cell(center.X - tetromino.Center.X, center.Y - tetromino.Center.Y);
+            var origin = new Cell(pivot.X - tetromino.Pivot.X, pivot.Y - tetromino.Pivot.Y);
             var rotationMask = tetromino.GetRotationMask(rotation);
             var width = rotationMask.GetLength(0);
             var height = rotationMask.GetLength(1);

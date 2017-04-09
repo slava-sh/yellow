@@ -23,9 +23,9 @@ namespace ProjectYellowTests
             return GetEnumerator();
         }
 
-        public void Add(Block block)
+        public void Add(Tetromino tetromino)
         {
-            blocks.Enqueue(block);
+            blocks.Enqueue(new Block(tetromino));
         }
     }
 }

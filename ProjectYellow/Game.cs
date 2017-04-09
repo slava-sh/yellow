@@ -4,7 +4,7 @@
     {
         private readonly IBlockGenerator blockGenerator;
         private readonly Field field;
-        private readonly Cell newBlockOrigin = new Cell(3, 0);
+        private readonly Cell newBlockOrigin;
         private Block block;
 
         public Game(int fieldWidth, int fieldHeight, int randomSeed) : this(fieldWidth, fieldHeight,
@@ -15,6 +15,8 @@
         internal Game(int fieldWidth, int fieldHeight, IBlockGenerator blockGenerator)
         {
             field = new Field(fieldWidth, fieldHeight);
+            var centerLeftWidth = (field.Width - 1) / 2;
+            newBlockOrigin = new Cell(centerLeftWidth, 0);
             this.blockGenerator = blockGenerator;
             block = blockGenerator.NextBlock().MoveTo(newBlockOrigin);
         }
