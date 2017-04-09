@@ -254,6 +254,54 @@ namespace ProjectYellowTests
                 "...IIII...");
         }
 
+        [TestMethod]
+        public void TSpin()
+        {
+            var game = new Game(8, 6, new MockTetrominoGenerator
+            {
+                Tetromino.Z,
+                Tetromino.I,
+                Tetromino.Z,
+                Tetromino.T,
+                Tetromino.O
+            });
+            game.ShiftLeft();
+            game.ShiftLeft();
+            game.HardDrop();
+            game.Tick();
+            game.ShiftRight();
+            game.ShiftRight();
+            game.HardDrop();
+            game.Tick();
+            game.ShiftRight();
+            game.ShiftRight();
+            game.HardDrop();
+            game.Tick();
+            game.Tick();
+            game.Rotate();
+            game.Rotate();
+            game.Rotate();
+            AssertFieldMask(game,
+                "...T....",
+                "..TT....",
+                "...T....",
+                "....ZZ..",
+                "ZZ...ZZ.",
+                ".ZZ.IIII");
+            game.HardDrop();
+            game.Rotate();
+            game.Rotate();
+            game.Rotate();
+            game.Tick();
+            AssertFieldMask(game,
+                "...OO...",
+                "........",
+                "........",
+                "....ZZ..",
+                "ZZTTTZZ.",
+                ".ZZTIIII");
+        }
+
         private static void AssertFieldMask(Game game, params string[] verboseFieldMaskLines)
         {
             var verboseFieldMask = string.Join(Environment.NewLine, verboseFieldMaskLines);
