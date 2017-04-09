@@ -1,4 +1,6 @@
-﻿namespace ProjectYellow
+﻿using System;
+
+namespace ProjectYellow
 {
     public class Game
     {
@@ -14,6 +16,10 @@
 
         internal Game(int fieldWidth, int fieldHeight, ITetrominoGenerator tetrominoGenerator)
         {
+            if (fieldWidth % 2 != 0)
+            {
+                throw new ArgumentException("fieldWidth must be even.");
+            }
             field = new Field(fieldWidth, fieldHeight);
             var centerLeftWidth = (field.Width - 1) / 2;
             newBlockOrigin = new Cell(centerLeftWidth, 0);

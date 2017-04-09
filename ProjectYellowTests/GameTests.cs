@@ -18,7 +18,7 @@ namespace ProjectYellowTests
         [TestMethod]
         public void SimpleGame()
         {
-            var game = new Game(7, 6, new MockTetrominoGenerator
+            var game = new Game(8, 6, new MockTetrominoGenerator
             {
                 Tetromino.J,
                 Tetromino.J,
@@ -32,110 +32,111 @@ namespace ProjectYellowTests
             }
             Assert.IsTrue(game.IsOver);
             AssertFieldMask(game,
-                "..c....",
-                "..ccc..",
-                "..b....",
-                "..bbb..",
-                "..a....",
-                "..aaa..");
+                "..c.....",
+                "..ccc...",
+                "..b.....",
+                "..bbb...",
+                "..a.....",
+                "..aaa...");
         }
 
         [TestMethod]
         public void ArrowKeys()
         {
-            var game = new Game(7, 6, new MockTetrominoGenerator
+            var game = new Game(8, 6, new MockTetrominoGenerator
             {
                 Tetromino.J,
                 Tetromino.J
             });
             AssertFieldMask(game,
-                "..###..",
-                ".......",
-                ".......",
-                ".......",
-                ".......",
-                ".......");
+                "..###...",
+                "........",
+                "........",
+                "........",
+                "........",
+                "........");
             game.Tick();
             game.Tick();
             AssertFieldMask(game,
-                ".......",
-                "..#....",
-                "..###..",
-                ".......",
-                ".......",
-                ".......");
+                "........",
+                "..#.....",
+                "..###...",
+                "........",
+                "........",
+                "........");
             game.ShiftLeft();
             game.Tick();
             AssertFieldMask(game,
-                ".......",
-                ".......",
-                ".#.....",
-                ".###...",
-                ".......",
-                ".......");
+                "........",
+                "........",
+                ".#......",
+                ".###....",
+                "........",
+                "........");
             game.Tick();
             game.ShiftLeft();
             AssertFieldMask(game,
-                ".......",
-                ".......",
-                ".......",
-                "#......",
-                "###....",
-                ".......");
+                "........",
+                "........",
+                "........",
+                "#.......",
+                "###.....",
+                "........");
             game.Tick();
             game.ShiftLeft();
             AssertFieldMask(game,
-                ".......",
-                ".......",
-                ".......",
-                ".......",
-                "#......",
-                "###....");
+                "........",
+                "........",
+                "........",
+                "........",
+                "#.......",
+                "###.....");
             game.Tick();
             game.ShiftRight();
             game.ShiftRight();
+            game.ShiftRight();
             AssertFieldMask(game,
-                "....###",
-                ".......",
-                ".......",
-                ".......",
-                "#......",
-                "###....");
+                ".....###",
+                "........",
+                "........",
+                "........",
+                "#.......",
+                "###.....");
             game.Tick();
             AssertFieldMask(game,
-                "....#..",
-                "....###",
-                ".......",
-                ".......",
-                "#......",
-                "###....");
+                ".....#..",
+                ".....###",
+                "........",
+                "........",
+                "#.......",
+                "###.....");
             game.Rotate();
             game.Rotate();
             game.Rotate();
             AssertFieldMask(game,
-                ".....#.",
-                ".....#.",
-                "....##.",
-                ".......",
-                "#......",
-                "###....");
+                "......#.",
+                "......#.",
+                ".....##.",
+                "........",
+                "#.......",
+                "###.....");
             game.Tick();
             game.ShiftRight();
             AssertFieldMask(game,
-                ".......",
-                "......#",
-                "......#",
-                ".....##",
-                "#......",
-                "###....");
+                "........",
+                ".......#",
+                ".......#",
+                "......##",
+                "#.......",
+                "###.....");
             game.Rotate();
             AssertFieldMask(game,
-                ".......",
-                "......#",
-                "......#",
-                ".....##",
-                "#......",
-                "###....");
+                "........",
+                ".......#",
+                ".......#",
+                "......##",
+                "#.......",
+                "###.....");
         }
 
         [TestMethod]
