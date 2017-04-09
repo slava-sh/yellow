@@ -139,7 +139,7 @@ namespace ProjectYellowTests
         }
 
         [TestMethod]
-        public void FullLineAreRemoved()
+        public void RemoveFullLines()
         {
             var game = new Game(6, 4, new MockTetrominoGenerator
             {
@@ -259,25 +259,7 @@ namespace ProjectYellowTests
             var fieldMask = Regex.Replace(verboseFieldMask, @"[^.\s]", "#");
             Assert.AreEqual(
                 Environment.NewLine + fieldMask + Environment.NewLine,
-                Environment.NewLine + GetFieldMaskString(game) + Environment.NewLine);
-        }
-
-        private static string GetFieldMaskString(Game game)
-        {
-            var mask = game.GetFieldMask();
-            var width = mask.GetLength(0);
-            var height = mask.GetLength(1);
-            var fieldMaskLines = new string[height];
-            for (var y = 0; y < height; ++y)
-            {
-                var line = new char[width];
-                for (var x = 0; x < width; ++x)
-                {
-                    line[x] = mask[x, y] ? '#' : '.';
-                }
-                fieldMaskLines[y] = new string(line);
-            }
-            return string.Join(Environment.NewLine, fieldMaskLines);
+                Environment.NewLine + MaskUtils.ToString(game.GetFieldMask()) + Environment.NewLine);
         }
     }
 }

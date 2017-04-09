@@ -38,7 +38,7 @@
             }
 
             field.Place(block);
-            field.MaybeRemoveLines();
+            field.RemoveFullLines();
 
             nextBlock = NewBlock();
             if (field.CanPlace(nextBlock))

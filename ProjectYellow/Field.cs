@@ -46,7 +46,7 @@ namespace ProjectYellow
             }
         }
 
-        public void MaybeRemoveLines()
+        public void RemoveFullLines()
         {
             var lineIsFull = new bool[Height];
             for (var y = 0; y < Height; ++y)
