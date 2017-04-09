@@ -47,7 +47,8 @@ namespace ProjectYellow
         private void NewGame()
         {
             game = new Game(FieldWidth, FieldHeight, 2017);
-            ticker = Utils.SetIntervalAndFire(MillisecondsPerTick, Tick);
+            Render();
+            ticker = Utils.SetInterval(MillisecondsPerTick, Tick);
         }
 
         private void Tick()

@@ -55,13 +55,19 @@ namespace ProjectYellow
             }
         }
 
-        public static Timer SetIntervalAndFire(int milliseconds, Action tick)
+        public static Timer SetInterval(int milliseconds, Action tick)
         {
             var timer = new Timer();
             timer.Interval = milliseconds;
             timer.Tick += (sender, e) => tick();
-            tick();
             timer.Start();
+            return timer;
+        }
+
+        public static Timer SetIntervalAndFire(int milliseconds, Action tick)
+        {
+            var timer = SetInterval(milliseconds, tick);
+            tick();
             return timer;
         }
     }
