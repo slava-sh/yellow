@@ -26,19 +26,19 @@ namespace ProjectYellow
             return 0 <= cell.X && cell.X < Width && 0 <= cell.Y && cell.Y < Height;
         }
 
-        public bool Contains(Block block)
+        public bool Contains(Piece piece)
         {
-            return block.GetCells().All(Contains);
+            return piece.GetCells().All(Contains);
         }
 
-        public bool CanPlace(Block block)
+        public bool CanPlace(Piece piece)
         {
-            return block.GetCells().All(cell => !IsOccupied(cell));
+            return piece.GetCells().All(cell => !IsOccupied(cell));
         }
 
-        public void Place(Block block)
+        public void Place(Piece piece)
         {
-            foreach (var cell in block.GetCells())
+            foreach (var cell in piece.GetCells())
             {
                 if (Contains(cell))
                 {

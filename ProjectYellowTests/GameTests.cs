@@ -214,7 +214,7 @@ namespace ProjectYellowTests
         }
 
         [TestMethod]
-        public void BlocksSpawnInTheCenter()
+        public void PiecesSpawnInTheCenter()
         {
             var game = new Game(10, 20, new MockTetrominoGenerator
             {

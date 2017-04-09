@@ -50,7 +50,7 @@
   <ItemGroup>
     <Compile Include="Field.cs" />
     <Compile Include="Cell.cs" />
-    <Compile Include="Block.cs" />
+    <Compile Include="Piece.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="ITetrominoGenerator.cs" />
     <Compile Include="RandomBagTetrominoGenerator.cs" />

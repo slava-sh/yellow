@@ -2,7 +2,7 @@
 
 namespace ProjectYellow
 {
-    internal struct Block
+    internal struct Piece
     {
         private readonly Tetromino tetromino;
         private readonly Rotation rotation;
@@ -12,35 +12,35 @@ namespace ProjectYellow
         /// </summary>
         private readonly Cell pivot;
 
-        public Block(Cell pivot, Tetromino tetromino) : this(pivot, tetromino, new Rotation())
+        public Piece(Cell pivot, Tetromino tetromino) : this(pivot, tetromino, new Rotation())
         {
         }
 
-        private Block(Cell pivot, Tetromino tetromino, Rotation rotation)
+        private Piece(Cell pivot, Tetromino tetromino, Rotation rotation)
         {
             this.pivot = pivot;
             this.tetromino = tetromino;
             this.rotation = rotation;
         }
 
-        public Block Rotate()
+        public Piece Rotate()
         {
-            return new Block(pivot, tetromino, rotation.Next());
+            return new Piece(pivot, tetromino, rotation.Next());
         }
 
-        public Block MoveDown()
+        public Piece MoveDown()
         {
-            return new Block(new Cell(pivot.X, pivot.Y + 1), tetromino, rotation);
+            return new Piece(new Cell(pivot.X, pivot.Y + 1), tetromino, rotation);
         }
 
-        public Block MoveLeft()
+        public Piece MoveLeft()
         {
-            return new Block(new Cell(pivot.X - 1, pivot.Y), tetromino, rotation);
+            return new Piece(new Cell(pivot.X - 1, pivot.Y), tetromino, rotation);
         }
 
-        public Block MoveRight()
+        public Piece MoveRight()
         {
-            return new Block(new Cell(pivot.X + 1, pivot.Y), tetromino, rotation);
+            return new Piece(new Cell(pivot.X + 1, pivot.Y), tetromino, rotation);
         }
 
         public IEnumerable<Cell> GetCells()

@@ -5,9 +5,9 @@ namespace ProjectYellow
     public class Game
     {
         private readonly Field field;
-        private readonly Cell newBlockOrigin;
+        private readonly Cell newPieceOrigin;
         private readonly ITetrominoGenerator tetrominoGenerator;
-        private Block block;
+        private Piece activePiece;
 
         public Game(int fieldWidth, int fieldHeight, int randomSeed) : this(fieldWidth, fieldHeight,
             new RandomBagTetrominoGenerator(randomSeed))
@@ -22,41 +22,41 @@ namespace ProjectYellow
             }
             field = new Field(fieldWidth, fieldHeight);
             var centerLeftWidth = (field.Width - 1) / 2;
-            newBlockOrigin = new Cell(centerLeftWidth, 0);
+            newPieceOrigin = new Cell(centerLeftWidth, 0);
             this.tetrominoGenerator = tetrominoGenerator;
-            block = NewBlock();
+            activePiece = NewPiece();
         }
 
         public bool IsOver { get; private set; }
 
-        private Block NewBlock()
+        private Piece NewPiece()
         {
-            return new Block(newBlockOrigin, tetrominoGenerator.Next());
+            return new Piece(newPieceOrigin, tetrominoGenerator.Next());
         }
 
         public void Tick()
         {
             CheckGameState();
-            var nextBlock = block.MoveDown();
-            if (field.CanPlace(nextBlock))
+            var nextPiece = activePiece.MoveDown();
+            if (field.CanPlace(nextPiece))
             {
-                block = nextBlock;
+                activePiece = nextPiece;
             }
-            else if (!field.Contains(block))
+            else if (!field.Contains(activePiece))
             {
                 // Note that this is not a Tetris Guideline compatible "lock out" condition.
-                // In our case, the game ends even if the block is partially visible.
+                // In our case, the game ends even if the piece is partially visible.
                 // See https://tetris.wiki/Top_out
                 IsOver = true;
             }
             else
             {
-                field.Place(block);
+                field.Place(activePiece);
                 field.RemoveFullLines();
-                nextBlock = NewBlock();
-                if (field.CanPlace(nextBlock))
+                nextPiece = NewPiece();
+                if (field.CanPlace(nextPiece))
                 {
-                    block = nextBlock;
+                    activePiece = nextPiece;
                 }
                 else
                 {
@@ -76,47 +76,47 @@ namespace ProjectYellow
 
         public bool Rotate()
         {
-            return MaybeSetBlock(block.Rotate());
+            return MaybeSetActivePiece(activePiece.Rotate());
         }
 
         public bool ShiftLeft()
         {
-            return MaybeSetBlock(block.MoveLeft());
+            return MaybeSetActivePiece(activePiece.MoveLeft());
         }
 
         public bool ShiftRight()
         {
-            return MaybeSetBlock(block.MoveRight());
+            return MaybeSetActivePiece(activePiece.MoveRight());
         }
 
         public bool SoftDrop()
         {
-            return MaybeSetBlock(block.MoveDown());
+            return MaybeSetActivePiece(activePiece.MoveDown());
         }
 
         public bool HardDrop()
         {
-            var newBlock = block;
+            var newPiece = activePiece;
             while (true)
             {
-                var nextBlock = newBlock.MoveDown();
-                if (!field.CanPlace(nextBlock))
+                var nextPiece = newPiece.MoveDown();
+                if (!field.CanPlace(nextPiece))
                 {
                     break;
                 }
-                newBlock = nextBlock;
+                newPiece = nextPiece;
             }
-            return MaybeSetBlock(newBlock);
+            return MaybeSetActivePiece(newPiece);
         }
 
-        private bool MaybeSetBlock(Block newBlock)
+        private bool MaybeSetActivePiece(Piece newPiece)
         {
             CheckGameState();
-            if (!field.CanPlace(newBlock))
+            if (!field.CanPlace(newPiece))
             {
                 return false;
             }
-            block = newBlock;
+            activePiece = newPiece;
             return true;
         }
 
@@ -133,7 +133,7 @@ namespace ProjectYellow
                     }
                 }
             }
-            foreach (var cell in block.GetCells())
+            foreach (var cell in activePiece.GetCells())
             {
                 if (field.Contains(cell))
                 {
