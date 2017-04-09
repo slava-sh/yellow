@@ -46,7 +46,8 @@ namespace ProjectYellow
 
         private void NewGame()
         {
-            game = new Game(FieldWidth, FieldHeight, 2017);
+            var randomSeed = new Random().Next();
+            game = new Game(FieldWidth, FieldHeight, randomSeed);
             Render();
             ticker = Utils.SetInterval(MillisecondsPerTick, Tick);
         }
