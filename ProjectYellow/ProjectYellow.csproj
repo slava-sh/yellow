@@ -53,10 +53,11 @@
     <Compile Include="Block.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="ITetrominoGenerator.cs" />
+    <Compile Include="RandomBagTetrominoGenerator.cs" />
     <Compile Include="RandomTetrominoGenerator.cs" />
     <Compile Include="Rotation.cs" />
     <Compile Include="Tetromino.cs" />
-    <Compile Include="MaskUtils.cs" />
+    <Compile Include="Utils.cs" />
     <Compile Include="YellowForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -217,7 +217,7 @@ namespace ProjectYellow
         private Tetromino(Cell pivot, IEnumerable<string[]> rotations)
         {
             Pivot = pivot;
-            rotationMasks = rotations.Select(MaskUtils.Parse).ToArray();
+            rotationMasks = rotations.Select(Utils.ParseMask).ToArray();
         }
 
         public bool[,] GetRotationMask(Rotation rotation)

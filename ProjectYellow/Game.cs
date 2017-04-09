@@ -8,7 +8,7 @@
         private Block block;
 
         public Game(int fieldWidth, int fieldHeight, int randomSeed) : this(fieldWidth, fieldHeight,
-            new RandomTetrominoGenerator(randomSeed))
+            new RandomBagTetrominoGenerator(randomSeed))
         {
         }
 

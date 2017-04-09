@@ -259,7 +259,7 @@ namespace ProjectYellowTests
             var fieldMask = Regex.Replace(verboseFieldMask, @"[^.\s]", "#");
             Assert.AreEqual(
                 Environment.NewLine + fieldMask + Environment.NewLine,
-                Environment.NewLine + MaskUtils.ToString(game.GetFieldMask()) + Environment.NewLine);
+                Environment.NewLine + Utils.MaskToString(game.GetFieldMask()) + Environment.NewLine);
         }
     }
 }

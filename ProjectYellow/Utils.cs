@@ -1,10 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("ProjectYellowTests")]
 
 namespace ProjectYellow
 {
-    public static class MaskUtils
+    internal static class Utils
     {
-        public static bool[,] Parse(string[] lines)
+        public static bool[,] ParseMask(string[] lines)
         {
             var width = lines[0].Length;
             var height = lines.Length;
@@ -19,7 +24,7 @@ namespace ProjectYellow
             return mask;
         }
 
-        public static string ToString(bool[,] mask)
+        public static string MaskToString(bool[,] mask)
         {
             var width = mask.GetLength(0);
             var height = mask.GetLength(1);
@@ -34,6 +39,19 @@ namespace ProjectYellow
                 lines[y] = new string(line);
             }
             return string.Join(Environment.NewLine, lines);
+        }
+
+        // Fisher-Yates shuffle.
+        // See http://stackoverflow.com/a/1287572/559031
+        public static IEnumerable<T> Shuffle<T>(IEnumerable<T> source, Random random)
+        {
+            var elements = source.ToArray();
+            for (var i = elements.Length - 1; i >= 0; i--)
+            {
+                var swapIndex = random.Next(i + 1);
+                yield return elements[swapIndex];
+                elements[swapIndex] = elements[i];
+            }
         }
     }
 }
