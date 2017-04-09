@@ -37,7 +37,10 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(284, 261);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "YellowForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Yellow";
             this.Load += new System.EventHandler(this.YellowForm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.YellowForm_KeyDown);
