@@ -2,26 +2,31 @@
 {
     public class Game
     {
-        private readonly IBlockGenerator blockGenerator;
         private readonly Field field;
         private readonly Cell newBlockOrigin;
+        private readonly ITetrominoGenerator tetrominoGenerator;
         private Block block;
 
         public Game(int fieldWidth, int fieldHeight, int randomSeed) : this(fieldWidth, fieldHeight,
-            new RandomBlockGenerator(randomSeed))
+            new RandomTetrominoGenerator(randomSeed))
         {
         }
 
-        internal Game(int fieldWidth, int fieldHeight, IBlockGenerator blockGenerator)
+        internal Game(int fieldWidth, int fieldHeight, ITetrominoGenerator tetrominoGenerator)
         {
             field = new Field(fieldWidth, fieldHeight);
             var centerLeftWidth = (field.Width - 1) / 2;
             newBlockOrigin = new Cell(centerLeftWidth, 0);
-            this.blockGenerator = blockGenerator;
-            block = blockGenerator.NextBlock().MoveTo(newBlockOrigin);
+            this.tetrominoGenerator = tetrominoGenerator;
+            block = NewBlock();
         }
 
         public bool IsOver { get; private set; }
+
+        private Block NewBlock()
+        {
+            return new Block(newBlockOrigin, tetrominoGenerator.Next());
+        }
 
         public void Tick()
         {
@@ -35,7 +40,7 @@
             field.Place(block);
             field.MaybeRemoveLines();
 
-            nextBlock = blockGenerator.NextBlock().MoveTo(newBlockOrigin);
+            nextBlock = NewBlock();
             if (field.CanPlace(nextBlock))
             {
                 block = nextBlock;

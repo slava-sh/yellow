@@ -18,7 +18,7 @@ namespace ProjectYellowTests
         [TestMethod]
         public void SimpleGame()
         {
-            var game = new Game(7, 6, new MockBlockGenerator
+            var game = new Game(7, 6, new MockTetrominoGenerator
             {
                 Tetromino.J,
                 Tetromino.J,
@@ -43,7 +43,7 @@ namespace ProjectYellowTests
         [TestMethod]
         public void ArrowKeys()
         {
-            var game = new Game(7, 6, new MockBlockGenerator
+            var game = new Game(7, 6, new MockTetrominoGenerator
             {
                 Tetromino.J,
                 Tetromino.J
@@ -141,7 +141,7 @@ namespace ProjectYellowTests
         [TestMethod]
         public void FullLineAreRemoved()
         {
-            var game = new Game(6, 4, new MockBlockGenerator
+            var game = new Game(6, 4, new MockTetrominoGenerator
             {
                 Tetromino.O,
                 Tetromino.O,
@@ -194,7 +194,7 @@ namespace ProjectYellowTests
         [TestMethod]
         public void HardDrop()
         {
-            var game = new Game(6, 4, new MockBlockGenerator
+            var game = new Game(6, 4, new MockTetrominoGenerator
             {
                 Tetromino.Z
             });
@@ -215,7 +215,7 @@ namespace ProjectYellowTests
         [TestMethod]
         public void BlocksSpawnInTheCenter()
         {
-            var game = new Game(10, 20, new MockBlockGenerator
+            var game = new Game(10, 20, new MockTetrominoGenerator
             {
                 Tetromino.I,
                 Tetromino.J,

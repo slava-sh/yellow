@@ -4,8 +4,8 @@
 
 namespace ProjectYellow
 {
-    internal interface IBlockGenerator
+    internal interface ITetrominoGenerator
     {
-        Block NextBlock();
+        Tetromino Next();
     }
 }

@@ -1,7 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-
-[assembly: InternalsVisibleTo("ProjectYellowTests")]
 
 namespace ProjectYellow
 {
@@ -15,11 +12,8 @@ namespace ProjectYellow
         /// </summary>
         private readonly Cell pivot;
 
-        public Block(Tetromino tetromino)
+        public Block(Cell pivot, Tetromino tetromino) : this(pivot, tetromino, new Rotation())
         {
-            pivot = new Cell(0, 0);
-            this.tetromino = tetromino;
-            rotation = new Rotation();
         }
 
         private Block(Cell pivot, Tetromino tetromino, Rotation rotation)
@@ -47,11 +41,6 @@ namespace ProjectYellow
         public Block MoveRight()
         {
             return new Block(new Cell(pivot.X + 1, pivot.Y), tetromino, rotation);
-        }
-
-        internal Block MoveTo(Cell newPivot)
-        {
-            return new Block(newPivot, tetromino, rotation);
         }
 
         public IEnumerable<Cell> GetCells()
