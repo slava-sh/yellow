@@ -36,24 +36,37 @@ namespace ProjectYellow
 
         public void Tick()
         {
+            CheckGameState();
             var nextBlock = block.MoveDown();
             if (field.CanPlace(nextBlock))
             {
                 block = nextBlock;
-                return;
             }
-
-            field.Place(block);
-            field.RemoveFullLines();
-
-            nextBlock = NewBlock();
-            if (field.CanPlace(nextBlock))
+            else if (!field.Contains(block))
             {
-                block = nextBlock;
+                IsOver = true;
             }
             else
             {
-                IsOver = true;
+                field.Place(block);
+                field.RemoveFullLines();
+                nextBlock = NewBlock();
+                if (field.CanPlace(nextBlock))
+                {
+                    block = nextBlock;
+                }
+                else
+                {
+                    IsOver = true;
+                }
+            }
+        }
+
+        private void CheckGameState()
+        {
+            if (IsOver)
+            {
+                throw new InvalidOperationException("The game is over.");
             }
         }
 
@@ -94,6 +107,7 @@ namespace ProjectYellow
 
         private bool MaybeSetBlock(Block newBlock)
         {
+            CheckGameState();
             if (!field.CanPlace(newBlock))
             {
                 return false;

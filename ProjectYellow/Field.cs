@@ -26,6 +26,11 @@ namespace ProjectYellow
             return 0 <= cell.X && cell.X < Width && 0 <= cell.Y && cell.Y < Height;
         }
 
+        public bool Contains(Block block)
+        {
+            return block.GetCells().All(Contains);
+        }
+
         public bool CanPlace(Block block)
         {
             return block.GetCells().All(cell => !IsOccupied(cell));

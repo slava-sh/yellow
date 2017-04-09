@@ -302,6 +302,95 @@ namespace ProjectYellowTests
                 ".ZZTIIII");
         }
 
+        [TestMethod]
+        public void GameOver1()
+        {
+            var game = new Game(4, 4, new MockTetrominoGenerator
+            {
+                Tetromino.I,
+                Tetromino.O
+            });
+            game.Rotate();
+            game.HardDrop();
+            AssertFieldMask(game,
+                "..I.",
+                "..I.",
+                "..I.",
+                "..I.");
+            Assert.IsFalse(game.IsOver);
+            game.Tick();
+            Assert.IsTrue(game.IsOver);
+        }
+
+        [TestMethod]
+        public void GameOver2()
+        {
+            var game = new Game(4, 5, new MockTetrominoGenerator
+            {
+                Tetromino.I,
+                Tetromino.O
+            });
+            game.Rotate();
+            game.HardDrop();
+            AssertFieldMask(game,
+                "....",
+                "..I.",
+                "..I.",
+                "..I.",
+                "..I.");
+            game.Tick();
+            AssertFieldMask(game,
+                ".OO.",
+                "..I.",
+                "..I.",
+                "..I.",
+                "..I.");
+            Assert.IsFalse(game.IsOver);
+            game.Tick();
+            AssertFieldMask(game,
+                ".OO.",
+                "..I.",
+                "..I.",
+                "..I.",
+                "..I.");
+            Assert.IsTrue(game.IsOver);
+        }
+
+        [TestMethod]
+        public void NoMovesAfterGameOver()
+        {
+            var game = new Game(4, 2, new MockTetrominoGenerator
+            {
+                Tetromino.O,
+                Tetromino.O
+            });
+            game.HardDrop();
+            game.Tick();
+            Assert.IsTrue(game.IsOver);
+            var actions = new Action[]
+            {
+                game.Tick,
+                () => game.Rotate(),
+                () => game.ShiftLeft(),
+                () => game.ShiftRight(),
+                () => game.SoftDrop(),
+                () => game.HardDrop()
+            };
+            foreach (var action in actions)
+            {
+                Exception exception = null;
+                try
+                {
+                    action();
+                }
+                catch (Exception e)
+                {
+                    exception = e;
+                }
+                Assert.IsInstanceOfType(exception, typeof(InvalidOperationException));
+            }
+        }
+
         private static void AssertFieldMask(Game game, params string[] verboseFieldMaskLines)
         {
             var verboseFieldMask = string.Join(Environment.NewLine, verboseFieldMaskLines);

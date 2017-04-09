@@ -8,11 +8,6 @@ namespace ProjectYellowTests
     {
         private readonly Queue<Tetromino> next = new Queue<Tetromino>();
 
-        public Tetromino Next()
-        {
-            return next.Dequeue();
-        }
-
         public IEnumerator<Tetromino> GetEnumerator()
         {
             return next.GetEnumerator();
@@ -21,6 +16,11 @@ namespace ProjectYellowTests
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        public Tetromino Next()
+        {
+            return next.Dequeue();
         }
 
         public void Add(Tetromino tetromino)
