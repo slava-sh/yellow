@@ -94,6 +94,10 @@ namespace ProjectYellow
             }
             keyPressTimers[key] = Utils.SetIntervalAndFire(MillisecondsPerKeyPress, () =>
             {
+                if (game.IsOver)
+                {
+                    return;
+                }
                 keyPressHandlers[key]();
                 Render();
             });
