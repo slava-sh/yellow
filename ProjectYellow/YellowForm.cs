@@ -65,6 +65,11 @@ namespace ProjectYellow
         private void HandleGameOver()
         {
             ticker.Stop();
+            foreach (var timer in keyPressTimers.Values)
+            {
+                timer.Stop();
+            }
+            keyPressTimers.Clear();
             // TODO: Add funny icon.
             var result = MessageBox.Show("Game over. Try again?", "Game Over", MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
