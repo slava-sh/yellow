@@ -8,7 +8,7 @@ namespace ProjectYellow
     public partial class YellowForm : Form
     {
         private const int MillisecondsPerTick = 500;
-        private const int MillisecondsPerKeyPress = 100;
+        private const int MillisecondsPerKeyPress = 200;
 
         private const int FieldWidth = 10;
         private const int FieldHeight = 20;
@@ -19,11 +19,10 @@ namespace ProjectYellow
         private readonly Button[,] buttons;
 
         private readonly Dictionary<Keys, Action> keyPressHandlers;
-        private readonly Timer keyPressThrottler = new Timer();
-        private readonly Timer ticker = new Timer();
+        private readonly Dictionary<Keys, Timer> keyPressTimers = new Dictionary<Keys, Timer>();
 
         private Game game;
-        private bool shouldProcessKeyPress = true;
+        private Timer ticker;
 
         public YellowForm()
         {
@@ -35,16 +34,6 @@ namespace ProjectYellow
                 [Keys.Down] = () => game.SoftDrop(),
                 [Keys.Space] = () => game.HardDrop()
             };
-
-            keyPressThrottler.Interval = MillisecondsPerKeyPress;
-            keyPressThrottler.Tick += (sender, e) =>
-            {
-                shouldProcessKeyPress = true;
-                keyPressThrottler.Stop();
-            };
-
-            ticker.Interval = MillisecondsPerTick;
-            ticker.Tick += (sender, e) => Tick();
 
             InitializeComponent();
             buttons = new Button[FieldWidth, FieldHeight];
@@ -71,8 +60,7 @@ namespace ProjectYellow
         private void NewGame()
         {
             game = new Game(FieldWidth, FieldHeight, 2017);
-            Tick();
-            ticker.Start();
+            ticker = Utils.SetIntervalAndFire(MillisecondsPerTick, Tick);
         }
 
         private void Tick()
@@ -110,20 +98,36 @@ namespace ProjectYellow
             }
         }
 
-        protected override bool ProcessCmdKey(ref Message msg, Keys key)
+        protected override bool IsInputKey(Keys key)
         {
-            if (!keyPressHandlers.ContainsKey(key))
+            return keyPressHandlers.ContainsKey(key);
+        }
+
+        private void YellowForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            var key = e.KeyData;
+            if (!keyPressHandlers.ContainsKey(key) || keyPressTimers.ContainsKey(key))
             {
-                return base.ProcessCmdKey(ref msg, key);
+                return;
             }
-            if (shouldProcessKeyPress)
+            keyPressTimers[key] = Utils.SetIntervalAndFire(MillisecondsPerKeyPress, () =>
             {
                 keyPressHandlers[key]();
                 Render();
-                shouldProcessKeyPress = false;
-                keyPressThrottler.Start();
+            });
+            e.SuppressKeyPress = true;
+            e.Handled = true;
+        }
+
+        private void YellowForm_KeyUp(object sender, KeyEventArgs e)
+        {
+            var key = e.KeyData;
+            if (!keyPressTimers.ContainsKey(key))
+            {
+                return;
             }
-            return true;
+            keyPressTimers[key].Stop();
+            keyPressTimers.Remove(key);
         }
     }
 }

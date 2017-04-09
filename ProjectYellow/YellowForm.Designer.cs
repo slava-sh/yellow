@@ -40,6 +40,8 @@
             this.Name = "YellowForm";
             this.Text = "Yellow";
             this.Load += new System.EventHandler(this.YellowForm_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.YellowForm_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.YellowForm_KeyUp);
             this.ResumeLayout(false);
 
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows.Forms;
 
 [assembly: InternalsVisibleTo("ProjectYellowTests")]
 
@@ -52,6 +53,16 @@ namespace ProjectYellow
                 yield return elements[swapIndex];
                 elements[swapIndex] = elements[i];
             }
+        }
+
+        public static Timer SetIntervalAndFire(int milliseconds, Action tick)
+        {
+            var timer = new Timer();
+            timer.Interval = milliseconds;
+            timer.Tick += (sender, e) => tick();
+            tick();
+            timer.Start();
+            return timer;
         }
     }
 }
