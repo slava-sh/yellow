@@ -255,7 +255,7 @@ namespace ProjectYellowTests
         }
 
         [TestMethod]
-        public void TSpin()
+        public void Spin()
         {
             var game = new Game(8, 6, new MockTetrominoGenerator
             {

@@ -44,6 +44,9 @@ namespace ProjectYellow
             }
             else if (!field.Contains(block))
             {
+                // Note that this is not a Tetris Guideline compatible "lock out" condition.
+                // In our case, the game ends even if the block is partially visible.
+                // See https://tetris.wiki/Top_out
                 IsOver = true;
             }
             else
@@ -57,6 +60,7 @@ namespace ProjectYellow
                 }
                 else
                 {
+                    // The "block out" condition.
                     IsOver = true;
                 }
             }
