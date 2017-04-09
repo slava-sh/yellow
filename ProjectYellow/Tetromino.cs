@@ -9,7 +9,7 @@ namespace ProjectYellow
     internal sealed class Tetromino
     {
         // Rotations according to the Super Rotation System.
-        // See http://tetris.wikia.com/wiki/SRS
+        // See https://tetris.wiki/SRS
         public static readonly Tetromino I = new Tetromino(
             new Cell(1, 1),
             new[]

@@ -71,19 +71,23 @@ namespace ProjectYellow
             switch (keyData)
             {
                 case Keys.Up:
-                    game.TryRotate();
+                    game.Rotate();
                     Render();
                     return true;
                 case Keys.Left:
-                    game.TryMoveLeft();
+                    game.ShiftLeft();
                     Render();
                     return true;
                 case Keys.Right:
-                    game.TryMoveRight();
+                    game.ShiftRight();
                     Render();
                     return true;
                 case Keys.Down:
-                    game.TryMoveDown();
+                    game.SoftDrop();
+                    Render();
+                    return true;
+                case Keys.Space:
+                    game.HardDrop();
                     Render();
                     return true;
                 default:

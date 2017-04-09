@@ -63,7 +63,7 @@ namespace ProjectYellowTests
                 ".......",
                 ".......",
                 ".......");
-            game.TryMoveLeft();
+            game.ShiftLeft();
             game.Tick();
             AssertFieldMask(game,
                 ".......",
@@ -73,7 +73,7 @@ namespace ProjectYellowTests
                 ".......",
                 ".......");
             game.Tick();
-            game.TryMoveLeft();
+            game.ShiftLeft();
             AssertFieldMask(game,
                 ".......",
                 ".......",
@@ -82,7 +82,7 @@ namespace ProjectYellowTests
                 "###....",
                 ".......");
             game.Tick();
-            game.TryMoveLeft();
+            game.ShiftLeft();
             AssertFieldMask(game,
                 ".......",
                 ".......",
@@ -91,8 +91,8 @@ namespace ProjectYellowTests
                 "#......",
                 "###....");
             game.Tick();
-            game.TryMoveRight();
-            game.TryMoveRight();
+            game.ShiftRight();
+            game.ShiftRight();
             AssertFieldMask(game,
                 "....###",
                 ".......",
@@ -108,9 +108,9 @@ namespace ProjectYellowTests
                 ".......",
                 "#......",
                 "###....");
-            game.TryRotate();
-            game.TryRotate();
-            game.TryRotate();
+            game.Rotate();
+            game.Rotate();
+            game.Rotate();
             AssertFieldMask(game,
                 ".....#.",
                 ".....#.",
@@ -119,7 +119,7 @@ namespace ProjectYellowTests
                 "#......",
                 "###....");
             game.Tick();
-            game.TryMoveRight();
+            game.ShiftRight();
             AssertFieldMask(game,
                 ".......",
                 "......#",
@@ -127,7 +127,7 @@ namespace ProjectYellowTests
                 ".....##",
                 "#......",
                 "###....");
-            game.TryRotate();
+            game.Rotate();
             AssertFieldMask(game,
                 ".......",
                 "......#",
@@ -153,7 +153,8 @@ namespace ProjectYellowTests
                 "..##..",
                 "......",
                 "......");
-            game.TryMoveLeft(); game.TryMoveLeft();
+            game.ShiftLeft();
+            game.ShiftLeft();
             game.Tick();
             game.Tick();
             game.Tick();
@@ -163,8 +164,8 @@ namespace ProjectYellowTests
                 "..##..",
                 "##....",
                 "##....");
-            game.TryMoveRight();
-            game.TryMoveRight();
+            game.ShiftRight();
+            game.ShiftRight();
             game.Tick();
             game.Tick();
             game.Tick();
@@ -187,6 +188,27 @@ namespace ProjectYellowTests
                 "......",
                 "......",
                 "......");
+        }
+
+        [TestMethod]
+        public void HardDrop()
+        {
+            var game = new Game(6, 4, new MockBlockGenerator
+            {
+                new Block(Tetromino.Z)
+            });
+            game.Tick();
+            AssertFieldMask(game,
+                "..##..",
+                "...##.",
+                "......",
+                "......");
+            game.HardDrop();
+            AssertFieldMask(game,
+                "......",
+                "......",
+                "..##..",
+                "...##.");
         }
 
         private static void AssertFieldMask(Game game, params string[] verboseFieldMaskLines)

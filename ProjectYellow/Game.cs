@@ -44,27 +44,42 @@
             }
         }
 
-        public bool TryRotate()
+        public bool Rotate()
         {
-            return TryNewBlock(block.Rotate());
+            return MaybeSetBlock(block.Rotate());
         }
 
-        public bool TryMoveLeft()
+        public bool ShiftLeft()
         {
-            return TryNewBlock(block.MoveLeft());
+            return MaybeSetBlock(block.MoveLeft());
         }
 
-        public bool TryMoveRight()
+        public bool ShiftRight()
         {
-            return TryNewBlock(block.MoveRight());
+            return MaybeSetBlock(block.MoveRight());
         }
 
-        public bool TryMoveDown()
+        public bool SoftDrop()
         {
-            return TryNewBlock(block.MoveDown());
+            return MaybeSetBlock(block.MoveDown());
         }
 
-        private bool TryNewBlock(Block newBlock)
+        public bool HardDrop()
+        {
+            var newBlock = block;
+            while (true)
+            {
+                var nextBlock = newBlock.MoveDown();
+                if (!field.CanPlace(nextBlock))
+                {
+                    break;
+                }
+                newBlock = nextBlock;
+            }
+            return MaybeSetBlock(newBlock);
+        }
+
+        private bool MaybeSetBlock(Block newBlock)
         {
             if (!field.CanPlace(newBlock))
             {
