@@ -14,8 +14,8 @@ namespace ProjectYellow
 
         private readonly Button[,] buttons;
 
-        private readonly Game game = new Game(FieldWidth, FieldHeight, 2017);
-        private readonly Timer ticker = new Timer();
+        private Game game;
+        private Timer ticker;
 
         public YellowForm()
         {
@@ -38,20 +38,40 @@ namespace ProjectYellow
 
         private void YellowForm_Load(object sender, EventArgs e)
         {
-            Tick(null, null);
-            ticker.Tick += Tick;
+            NewGame();
+        }
+
+        private void NewGame()
+        {
+            game = new Game(FieldWidth, FieldHeight, 2017);
+            HandleTick(null, null);
+            ticker = new Timer();
+            ticker.Tick += HandleTick;
             ticker.Interval = 300;
             ticker.Start();
         }
 
-        private void Tick(object sender, EventArgs e)
+        private void HandleTick(object sender, EventArgs e)
         {
             game.Tick();
+            Render();
             if (game.IsOver)
             {
-                ticker.Stop();
+                HandleGameOver();
             }
-            Render();
+        }
+
+        private void HandleGameOver()
+        {
+            ticker.Stop();
+            // TODO: Add funny icon.
+            var result = MessageBox.Show("Game over. Try again?", "Game Over", MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+            if (result == DialogResult.No)
+            {
+                Application.Exit();
+            }
+            NewGame();
         }
 
         private void Render()
