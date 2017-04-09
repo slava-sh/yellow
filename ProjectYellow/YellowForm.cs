@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -6,6 +7,9 @@ namespace ProjectYellow
 {
     public partial class YellowForm : Form
     {
+        private const int MillisecondsPerTick = 500;
+        private const int MillisecondsPerKeyPress = 100;
+
         private const int FieldWidth = 10;
         private const int FieldHeight = 20;
         private const int CellSize = 25;
@@ -14,11 +18,34 @@ namespace ProjectYellow
 
         private readonly Button[,] buttons;
 
+        private readonly Dictionary<Keys, Action> keyPressHandlers;
+        private readonly Timer keyPressThrottler = new Timer();
+        private readonly Timer ticker = new Timer();
+
         private Game game;
-        private Timer ticker;
+        private bool shouldProcessKeyPress = true;
 
         public YellowForm()
         {
+            keyPressHandlers = new Dictionary<Keys, Action>
+            {
+                [Keys.Up] = () => game.Rotate(),
+                [Keys.Left] = () => game.ShiftLeft(),
+                [Keys.Right] = () => game.ShiftRight(),
+                [Keys.Down] = () => game.SoftDrop(),
+                [Keys.Space] = () => game.HardDrop()
+            };
+
+            keyPressThrottler.Interval = MillisecondsPerKeyPress;
+            keyPressThrottler.Tick += (sender, e) =>
+            {
+                shouldProcessKeyPress = true;
+                keyPressThrottler.Stop();
+            };
+
+            ticker.Interval = MillisecondsPerTick;
+            ticker.Tick += (sender, e) => Tick();
+
             InitializeComponent();
             buttons = new Button[FieldWidth, FieldHeight];
             for (var x = 0; x < FieldWidth; ++x)
@@ -44,14 +71,11 @@ namespace ProjectYellow
         private void NewGame()
         {
             game = new Game(FieldWidth, FieldHeight, 2017);
-            HandleTick(null, null);
-            ticker = new Timer();
-            ticker.Tick += HandleTick;
-            ticker.Interval = 300;
+            Tick();
             ticker.Start();
         }
 
-        private void HandleTick(object sender, EventArgs e)
+        private void Tick()
         {
             game.Tick();
             Render();
@@ -86,33 +110,20 @@ namespace ProjectYellow
             }
         }
 
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        protected override bool ProcessCmdKey(ref Message msg, Keys key)
         {
-            switch (keyData)
+            if (!keyPressHandlers.ContainsKey(key))
             {
-                case Keys.Up:
-                    game.Rotate();
-                    Render();
-                    return true;
-                case Keys.Left:
-                    game.ShiftLeft();
-                    Render();
-                    return true;
-                case Keys.Right:
-                    game.ShiftRight();
-                    Render();
-                    return true;
-                case Keys.Down:
-                    game.SoftDrop();
-                    Render();
-                    return true;
-                case Keys.Space:
-                    game.HardDrop();
-                    Render();
-                    return true;
-                default:
-                    return base.ProcessCmdKey(ref msg, keyData);
+                return base.ProcessCmdKey(ref msg, key);
             }
+            if (shouldProcessKeyPress)
+            {
+                keyPressHandlers[key]();
+                Render();
+                shouldProcessKeyPress = false;
+                keyPressThrottler.Start();
+            }
+            return true;
         }
     }
 }
