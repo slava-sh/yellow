@@ -16,8 +16,6 @@ namespace ProjectYellow
         private static readonly Color EmptyCellColor = Color.Yellow;
         private static readonly Color OccupiedCellColor = Color.Black;
 
-        private readonly Button[,] buttons;
-
         private readonly Dictionary<Keys, Action> keyPressHandlers;
         private readonly Dictionary<Keys, Timer> keyPressTimers = new Dictionary<Keys, Timer>();
 
@@ -36,20 +34,9 @@ namespace ProjectYellow
             };
 
             InitializeComponent();
-            buttons = new Button[FieldWidth, FieldHeight];
-            for (var x = 0; x < FieldWidth; ++x)
-            {
-                for (var y = 0; y < FieldHeight; ++y)
-                {
-                    buttons[x, y] = new Button
-                    {
-                        Size = new Size(CellSize, CellSize),
-                        Location = new Point(x * CellSize, y * CellSize),
-                        Enabled = false
-                    };
-                    Controls.Add(buttons[x, y]);
-                }
-            }
+
+            canvas.Size = new Size(FieldWidth * CellSize, FieldHeight * CellSize);
+            ClientSize = canvas.Size;
         }
 
         private void YellowForm_Load(object sender, EventArgs e)
@@ -88,14 +75,7 @@ namespace ProjectYellow
 
         private void Render()
         {
-            var mask = game.GetFieldMask();
-            for (var x = 0; x < mask.GetLength(0); ++x)
-            {
-                for (var y = 0; y < mask.GetLength(1); ++y)
-                {
-                    buttons[x, y].BackColor = mask[x, y] ? OccupiedCellColor : EmptyCellColor;
-                }
-            }
+            canvas.Invalidate();
         }
 
         protected override bool IsInputKey(Keys key)
@@ -128,6 +108,21 @@ namespace ProjectYellow
             }
             keyPressTimers[key].Stop();
             keyPressTimers.Remove(key);
+        }
+
+        private void canvas_Paint(object sender, PaintEventArgs e)
+        {
+            var graphics = e.Graphics;
+            var mask = game.GetFieldMask();
+            for (var x = 0; x < FieldWidth; ++x)
+            {
+                for (var y = 0; y < FieldHeight; ++y)
+                {
+                    var rectangle = new Rectangle(x * CellSize, y * CellSize, CellSize, CellSize);
+                    var fillColor = mask[x, y] ? OccupiedCellColor : EmptyCellColor;
+                    graphics.FillRectangle(new SolidBrush(fillColor), rectangle);
+                }
+            }
         }
     }
 }

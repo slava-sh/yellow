@@ -28,15 +28,26 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.canvas = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.canvas)).BeginInit();
             this.SuspendLayout();
+            // 
+            // canvas
+            // 
+            this.canvas.Location = new System.Drawing.Point(0, 0);
+            this.canvas.Name = "canvas";
+            this.canvas.Size = new System.Drawing.Size(355, 282);
+            this.canvas.TabIndex = 0;
+            this.canvas.TabStop = false;
+            this.canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.canvas_Paint);
             // 
             // YellowForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSize = true;
-            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.ClientSize = new System.Drawing.Size(462, 364);
+            this.Controls.Add(this.canvas);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "YellowForm";
@@ -45,11 +56,14 @@
             this.Load += new System.EventHandler(this.YellowForm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.YellowForm_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.YellowForm_KeyUp);
+            ((System.ComponentModel.ISupportInitialize)(this.canvas)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private System.Windows.Forms.PictureBox canvas;
     }
 }
 
