@@ -9,12 +9,7 @@ namespace ProjectYellow
         private readonly ITetrominoGenerator tetrominoGenerator;
         private Piece activePiece;
 
-        public Game(int fieldWidth, int fieldHeight, int randomSeed) : this(fieldWidth, fieldHeight,
-            new RandomBagTetrominoGenerator(randomSeed))
-        {
-        }
-
-        internal Game(int fieldWidth, int fieldHeight, ITetrominoGenerator tetrominoGenerator)
+        public Game(int fieldWidth, int fieldHeight, ITetrominoGenerator tetrominoGenerator)
         {
             if (fieldWidth % 2 != 0)
             {

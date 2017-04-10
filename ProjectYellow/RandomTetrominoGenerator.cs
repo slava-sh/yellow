@@ -2,7 +2,7 @@
 
 namespace ProjectYellow
 {
-    internal class RandomTetrominoGenerator : ITetrominoGenerator
+    public class RandomTetrominoGenerator : ITetrominoGenerator
     {
         private readonly Random random;
 

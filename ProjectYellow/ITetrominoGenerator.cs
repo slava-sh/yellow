@@ -1,10 +1,6 @@
-﻿using System.Runtime.CompilerServices;
-
-[assembly: InternalsVisibleTo("ProjectYellowTests")]
-
-namespace ProjectYellow
+﻿namespace ProjectYellow
 {
-    internal interface ITetrominoGenerator
+    public interface ITetrominoGenerator
     {
         Tetromino Next();
     }

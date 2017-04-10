@@ -57,8 +57,10 @@ namespace ProjectYellow
 
         public static Timer SetInterval(int milliseconds, Action tick)
         {
-            var timer = new Timer();
-            timer.Interval = milliseconds;
+            var timer = new Timer
+            {
+                Interval = milliseconds
+            };
             timer.Tick += (sender, e) => tick();
             timer.Start();
             return timer;

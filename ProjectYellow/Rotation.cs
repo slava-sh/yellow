@@ -1,11 +1,8 @@
 ﻿using System.Diagnostics.Contracts;
-using System.Runtime.CompilerServices;
-
-[assembly: InternalsVisibleTo("ProjectYellowTests")]
 
 namespace ProjectYellow
 {
-    internal struct Rotation
+    public struct Rotation
     {
         public readonly int Number;
 

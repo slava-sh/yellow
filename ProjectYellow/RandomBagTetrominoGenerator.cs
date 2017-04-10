@@ -6,7 +6,7 @@ namespace ProjectYellow
     /// <summary>
     ///     See https://tetris.wiki/Random_Generator
     /// </summary>
-    internal class RandomBagTetrominoGenerator : ITetrominoGenerator
+    public class RandomBagTetrominoGenerator : ITetrominoGenerator
     {
         private readonly Queue<Tetromino> bag = new Queue<Tetromino>();
         private readonly Random random;

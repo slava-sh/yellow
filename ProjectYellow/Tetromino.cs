@@ -1,12 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-
-[assembly: InternalsVisibleTo("ProjectYellowTests")]
 
 namespace ProjectYellow
 {
-    internal sealed class Tetromino
+    public sealed class Tetromino
     {
         // Rotations according to the Super Rotation System.
         // See https://tetris.wiki/SRS
@@ -105,13 +102,13 @@ namespace ProjectYellow
             });
 
         public static readonly Tetromino O = new Tetromino(
-            new Cell(0, 1),
+            new Cell(1, 1),
             new[]
             {
                 new[]
                 {
-                    "##",
-                    "##"
+                    ".##.",
+                    ".##."
                 }
             });
 

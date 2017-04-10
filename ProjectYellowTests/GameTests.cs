@@ -11,7 +11,10 @@ namespace ProjectYellowTests
         [TestMethod]
         public void NewGameIsNotOver()
         {
-            var game = new Game(6, 6, 0);
+            var game = new Game(6, 6, new MockTetrominoGenerator
+            {
+                Tetromino.Z
+            });
             Assert.IsFalse(game.IsOver);
         }
 

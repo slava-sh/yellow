@@ -1,6 +1,6 @@
 ﻿namespace ProjectYellow
 {
-    internal struct Cell
+    public struct Cell
     {
         public readonly int X;
         public readonly int Y;

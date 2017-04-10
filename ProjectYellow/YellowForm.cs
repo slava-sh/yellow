@@ -12,6 +12,8 @@ namespace ProjectYellow
 
         private const int FieldWidth = 10;
         private const int FieldHeight = 20;
+        private const int CanvasWidth = FieldWidth + 6;
+        private const int CanvasHeight = FieldHeight;
         private const int CellSize = 25;
         private static readonly Color EmptyCellColor = Color.Yellow;
         private static readonly Color OccupiedCellColor = Color.Black;
@@ -20,6 +22,7 @@ namespace ProjectYellow
         private readonly Dictionary<Keys, Timer> keyPressTimers = new Dictionary<Keys, Timer>();
 
         private Game game;
+        private PeekableTetrominoGenerator tetrominoGenerator;
         private Timer ticker;
 
         public YellowForm()
@@ -35,7 +38,7 @@ namespace ProjectYellow
 
             InitializeComponent();
 
-            canvas.Size = new Size(FieldWidth * CellSize, FieldHeight * CellSize);
+            canvas.Size = new Size(CanvasWidth * CellSize, CanvasHeight * CellSize);
             ClientSize = canvas.Size;
         }
 
@@ -47,7 +50,9 @@ namespace ProjectYellow
         private void NewGame()
         {
             var randomSeed = new Random().Next();
-            game = new Game(FieldWidth, FieldHeight, randomSeed);
+            tetrominoGenerator = new PeekableTetrominoGenerator(
+                new RandomBagTetrominoGenerator(randomSeed));
+            game = new Game(FieldWidth, FieldHeight, tetrominoGenerator);
             Render();
             ticker = Utils.SetInterval(MillisecondsPerTick, Tick);
         }
@@ -58,11 +63,11 @@ namespace ProjectYellow
             Render();
             if (game.IsOver)
             {
-                HandleGameOver();
+                GameOver();
             }
         }
 
-        private void HandleGameOver()
+        private void GameOver()
         {
             ticker.Stop();
             foreach (var timer in keyPressTimers.Values)
@@ -70,13 +75,15 @@ namespace ProjectYellow
                 timer.Stop();
             }
             keyPressTimers.Clear();
-            // TODO: Add funny icon.
+
+            // TODO: Add a funny icon.
             var result = MessageBox.Show("Game over. Try again?", "Game Over", MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
             if (result == DialogResult.No)
             {
                 Application.Exit();
             }
+
             NewGame();
         }
 
@@ -124,12 +131,34 @@ namespace ProjectYellow
         private void canvas_Paint(object sender, PaintEventArgs e)
         {
             var graphics = e.Graphics;
-            var mask = game.GetFieldMask();
-            for (var x = 0; x < FieldWidth; ++x)
+            DrawField(graphics);
+            DrawNextPiecePreview(graphics);
+        }
+
+        private void DrawField(Graphics graphics)
+        {
+            DrawMask(graphics, game.GetFieldMask(), new Cell(0, 0));
+        }
+
+        private void DrawNextPiecePreview(Graphics graphics)
+        {
+            var nextTetromino = tetrominoGenerator.Peek();
+            var mask = nextTetromino.GetRotationMask(new Rotation());
+            DrawMask(graphics, mask, new Cell(FieldWidth + 1, 1));
+        }
+
+        private static void DrawMask(Graphics graphics, bool[,] mask, Cell origin)
+        {
+            var width = mask.GetLength(0);
+            var height = mask.GetLength(1);
+            for (var x = 0; x < width; ++x)
             {
-                for (var y = 0; y < FieldHeight; ++y)
+                for (var y = 0; y < height; ++y)
                 {
-                    var rectangle = new Rectangle(x * CellSize, y * CellSize, CellSize, CellSize);
+                    var rectangle = new Rectangle(
+                        (origin.X + x) * CellSize,
+                        (origin.Y + y) * CellSize,
+                        CellSize, CellSize);
                     var fillColor = mask[x, y] ? OccupiedCellColor : EmptyCellColor;
                     graphics.FillRectangle(new SolidBrush(fillColor), rectangle);
                 }

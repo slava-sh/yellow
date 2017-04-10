@@ -8,6 +8,18 @@ namespace ProjectYellowTests
     {
         private readonly Queue<Tetromino> next = new Queue<Tetromino>();
 
+        public MockTetrominoGenerator()
+        {
+        }
+
+        public MockTetrominoGenerator(IEnumerable<Tetromino> tetrominoes)
+        {
+            foreach (var tetromino in tetrominoes)
+            {
+                next.Enqueue(tetromino);
+            }
+        }
+
         public IEnumerator<Tetromino> GetEnumerator()
         {
             return next.GetEnumerator();
