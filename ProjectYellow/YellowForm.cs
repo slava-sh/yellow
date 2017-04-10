@@ -145,7 +145,7 @@ namespace ProjectYellow
         {
             var nextTetromino = tetrominoGenerator.Peek();
             var mask = nextTetromino.GetRotationMask(new Rotation());
-            DrawMask(graphics, mask, new Cell(FieldWidth + 1, 1));
+            DrawMask(graphics, Utils.Crop(mask, 4, 2), new Cell(FieldWidth + 1, 1));
         }
 
         private void DrawStats(Graphics graphics)
