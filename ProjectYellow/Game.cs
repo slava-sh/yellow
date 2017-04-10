@@ -22,7 +22,7 @@ namespace ProjectYellow
             activePiece = NewPiece();
         }
 
-        public GameStatistics Stats { get; private set; } = new GameStatistics();
+        public GameStatistics Stats { get; } = new GameStatistics();
 
         public bool IsOver { get; private set; }
 
@@ -52,7 +52,7 @@ namespace ProjectYellow
                 var numClearedLines = field.ClearLines();
                 if (numClearedLines > 0)
                 {
-                    Stats = Stats.Clear(numClearedLines);
+                    Stats.Clear(numClearedLines);
                 }
                 nextPiece = NewPiece();
                 if (field.CanPlace(nextPiece))
@@ -95,7 +95,7 @@ namespace ProjectYellow
             var moved = MaybeSetActivePiece(activePiece.MoveDown());
             if (moved)
             {
-                Stats = Stats.SoftDrop();
+                Stats.SoftDrop();
             }
             return moved;
         }
@@ -104,7 +104,7 @@ namespace ProjectYellow
         {
             CheckGameState();
             var newPiece = activePiece;
-            int numLines = 0;
+            var numLines = 0;
             while (true)
             {
                 var nextPiece = newPiece.MoveDown();
@@ -118,7 +118,7 @@ namespace ProjectYellow
             if (numLines > 0)
             {
                 activePiece = newPiece;
-                Stats = Stats.HardDrop(numLines);
+                Stats.HardDrop(numLines);
             }
             return numLines;
         }

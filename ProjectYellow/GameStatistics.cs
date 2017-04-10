@@ -4,47 +4,39 @@ namespace ProjectYellow
 {
     public class GameStatistics
     {
-        public readonly int Level;
-        public readonly int Score;
+        public int Level { get; } = 1;
+        public int Score { get; private set; }
 
-        public GameStatistics()
-        {
-            Level = 1;
-            Score = 0;
-        }
-
-        private GameStatistics(int level, int score)
-        {
-            Level = level;
-            Score = score;
-        }
-
-        public GameStatistics Clear(int numLines)
+        public void Clear(int numLines)
         {
             // Scoring according to https://tetris.wiki/Scoring#Recent_guideline_compatible_games
             switch (numLines)
             {
                 case 1:
-                    return new GameStatistics(Level, Score + 100 * Level);
+                    Score += 100 * Level;
+                    break;
                 case 2:
-                    return new GameStatistics(Level, Score + 300 * Level);
+                    Score += 300 * Level;
+                    break;
                 case 3:
-                    return new GameStatistics(Level, Score + 500 * Level);
+                    Score += 500 * Level;
+                    break;
                 case 4:
-                    return new GameStatistics(Level, Score + 800 * Level);
+                    Score += 800 * Level;
+                    break;
                 default:
                     throw new ArgumentException("Incorrect number of cleared lines.");
             }
         }
 
-        public GameStatistics SoftDrop()
+        public void SoftDrop()
         {
-            return new GameStatistics(Level, Score + 1);
+            Score += 1;
         }
 
-        public GameStatistics HardDrop(int numLines)
+        public void HardDrop(int numLines)
         {
-            return new GameStatistics(Level, Score + 2 * numLines);
+            Score += 2 * numLines;
         }
 
         // TODO: Give points for T-spins.
