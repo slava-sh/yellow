@@ -92,12 +92,19 @@ namespace ProjectYellow
 
         public bool SoftDrop()
         {
-            return MaybeSetActivePiece(activePiece.MoveDown());
+            var moved = MaybeSetActivePiece(activePiece.MoveDown());
+            if (moved)
+            {
+                Stats = Stats.SoftDrop();
+            }
+            return moved;
         }
 
-        public bool HardDrop()
+        public int HardDrop()
         {
+            CheckGameState();
             var newPiece = activePiece;
+            int numLines = 0;
             while (true)
             {
                 var nextPiece = newPiece.MoveDown();
@@ -106,8 +113,14 @@ namespace ProjectYellow
                     break;
                 }
                 newPiece = nextPiece;
+                ++numLines;
             }
-            return MaybeSetActivePiece(newPiece);
+            if (numLines > 0)
+            {
+                activePiece = newPiece;
+                Stats = Stats.HardDrop(numLines);
+            }
+            return numLines;
         }
 
         private bool MaybeSetActivePiece(Piece newPiece)

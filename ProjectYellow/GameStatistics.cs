@@ -36,5 +36,17 @@ namespace ProjectYellow
                     throw new ArgumentException("Incorrect number of cleared lines.");
             }
         }
+
+        public GameStatistics SoftDrop()
+        {
+            return new GameStatistics(Level, Score + 1);
+        }
+
+        public GameStatistics HardDrop(int numLines)
+        {
+            return new GameStatistics(Level, Score + 2 * numLines);
+        }
+
+        // TODO: Give points for T-spins.
     }
 }
