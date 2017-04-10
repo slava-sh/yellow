@@ -133,6 +133,7 @@ namespace ProjectYellow
             var graphics = e.Graphics;
             DrawField(graphics);
             DrawNextPiecePreview(graphics);
+            DrawStats(graphics);
         }
 
         private void DrawField(Graphics graphics)
@@ -145,6 +146,23 @@ namespace ProjectYellow
             var nextTetromino = tetrominoGenerator.Peek();
             var mask = nextTetromino.GetRotationMask(new Rotation());
             DrawMask(graphics, mask, new Cell(FieldWidth + 1, 1));
+        }
+
+        private void DrawStats(Graphics graphics)
+        {
+            var stats = game.Stats;
+            graphics.DrawString(
+                string.Format("Level: {0}", stats.Level),
+                new Font("Arial", 16),
+                new SolidBrush(Color.Black),
+                (FieldWidth + 1) * CellSize,
+                7 * CellSize);
+            graphics.DrawString(
+                string.Format("Score: {0}", stats.Score),
+                new Font("Arial", 16),
+                new SolidBrush(Color.Black),
+                (FieldWidth + 1) * CellSize,
+                8 * CellSize);
         }
 
         private static void DrawMask(Graphics graphics, bool[,] mask, Cell origin)

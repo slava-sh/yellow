@@ -51,7 +51,7 @@ namespace ProjectYellow
             }
         }
 
-        public void RemoveFullLines()
+        public int ClearLines()
         {
             var lineIsFull = new bool[Height];
             for (var y = 0; y < Height; ++y)
@@ -68,23 +68,24 @@ namespace ProjectYellow
             }
             if (!lineIsFull.Any(x => x))
             {
-                return;
+                return 0;
             }
             var newCells = new bool[Width, Height];
-            var numFullLines = 0;
+            var numClearedLines = 0;
             for (var y = Height - 1; y >= 0; --y)
             {
                 if (lineIsFull[y])
                 {
-                    ++numFullLines;
+                    ++numClearedLines;
                     continue;
                 }
                 for (var x = 0; x < Width; ++x)
                 {
-                    newCells[x, y + numFullLines] = cells[x, y];
+                    newCells[x, y + numClearedLines] = cells[x, y];
                 }
             }
             cells = newCells;
+            return numClearedLines;
         }
     }
 }

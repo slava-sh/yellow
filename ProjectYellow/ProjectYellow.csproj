@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Field.cs" />
     <Compile Include="Cell.cs" />
+    <Compile Include="GameStatistics.cs" />
     <Compile Include="PeekableTetrominoGenerator.cs" />
     <Compile Include="Piece.cs" />
     <Compile Include="Game.cs" />

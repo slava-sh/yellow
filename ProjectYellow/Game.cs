@@ -22,6 +22,8 @@ namespace ProjectYellow
             activePiece = NewPiece();
         }
 
+        public GameStatistics Stats { get; private set; } = new GameStatistics();
+
         public bool IsOver { get; private set; }
 
         private Piece NewPiece()
@@ -47,7 +49,11 @@ namespace ProjectYellow
             else
             {
                 field.Place(activePiece);
-                field.RemoveFullLines();
+                var numClearedLines = field.ClearLines();
+                if (numClearedLines > 0)
+                {
+                    Stats = Stats.Clear(numClearedLines);
+                }
                 nextPiece = NewPiece();
                 if (field.CanPlace(nextPiece))
                 {
