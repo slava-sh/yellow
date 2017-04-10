@@ -131,9 +131,15 @@ namespace ProjectYellow
         private void canvas_Paint(object sender, PaintEventArgs e)
         {
             var graphics = e.Graphics;
+            DrawBackground(graphics);
             DrawField(graphics);
             DrawNextPiecePreview(graphics);
             DrawStats(graphics);
+        }
+
+        private static void DrawBackground(Graphics graphics)
+        {
+            graphics.FillRectangle(Brushes.WhiteSmoke, new Rectangle(0, 0, CanvasWidth * CellSize, CanvasHeight * CellSize));
         }
 
         private void DrawField(Graphics graphics)
@@ -151,14 +157,14 @@ namespace ProjectYellow
         private void DrawStats(Graphics graphics)
         {
             var stats = game.Stats;
-            var font = new Font("Arial", 16);
-            var brush = new SolidBrush(Color.Black);
-            graphics.DrawString($"Score:\n{stats.Score}", font, brush,
-                (FieldWidth + 1) * CellSize, 6 * CellSize);
-            graphics.DrawString($"Level:\n{stats.Level}", font, brush,
-                (FieldWidth + 1) * CellSize, 9 * CellSize);
-            graphics.DrawString($"Lines:\n{stats.LinesCleared}", font, brush,
-                (FieldWidth + 1) * CellSize, 12 * CellSize);
+            var font = new Font("Consolas", 16, FontStyle.Bold);
+            var brush = Brushes.Black;
+            graphics.DrawString($"Score\n{stats.Score,5:00000}", font, brush,
+                (FieldWidth + 1) * CellSize, 5 * CellSize);
+            graphics.DrawString($"Level\n{stats.Level,5:00}", font, brush,
+                (FieldWidth + 1) * CellSize, 8 * CellSize);
+            graphics.DrawString($"Lines\n{stats.LinesCleared,5:000}", font, brush,
+                (FieldWidth + 1) * CellSize, 11 * CellSize);
         }
 
         private static void DrawMask(Graphics graphics, bool[,] mask, Cell origin)
