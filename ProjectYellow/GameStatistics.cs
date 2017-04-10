@@ -4,12 +4,18 @@ namespace ProjectYellow
 {
     public class GameStatistics
     {
-        public int Level { get; } = 1;
+        public int Level => 1 + LinesCleared / 10;
+
+        /// <summary>
+        ///     Score according to https://tetris.wiki/Tetris_DS#Scoring_tables
+        ///     TODO: Implement T-spins and B2B.
+        /// </summary>
         public int Score { get; private set; }
+
+        public int LinesCleared { get; private set; }
 
         public void Clear(int numLines)
         {
-            // Scoring according to https://tetris.wiki/Scoring#Recent_guideline_compatible_games
             switch (numLines)
             {
                 case 1:
@@ -27,6 +33,7 @@ namespace ProjectYellow
                 default:
                     throw new ArgumentException("Incorrect number of cleared lines.");
             }
+            LinesCleared += numLines;
         }
 
         public void SoftDrop()
@@ -38,7 +45,5 @@ namespace ProjectYellow
         {
             Score += 2 * numLines;
         }
-
-        // TODO: Give points for T-spins.
     }
 }

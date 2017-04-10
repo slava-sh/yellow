@@ -153,10 +153,12 @@ namespace ProjectYellow
             var stats = game.Stats;
             var font = new Font("Arial", 16);
             var brush = new SolidBrush(Color.Black);
-            graphics.DrawString($"Level:\n{stats.Level}", font, brush,
-                (FieldWidth + 1) * CellSize, 6 * CellSize);
             graphics.DrawString($"Score:\n{stats.Score}", font, brush,
+                (FieldWidth + 1) * CellSize, 6 * CellSize);
+            graphics.DrawString($"Level:\n{stats.Level}", font, brush,
                 (FieldWidth + 1) * CellSize, 9 * CellSize);
+            graphics.DrawString($"Lines:\n{stats.LinesCleared}", font, brush,
+                (FieldWidth + 1) * CellSize, 12 * CellSize);
         }
 
         private static void DrawMask(Graphics graphics, bool[,] mask, Cell origin)
