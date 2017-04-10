@@ -53,38 +53,32 @@ namespace ProjectYellow
 
         public int ClearLines()
         {
-            var lineIsFull = new bool[Height];
-            for (var y = 0; y < Height; ++y)
+            var numClearedLines = 0;
+            for (var y = Height - 1; y >= 0; --y)
             {
-                lineIsFull[y] = true;
+                var lineIsFull = true;
                 for (var x = 0; x < Width; ++x)
                 {
                     if (!cells[x, y])
                     {
-                        lineIsFull[y] = false;
+                        lineIsFull = false;
                         break;
                     }
                 }
-            }
-            if (!lineIsFull.Any(x => x))
-            {
-                return 0;
-            }
-            var newCells = new bool[Width, Height];
-            var numClearedLines = 0;
-            for (var y = Height - 1; y >= 0; --y)
-            {
-                if (lineIsFull[y])
+                if (lineIsFull)
                 {
                     ++numClearedLines;
                     continue;
                 }
-                for (var x = 0; x < Width; ++x)
+                if (numClearedLines > 0)
                 {
-                    newCells[x, y + numClearedLines] = cells[x, y];
+                    for (var x = 0; x < Width; ++x)
+                    {
+                        cells[x, y + numClearedLines] = cells[x, y];
+                    }
                 }
             }
-            cells = newCells;
+            Array.Clear(cells, 0, Width * numClearedLines);
             return numClearedLines;
         }
     }
