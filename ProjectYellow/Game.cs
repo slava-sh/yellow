@@ -31,7 +31,7 @@ namespace ProjectYellow
             return new Piece(newPieceOrigin, tetrominoGenerator.Next());
         }
 
-        public void Tick()
+        public void ApplyGravity()
         {
             CheckGameState();
             var nextPiece = activePiece.MoveDown();
@@ -100,7 +100,7 @@ namespace ProjectYellow
             return moved;
         }
 
-        public int HardDrop()
+        public bool HardDrop()
         {
             CheckGameState();
             var newPiece = activePiece;
@@ -115,12 +115,13 @@ namespace ProjectYellow
                 newPiece = nextPiece;
                 ++numLines;
             }
-            if (numLines > 0)
+            if (numLines == 0)
             {
-                activePiece = newPiece;
-                Stats.HardDrop(numLines);
+                return false;
             }
-            return numLines;
+            activePiece = newPiece;
+            Stats.HardDrop(numLines);
+            return true;
         }
 
         private bool MaybeSetActivePiece(Piece newPiece)

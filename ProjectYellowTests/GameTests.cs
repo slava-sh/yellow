@@ -31,7 +31,7 @@ namespace ProjectYellowTests
             for (var i = 0; i < 12; ++i)
             {
                 Assert.IsFalse(game.IsOver);
-                game.Tick();
+                game.ApplyGravity();
             }
             Assert.IsTrue(game.IsOver);
             AssertFieldMask(game,
@@ -58,8 +58,8 @@ namespace ProjectYellowTests
                 "........",
                 "........",
                 "........");
-            game.Tick();
-            game.Tick();
+            game.ApplyGravity();
+            game.ApplyGravity();
             AssertFieldMask(game,
                 "........",
                 "..#.....",
@@ -68,7 +68,7 @@ namespace ProjectYellowTests
                 "........",
                 "........");
             game.ShiftLeft();
-            game.Tick();
+            game.ApplyGravity();
             AssertFieldMask(game,
                 "........",
                 "........",
@@ -76,7 +76,7 @@ namespace ProjectYellowTests
                 ".###....",
                 "........",
                 "........");
-            game.Tick();
+            game.ApplyGravity();
             game.ShiftLeft();
             AssertFieldMask(game,
                 "........",
@@ -85,7 +85,7 @@ namespace ProjectYellowTests
                 "#.......",
                 "###.....",
                 "........");
-            game.Tick();
+            game.ApplyGravity();
             game.ShiftLeft();
             AssertFieldMask(game,
                 "........",
@@ -94,7 +94,7 @@ namespace ProjectYellowTests
                 "........",
                 "#.......",
                 "###.....");
-            game.Tick();
+            game.ApplyGravity();
             game.ShiftRight();
             game.ShiftRight();
             game.ShiftRight();
@@ -105,7 +105,7 @@ namespace ProjectYellowTests
                 "........",
                 "#.......",
                 "###.....");
-            game.Tick();
+            game.ApplyGravity();
             AssertFieldMask(game,
                 ".....#..",
                 ".....###",
@@ -123,7 +123,7 @@ namespace ProjectYellowTests
                 "........",
                 "#.......",
                 "###.....");
-            game.Tick();
+            game.ApplyGravity();
             game.ShiftRight();
             AssertFieldMask(game,
                 "........",
@@ -152,7 +152,7 @@ namespace ProjectYellowTests
                 Tetromino.O,
                 Tetromino.O
             });
-            game.Tick();
+            game.ApplyGravity();
             AssertFieldMask(game,
                 "..##..",
                 "..##..",
@@ -160,10 +160,10 @@ namespace ProjectYellowTests
                 "......");
             game.ShiftLeft();
             game.ShiftLeft();
-            game.Tick();
-            game.Tick();
-            game.Tick();
-            game.Tick();
+            game.ApplyGravity();
+            game.ApplyGravity();
+            game.ApplyGravity();
+            game.ApplyGravity();
             AssertFieldMask(game,
                 "..##..",
                 "..##..",
@@ -171,23 +171,23 @@ namespace ProjectYellowTests
                 "##....");
             game.ShiftRight();
             game.ShiftRight();
-            game.Tick();
-            game.Tick();
-            game.Tick();
-            game.Tick();
+            game.ApplyGravity();
+            game.ApplyGravity();
+            game.ApplyGravity();
+            game.ApplyGravity();
             AssertFieldMask(game,
                 "..##..",
                 "..##..",
                 "##..##",
                 "##..##");
-            game.Tick();
-            game.Tick();
+            game.ApplyGravity();
+            game.ApplyGravity();
             AssertFieldMask(game,
                 "......",
                 "......",
                 "######",
                 "######");
-            game.Tick();
+            game.ApplyGravity();
             AssertFieldMask(game,
                 "..##..",
                 "......",
@@ -202,7 +202,7 @@ namespace ProjectYellowTests
             {
                 Tetromino.Z
             });
-            game.Tick();
+            game.ApplyGravity();
             AssertFieldMask(game,
                 ".##...",
                 "..##..",
@@ -231,7 +231,7 @@ namespace ProjectYellowTests
             });
             for (var i = 0; i < 7; ++i)
             {
-                game.Tick();
+                game.ApplyGravity();
                 game.HardDrop();
             }
             AssertFieldMask(game,
@@ -271,16 +271,16 @@ namespace ProjectYellowTests
             game.ShiftLeft();
             game.ShiftLeft();
             game.HardDrop();
-            game.Tick();
+            game.ApplyGravity();
             game.ShiftRight();
             game.ShiftRight();
             game.HardDrop();
-            game.Tick();
+            game.ApplyGravity();
             game.ShiftRight();
             game.ShiftRight();
             game.HardDrop();
-            game.Tick();
-            game.Tick();
+            game.ApplyGravity();
+            game.ApplyGravity();
             game.Rotate();
             game.Rotate();
             game.Rotate();
@@ -295,7 +295,7 @@ namespace ProjectYellowTests
             game.Rotate();
             game.Rotate();
             game.Rotate();
-            game.Tick();
+            game.ApplyGravity();
             AssertFieldMask(game,
                 "...OO...",
                 "........",
@@ -321,7 +321,7 @@ namespace ProjectYellowTests
                 "..I.",
                 "..I.");
             Assert.IsFalse(game.IsOver);
-            game.Tick();
+            game.ApplyGravity();
             Assert.IsTrue(game.IsOver);
         }
 
@@ -341,7 +341,7 @@ namespace ProjectYellowTests
                 "..I.",
                 "..I.",
                 "..I.");
-            game.Tick();
+            game.ApplyGravity();
             AssertFieldMask(game,
                 ".OO.",
                 "..I.",
@@ -349,7 +349,7 @@ namespace ProjectYellowTests
                 "..I.",
                 "..I.");
             Assert.IsFalse(game.IsOver);
-            game.Tick();
+            game.ApplyGravity();
             AssertFieldMask(game,
                 ".OO.",
                 "..I.",
@@ -368,11 +368,11 @@ namespace ProjectYellowTests
                 Tetromino.O
             });
             game.HardDrop();
-            game.Tick();
+            game.ApplyGravity();
             Assert.IsTrue(game.IsOver);
             var actions = new Action[]
             {
-                game.Tick,
+                game.ApplyGravity,
                 () => game.Rotate(),
                 () => game.ShiftLeft(),
                 () => game.ShiftRight(),

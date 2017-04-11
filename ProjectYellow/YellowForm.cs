@@ -22,24 +22,45 @@ namespace ProjectYellow
         private readonly Dictionary<Keys, Timer> keyPressTimers = new Dictionary<Keys, Timer>();
 
         private Game game;
+        private Timer gravityTimer;
         private PeekableTetrominoGenerator tetrominoGenerator;
-        private Timer ticker;
 
         public YellowForm()
         {
-            keyPressHandlers = new Dictionary<Keys, Action>
+            InitializeComponent();
+            keyPressHandlers = GetKeyPressHandlers();
+            canvas.Size = new Size(CanvasWidth * CellSize, CanvasHeight * CellSize);
+            ClientSize = canvas.Size;
+        }
+
+        private Dictionary<Keys, Action> GetKeyPressHandlers()
+        {
+            return new Dictionary<Keys, Action>
             {
                 [Keys.Up] = () => game.Rotate(),
                 [Keys.Left] = () => game.ShiftLeft(),
                 [Keys.Right] = () => game.ShiftRight(),
-                [Keys.Down] = () => game.SoftDrop(),
-                [Keys.Space] = () => game.HardDrop()
+                [Keys.Down] = () =>
+                {
+                    if (game.SoftDrop())
+                    {
+                        ResetGravityTimer();
+                    }
+                },
+                [Keys.Space] = () =>
+                {
+                    if (game.HardDrop())
+                    {
+                        ResetGravityTimer();
+                    }
+                }
             };
+        }
 
-            InitializeComponent();
-
-            canvas.Size = new Size(CanvasWidth * CellSize, CanvasHeight * CellSize);
-            ClientSize = canvas.Size;
+        private void ResetGravityTimer()
+        {
+            gravityTimer.Stop();
+            gravityTimer.Start();
         }
 
         private void YellowForm_Load(object sender, EventArgs e)
@@ -54,12 +75,12 @@ namespace ProjectYellow
                 new RandomBagTetrominoGenerator(randomSeed));
             game = new Game(FieldWidth, FieldHeight, tetrominoGenerator);
             Render();
-            ticker = Utils.SetInterval(MillisecondsPerTick, Tick);
+            gravityTimer = Utils.SetInterval(MillisecondsPerTick, Tick);
         }
 
         private void Tick()
         {
-            game.Tick();
+            game.ApplyGravity();
             Render();
             if (game.IsOver)
             {
@@ -69,7 +90,7 @@ namespace ProjectYellow
 
         private void GameOver()
         {
-            ticker.Stop();
+            gravityTimer.Stop();
             foreach (var timer in keyPressTimers.Values)
             {
                 timer.Stop();
@@ -139,7 +160,8 @@ namespace ProjectYellow
 
         private static void DrawBackground(Graphics graphics)
         {
-            graphics.FillRectangle(Brushes.WhiteSmoke, new Rectangle(0, 0, CanvasWidth * CellSize, CanvasHeight * CellSize));
+            graphics.FillRectangle(Brushes.WhiteSmoke,
+                new Rectangle(0, 0, CanvasWidth * CellSize, CanvasHeight * CellSize));
         }
 
         private void DrawField(Graphics graphics)
