@@ -74,14 +74,14 @@ namespace ProjectYellow
             tetrominoGenerator = new PeekableTetrominoGenerator(
                 new RandomBagTetrominoGenerator(randomSeed));
             game = new Game(FieldWidth, FieldHeight, tetrominoGenerator);
-            Render();
-            gravityTimer = Utils.SetInterval(MillisecondsPerTick, Tick);
+            ScheduleRepaint();
+            gravityTimer = Utils.SetInterval(MillisecondsPerTick, ApplyGravity);
         }
 
-        private void Tick()
+        private void ApplyGravity()
         {
             game.ApplyGravity();
-            Render();
+            ScheduleRepaint();
             if (game.IsOver)
             {
                 GameOver();
@@ -108,7 +108,7 @@ namespace ProjectYellow
             NewGame();
         }
 
-        private void Render()
+        private void ScheduleRepaint()
         {
             canvas.Invalidate();
         }
@@ -132,7 +132,7 @@ namespace ProjectYellow
                     return;
                 }
                 keyPressHandlers[key]();
-                Render();
+                ScheduleRepaint();
             });
             e.SuppressKeyPress = true;
             e.Handled = true;
