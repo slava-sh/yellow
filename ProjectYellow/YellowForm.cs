@@ -7,14 +7,14 @@ namespace ProjectYellow
 {
     public partial class YellowForm : Form
     {
-        private const int MillisecondsPerTick = 500;
-        private const int MillisecondsPerKeyPress = 200;
-
         private const int FieldWidth = 10;
         private const int FieldHeight = 20;
         private const int CanvasWidth = FieldWidth + 6;
         private const int CanvasHeight = FieldHeight;
         private const int CellSize = 25;
+        private static readonly int MillisecondsPerGravity = Utils.FramesToMilliseconds(8);
+        private static readonly int KeyRepeatDelayMilliseconds = Utils.FramesToMilliseconds(23);
+        private static readonly int KeyRepeatIntervalMilliseconds = Utils.FramesToMilliseconds(9);
         private static readonly Color EmptyCellColor = Color.Yellow;
         private static readonly Color OccupiedCellColor = Color.Black;
 
@@ -75,7 +75,7 @@ namespace ProjectYellow
                 new RandomBagTetrominoGenerator(randomSeed));
             game = new Game(FieldWidth, FieldHeight, tetrominoGenerator);
             ScheduleRepaint();
-            gravityTimer = Utils.SetInterval(MillisecondsPerTick, ApplyGravity);
+            gravityTimer = Utils.SetInterval(MillisecondsPerGravity, ApplyGravity);
         }
 
         private void ApplyGravity()
@@ -125,7 +125,8 @@ namespace ProjectYellow
             {
                 return;
             }
-            keyPressTimers[key] = Utils.SetIntervalAndFire(MillisecondsPerKeyPress, () =>
+
+            void HandleKeyPress()
             {
                 if (game.IsOver)
                 {
@@ -133,7 +134,16 @@ namespace ProjectYellow
                 }
                 keyPressHandlers[key]();
                 ScheduleRepaint();
-            });
+            }
+
+            HandleKeyPress();
+            keyPressTimers[key] = Utils.SetTimeout(KeyRepeatDelayMilliseconds,
+                () =>
+                {
+                    keyPressTimers[key] = Utils.SetIntervalAndFire(KeyRepeatIntervalMilliseconds,
+                        HandleKeyPress);
+                });
+
             e.SuppressKeyPress = true;
             e.Handled = true;
         }

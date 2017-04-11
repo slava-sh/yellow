@@ -73,6 +73,21 @@ namespace ProjectYellow
             return timer;
         }
 
+        public static Timer SetTimeout(int milliseconds, Action action)
+        {
+            var timer = new Timer
+            {
+                Interval = milliseconds
+            };
+            timer.Tick += (sender, e) =>
+            {
+                action();
+                timer.Stop();
+            };
+            timer.Start();
+            return timer;
+        }
+
         public static bool[,] Crop(bool[,] mask, int newWidth, int newHeight)
         {
             var newMask = new bool[newWidth, newHeight];
@@ -88,6 +103,11 @@ namespace ProjectYellow
                 }
             }
             return newMask;
+        }
+
+        public static int FramesToMilliseconds(int frames, int framesPerSecond = 60)
+        {
+            return frames * 1000 / framesPerSecond;
         }
     }
 }
