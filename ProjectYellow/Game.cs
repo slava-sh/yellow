@@ -25,6 +25,7 @@ namespace ProjectYellow
         public GameStatistics Stats { get; } = new GameStatistics();
 
         public bool IsOver { get; private set; }
+        public int Level => Stats.Level;
 
         private Piece NewPiece()
         {

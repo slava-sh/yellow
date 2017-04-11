@@ -12,7 +12,32 @@ namespace ProjectYellow
         private const int CanvasWidth = FieldWidth + 6;
         private const int CanvasHeight = FieldHeight;
         private const int CellSize = 25;
-        private static readonly int MillisecondsPerGravity = Utils.FramesToMilliseconds(8);
+
+        private static readonly Dictionary<int, int> LevelSpeed = new Dictionary<int, int>
+        {
+            // Game Boy speeds. See https://tetris.wiki/Tetris_(Game_Boy)
+            [1] = Utils.FramesToMilliseconds(49),
+            [2] = Utils.FramesToMilliseconds(45),
+            [3] = Utils.FramesToMilliseconds(41),
+            [4] = Utils.FramesToMilliseconds(37),
+            [5] = Utils.FramesToMilliseconds(33),
+            [6] = Utils.FramesToMilliseconds(28),
+            [7] = Utils.FramesToMilliseconds(22),
+            [8] = Utils.FramesToMilliseconds(17),
+            [9] = Utils.FramesToMilliseconds(11),
+            [10] = Utils.FramesToMilliseconds(10),
+            [11] = Utils.FramesToMilliseconds(9),
+            [12] = Utils.FramesToMilliseconds(8),
+            [13] = Utils.FramesToMilliseconds(7),
+            [14] = Utils.FramesToMilliseconds(6),
+            [15] = Utils.FramesToMilliseconds(6),
+            [16] = Utils.FramesToMilliseconds(5),
+            [17] = Utils.FramesToMilliseconds(5),
+            [18] = Utils.FramesToMilliseconds(4),
+            [19] = Utils.FramesToMilliseconds(4),
+            [20] = Utils.FramesToMilliseconds(3)
+        };
+
         private static readonly int KeyRepeatDelayMilliseconds = Utils.FramesToMilliseconds(23);
         private static readonly int KeyRepeatIntervalMilliseconds = Utils.FramesToMilliseconds(9);
         private static readonly Color EmptyCellColor = Color.Yellow;
@@ -75,7 +100,19 @@ namespace ProjectYellow
                 new RandomBagTetrominoGenerator(randomSeed));
             game = new Game(FieldWidth, FieldHeight, tetrominoGenerator);
             ScheduleRepaint();
-            gravityTimer = Utils.SetInterval(MillisecondsPerGravity, ApplyGravity);
+
+            void ApplyGravityAndSetTimeout()
+            {
+                ApplyGravity();
+                gravityTimer = Utils.SetTimeout(GetGravitySpeed(), ApplyGravityAndSetTimeout);
+            }
+
+            gravityTimer = Utils.SetTimeout(GetGravitySpeed(), ApplyGravityAndSetTimeout);
+        }
+
+        private int GetGravitySpeed()
+        {
+            return LevelSpeed[game.Level];
         }
 
         private void ApplyGravity()
