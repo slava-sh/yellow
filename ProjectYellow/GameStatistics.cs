@@ -4,7 +4,10 @@ namespace ProjectYellow
 {
     public class GameStatistics
     {
-        public int Level => 1 + LinesCleared / 10;
+        private const int MaxLevel = 20;
+        private const int LinesPerLevel = 10;
+
+        public int Level => Math.Min(MaxLevel, 1 + LinesCleared / LinesPerLevel);
 
         /// <summary>
         ///     Score according to https://tetris.wiki/Tetris_DS#Scoring_tables
