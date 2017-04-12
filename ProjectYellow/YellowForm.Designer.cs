@@ -39,7 +39,7 @@
             this.canvas.Size = new System.Drawing.Size(355, 282);
             this.canvas.TabIndex = 0;
             this.canvas.TabStop = false;
-            this.canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.canvas_Paint);
+            this.canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.HandlePaint);
             // 
             // YellowForm
             // 
@@ -54,8 +54,8 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Yellow";
             this.Load += new System.EventHandler(this.YellowForm_Load);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.YellowForm_KeyDown);
-            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.YellowForm_KeyUp);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.HandleKeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.HandleKeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.canvas)).EndInit();
             this.ResumeLayout(false);
 

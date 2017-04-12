@@ -6,6 +6,8 @@ namespace ProjectYellow
     {
         private readonly Field field;
         private readonly Cell newPieceOrigin;
+
+        public readonly GameStatistics Stats = new GameStatistics();
         private readonly ITetrominoGenerator tetrominoGenerator;
         private Piece activePiece;
 
@@ -22,10 +24,7 @@ namespace ProjectYellow
             activePiece = NewPiece();
         }
 
-        public GameStatistics Stats { get; } = new GameStatistics();
-
         public bool IsOver { get; private set; }
-        public int Level => Stats.Level;
 
         private Piece NewPiece()
         {
