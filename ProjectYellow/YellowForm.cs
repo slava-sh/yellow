@@ -77,11 +77,19 @@ namespace ProjectYellow
                 [Keys.Up] = () => game.Rotate(),
                 [Keys.Left] = () => game.ShiftLeft(),
                 [Keys.Right] = () => game.ShiftRight(),
-                [Keys.Down] = () => game.SoftDrop(),
+                [Keys.Down] = () =>
+                {
+                    if (!game.SoftDrop())
+                    {
+                        ApplyGravity();
+                    }
+                    RescheduleGravity();
+                },
                 [Keys.Space] = () =>
                 {
                     game.HardDrop();
-                    ApplyAndScheduleGravity();
+                    ApplyGravity();
+                    RescheduleGravity();
                 }
             };
         }
@@ -98,26 +106,28 @@ namespace ProjectYellow
                 new RandomBagTetrominoGenerator(randomSeed));
             game = new Game(FieldWidth, FieldHeight, tetrominoGenerator);
             ScheduleRepaint();
-            ScheduleGravity();
+            RescheduleGravity();
         }
 
-        private void ApplyAndScheduleGravity()
+        private void ApplyGravity()
         {
             game.ApplyGravity();
             ScheduleRepaint();
             if (game.IsOver)
             {
                 GameOver();
-                return;
             }
-            ScheduleGravity();
         }
 
-        private void ScheduleGravity()
+        private void RescheduleGravity()
         {
             gravityTimer?.Stop();
             var delay = Utils.FramesToMilliseconds(LevelSpeed[game.Stats.Level]);
-            gravityTimer = Utils.SetTimeout(delay, ApplyAndScheduleGravity);
+            gravityTimer = Utils.SetTimeout(delay, () =>
+            {
+                ApplyGravity();
+                RescheduleGravity();
+            });
         }
 
         private void GameOver()
