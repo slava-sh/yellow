@@ -10,43 +10,18 @@ namespace ProjectYellow
         private const int FieldWidth = 10;
         private const int FieldHeight = 20;
 
-        private static readonly Dictionary<int, int> LevelSpeed = new Dictionary<int, int>
-        {
-            // Game Boy speeds. See https://tetris.wiki/Tetris_(Game_Boy)
-            [1] = 49,
-            [2] = 45,
-            [3] = 41,
-            [4] = 37,
-            [5] = 33,
-            [6] = 28,
-            [7] = 22,
-            [8] = 17,
-            [9] = 11,
-            [10] = 10,
-            [11] = 9,
-            [12] = 8,
-            [13] = 7,
-            [14] = 6,
-            [15] = 6,
-            [16] = 5,
-            [17] = 5,
-            [18] = 4,
-            [19] = 4,
-            [20] = 3
-        };
-
         private static readonly Dictionary<Keys, int> KeyRepeatDelayFrames = new Dictionary<Keys, int>
         {
-            [Keys.Left] = 23,
-            [Keys.Right] = 23,
-            [Keys.Down] = 9
+            [Keys.Left] = GameBoy.ShiftDelayFrames,
+            [Keys.Right] = GameBoy.ShiftDelayFrames,
+            [Keys.Down] = GameBoy.SoftDropIntervalFrames
         };
 
         private static readonly Dictionary<Keys, int> KeyRepeatIntervalFrames = new Dictionary<Keys, int>
         {
-            [Keys.Left] = 9,
-            [Keys.Right] = 9,
-            [Keys.Down] = 9
+            [Keys.Left] = GameBoy.ShiftIntervalFrames,
+            [Keys.Right] = GameBoy.ShiftIntervalFrames,
+            [Keys.Down] = GameBoy.SoftDropIntervalFrames
         };
 
         private readonly Dictionary<Keys, Action> keyPressHandlers;
@@ -115,7 +90,7 @@ namespace ProjectYellow
         private void RescheduleGravity()
         {
             gravityTimer?.Stop();
-            var delay = Utils.FramesToMilliseconds(LevelSpeed[game.Stats.Level]);
+            var delay = Utils.FramesToMilliseconds(GameBoy.LevelSpeed[game.Stats.Level]);
             gravityTimer = Utils.SetTimeout(delay, () =>
             {
                 ApplyGravity();

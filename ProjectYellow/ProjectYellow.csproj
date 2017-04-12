@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameBoy.cs" />
     <Compile Include="GameView.cs">
       <SubType>Component</SubType>
     </Compile>
