@@ -2,7 +2,7 @@
 
 namespace ProjectYellow
 {
-    internal struct Piece
+    public struct Piece
     {
         private readonly Tetromino tetromino;
         private readonly Rotation rotation;

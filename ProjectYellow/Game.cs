@@ -4,7 +4,7 @@ namespace ProjectYellow
 {
     public class Game
     {
-        private readonly Field field;
+        public readonly Field Field;
         private readonly Cell newPieceOrigin;
 
         public readonly GameStatistics Stats = new GameStatistics();
@@ -17,8 +17,8 @@ namespace ProjectYellow
             {
                 throw new ArgumentException("fieldWidth must be even.");
             }
-            field = new Field(fieldWidth, fieldHeight);
-            var centerLeftWidth = (field.Width - 1) / 2;
+            Field = new Field(fieldWidth, fieldHeight);
+            var centerLeftWidth = (Field.Width - 1) / 2;
             newPieceOrigin = new Cell(centerLeftWidth, 0);
             this.tetrominoGenerator = tetrominoGenerator;
             activePiece = NewPiece();
@@ -35,11 +35,11 @@ namespace ProjectYellow
         {
             CheckGameState();
             var nextPiece = activePiece.MoveDown();
-            if (field.CanPlace(nextPiece))
+            if (Field.CanPlace(nextPiece))
             {
                 activePiece = nextPiece;
             }
-            else if (!field.Contains(activePiece))
+            else if (!Field.Contains(activePiece))
             {
                 // Note that this is not a Tetris Guideline compatible "lock out" condition.
                 // In our case, the game ends even if the piece is partially visible.
@@ -48,14 +48,14 @@ namespace ProjectYellow
             }
             else
             {
-                field.Place(activePiece);
-                var numClearedLines = field.ClearLines();
+                Field.Place(activePiece);
+                var numClearedLines = Field.ClearLines();
                 if (numClearedLines > 0)
                 {
                     Stats.Clear(numClearedLines);
                 }
                 nextPiece = NewPiece();
-                if (field.CanPlace(nextPiece))
+                if (Field.CanPlace(nextPiece))
                 {
                     activePiece = nextPiece;
                 }
@@ -108,7 +108,7 @@ namespace ProjectYellow
             while (true)
             {
                 var nextPiece = newPiece.MoveDown();
-                if (!field.CanPlace(nextPiece))
+                if (!Field.CanPlace(nextPiece))
                 {
                     break;
                 }
@@ -127,7 +127,7 @@ namespace ProjectYellow
         private bool MaybeSetActivePiece(Piece newPiece)
         {
             CheckGameState();
-            if (!field.CanPlace(newPiece))
+            if (!Field.CanPlace(newPiece))
             {
                 return false;
             }
@@ -137,12 +137,12 @@ namespace ProjectYellow
 
         public bool[,] GetFieldMask()
         {
-            var mask = new bool[field.Width, field.Height];
-            for (var x = 0; x < field.Width; ++x)
+            var mask = new bool[Field.Width, Field.Height];
+            for (var x = 0; x < Field.Width; ++x)
             {
-                for (var y = 0; y < field.Height; ++y)
+                for (var y = 0; y < Field.Height; ++y)
                 {
-                    if (field.IsOccupied(new Cell(x, y)))
+                    if (Field.IsOccupied(new Cell(x, y)))
                     {
                         mask[x, y] = true;
                     }
@@ -150,7 +150,7 @@ namespace ProjectYellow
             }
             foreach (var cell in activePiece.GetCells())
             {
-                if (field.Contains(cell))
+                if (Field.Contains(cell))
                 {
                     mask[cell.X, cell.Y] = true;
                 }

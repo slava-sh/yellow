@@ -3,11 +3,11 @@ using System.Linq;
 
 namespace ProjectYellow
 {
-    internal class Field
+    public class Field
     {
+        private readonly bool[,] cells;
         public readonly int Height;
         public readonly int Width;
-        private bool[,] cells;
 
         public Field(int width, int height)
         {

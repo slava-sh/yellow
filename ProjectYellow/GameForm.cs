@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Windows.Forms;
+using ProjectYellow.Properties;
 
 namespace ProjectYellow
 {
-    public partial class YellowForm : Form
+    public partial class GameForm : Form
     {
         private const int FieldWidth = 10;
         private const int FieldHeight = 20;
-        private const int CanvasWidth = FieldWidth + 6;
-        private const int CanvasHeight = FieldHeight;
-        private const int CellSize = 25;
 
         private static readonly Dictionary<int, int> LevelSpeed = new Dictionary<int, int>
         {
@@ -52,22 +49,17 @@ namespace ProjectYellow
             [Keys.Down] = 9
         };
 
-        private static readonly Color EmptyCellColor = Color.Yellow;
-        private static readonly Color OccupiedCellColor = Color.Black;
-
         private readonly Dictionary<Keys, Action> keyPressHandlers;
         private readonly Dictionary<Keys, Timer> keyPressTimers = new Dictionary<Keys, Timer>();
 
         private Game game;
         private Timer gravityTimer;
-        private PeekableTetrominoGenerator tetrominoGenerator;
 
-        public YellowForm()
+        public GameForm()
         {
             InitializeComponent();
             keyPressHandlers = GetKeyPressHandlers();
-            canvas.Size = new Size(CanvasWidth * CellSize, CanvasHeight * CellSize);
-            ClientSize = canvas.Size;
+            ClientSize = Resources.Background.Size;
         }
 
         private Dictionary<Keys, Action> GetKeyPressHandlers()
@@ -102,9 +94,10 @@ namespace ProjectYellow
         private void NewGame()
         {
             var randomSeed = new Random().Next();
-            tetrominoGenerator = new PeekableTetrominoGenerator(
-                new RandomBagTetrominoGenerator(randomSeed));
+            var tetrominoGenerator = new PeekableTetrominoGenerator(new RandomBagTetrominoGenerator(randomSeed));
             game = new Game(FieldWidth, FieldHeight, tetrominoGenerator);
+            gameView.Game = game;
+            gameView.GetNextTetromino = tetrominoGenerator.Peek;
             ScheduleRepaint();
             RescheduleGravity();
         }
@@ -152,7 +145,7 @@ namespace ProjectYellow
 
         private void ScheduleRepaint()
         {
-            canvas.Invalidate();
+            gameView.Invalidate();
         }
 
         protected override bool IsInputKey(Keys key)
@@ -208,64 +201,6 @@ namespace ProjectYellow
             }
             keyPressTimers[key]?.Stop();
             keyPressTimers.Remove(key);
-        }
-
-        private void HandlePaint(object sender, PaintEventArgs e)
-        {
-            var graphics = e.Graphics;
-            DrawBackground(graphics);
-            DrawField(graphics);
-            DrawNextPiecePreview(graphics);
-            DrawStats(graphics);
-        }
-
-        private static void DrawBackground(Graphics graphics)
-        {
-            graphics.FillRectangle(Brushes.WhiteSmoke,
-                new Rectangle(0, 0, CanvasWidth * CellSize, CanvasHeight * CellSize));
-        }
-
-        private void DrawField(Graphics graphics)
-        {
-            DrawMask(graphics, game.GetFieldMask(), new Cell(0, 0));
-        }
-
-        private void DrawNextPiecePreview(Graphics graphics)
-        {
-            var nextTetromino = tetrominoGenerator.Peek();
-            var mask = nextTetromino.GetRotationMask(new Rotation());
-            DrawMask(graphics, Utils.Crop(mask, 4, 2), new Cell(FieldWidth + 1, 1));
-        }
-
-        private void DrawStats(Graphics graphics)
-        {
-            var stats = game.Stats;
-            var font = new Font("Consolas", 16, FontStyle.Bold);
-            var brush = Brushes.Black;
-            graphics.DrawString($"Score\n{stats.Score,5:00000}", font, brush,
-                (FieldWidth + 1) * CellSize, 5 * CellSize);
-            graphics.DrawString($"Level\n{stats.Level,5:00}", font, brush,
-                (FieldWidth + 1) * CellSize, 8 * CellSize);
-            graphics.DrawString($"Lines\n{stats.LinesCleared,5:000}", font, brush,
-                (FieldWidth + 1) * CellSize, 11 * CellSize);
-        }
-
-        private static void DrawMask(Graphics graphics, bool[,] mask, Cell origin)
-        {
-            var width = mask.GetLength(0);
-            var height = mask.GetLength(1);
-            for (var x = 0; x < width; ++x)
-            {
-                for (var y = 0; y < height; ++y)
-                {
-                    var rectangle = new Rectangle(
-                        (origin.X + x) * CellSize,
-                        (origin.Y + y) * CellSize,
-                        CellSize, CellSize);
-                    var fillColor = mask[x, y] ? OccupiedCellColor : EmptyCellColor;
-                    graphics.FillRectangle(new SolidBrush(fillColor), rectangle);
-                }
-            }
         }
     }
 }

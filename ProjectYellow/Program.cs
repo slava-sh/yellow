@@ -13,7 +13,7 @@ namespace ProjectYellow
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new YellowForm());
+            Application.Run(new GameForm());
         }
     }
 }
