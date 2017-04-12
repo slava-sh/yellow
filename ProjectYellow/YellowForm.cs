@@ -38,8 +38,20 @@ namespace ProjectYellow
             [20] = 3
         };
 
-        private static readonly int KeyRepeatDelayMilliseconds = Utils.FramesToMilliseconds(23);
-        private static readonly int KeyRepeatIntervalMilliseconds = Utils.FramesToMilliseconds(9);
+        private static readonly Dictionary<Keys, int> KeyRepeatDelayFrames = new Dictionary<Keys, int>
+        {
+            [Keys.Left] = 23,
+            [Keys.Right] = 23,
+            [Keys.Down] = 9
+        };
+
+        private static readonly Dictionary<Keys, int> KeyRepeatIntervalFrames = new Dictionary<Keys, int>
+        {
+            [Keys.Left] = 9,
+            [Keys.Right] = 9,
+            [Keys.Down] = 9
+        };
+
         private static readonly Color EmptyCellColor = Color.Yellow;
         private static readonly Color OccupiedCellColor = Color.Black;
 
@@ -65,7 +77,7 @@ namespace ProjectYellow
                 [Keys.Up] = () => game.Rotate(),
                 [Keys.Left] = () => game.ShiftLeft(),
                 [Keys.Right] = () => game.ShiftRight(),
-                [Keys.Down] = () => { game.SoftDrop(); },
+                [Keys.Down] = () => game.SoftDrop(),
                 [Keys.Space] = () =>
                 {
                     game.HardDrop();
@@ -113,7 +125,7 @@ namespace ProjectYellow
             gravityTimer.Stop();
             foreach (var timer in keyPressTimers.Values)
             {
-                timer.Stop();
+                timer?.Stop();
             }
             keyPressTimers.Clear();
 
@@ -146,26 +158,35 @@ namespace ProjectYellow
                 return;
             }
 
-            void HandleKeyPress()
-            {
-                if (game.IsOver)
-                {
-                    return;
-                }
-                keyPressHandlers[key]();
-                ScheduleRepaint();
-            }
+            OnKeyPress(key);
 
-            HandleKeyPress();
-            keyPressTimers[key] = Utils.SetTimeout(KeyRepeatDelayMilliseconds,
-                () =>
+            if (KeyRepeatDelayFrames.ContainsKey(key))
+            {
+                var delay = Utils.FramesToMilliseconds(KeyRepeatDelayFrames[key]);
+                keyPressTimers[key] = Utils.SetTimeout(delay, () =>
                 {
-                    keyPressTimers[key] = Utils.SetIntervalAndFire(KeyRepeatIntervalMilliseconds,
-                        HandleKeyPress);
+                    var interval = Utils.FramesToMilliseconds(KeyRepeatIntervalFrames[key]);
+                    keyPressTimers[key] = Utils.SetIntervalAndFire(interval, () => OnKeyPress(key));
                 });
+            }
+            else
+            {
+                // Prevent subsequent calls to HandleKeyDown from handling this key.
+                keyPressTimers[key] = null;
+            }
 
             e.SuppressKeyPress = true;
             e.Handled = true;
+        }
+
+        private void OnKeyPress(Keys key)
+        {
+            if (game.IsOver)
+            {
+                return;
+            }
+            keyPressHandlers[key]();
+            ScheduleRepaint();
         }
 
         private void HandleKeyUp(object sender, KeyEventArgs e)
@@ -175,7 +196,7 @@ namespace ProjectYellow
             {
                 return;
             }
-            keyPressTimers[key].Stop();
+            keyPressTimers[key]?.Stop();
             keyPressTimers.Remove(key);
         }
 
