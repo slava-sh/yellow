@@ -65,30 +65,16 @@ namespace ProjectYellow
                 [Keys.Up] = () => game.Rotate(),
                 [Keys.Left] = () => game.ShiftLeft(),
                 [Keys.Right] = () => game.ShiftRight(),
-                [Keys.Down] = () =>
-                {
-                    if (game.SoftDrop())
-                    {
-                        ResetGravityTimer();
-                    }
-                },
+                [Keys.Down] = () => { game.SoftDrop(); },
                 [Keys.Space] = () =>
                 {
-                    if (game.HardDrop())
-                    {
-                        ResetGravityTimer();
-                    }
+                    game.HardDrop();
+                    ApplyAndScheduleGravity();
                 }
             };
         }
 
-        private void ResetGravityTimer()
-        {
-            gravityTimer.Stop();
-            gravityTimer.Start();
-        }
-
-        private void YellowForm_Load(object sender, EventArgs e)
+        private void HandleFormLoad(object sender, EventArgs e)
         {
             NewGame();
         }
@@ -100,29 +86,26 @@ namespace ProjectYellow
                 new RandomBagTetrominoGenerator(randomSeed));
             game = new Game(FieldWidth, FieldHeight, tetrominoGenerator);
             ScheduleRepaint();
-
-            void ApplyGravityAndSetTimeout()
-            {
-                ApplyGravity();
-                gravityTimer = Utils.SetTimeout(GetGravityDelayMilliseconds(), ApplyGravityAndSetTimeout);
-            }
-
-            gravityTimer = Utils.SetTimeout(GetGravityDelayMilliseconds(), ApplyGravityAndSetTimeout);
+            ScheduleGravity();
         }
 
-        private int GetGravityDelayMilliseconds()
-        {
-            return Utils.FramesToMilliseconds(LevelSpeed[game.Stats.Level]);
-        }
-
-        private void ApplyGravity()
+        private void ApplyAndScheduleGravity()
         {
             game.ApplyGravity();
             ScheduleRepaint();
             if (game.IsOver)
             {
                 GameOver();
+                return;
             }
+            ScheduleGravity();
+        }
+
+        private void ScheduleGravity()
+        {
+            gravityTimer?.Stop();
+            var delay = Utils.FramesToMilliseconds(LevelSpeed[game.Stats.Level]);
+            gravityTimer = Utils.SetTimeout(delay, ApplyAndScheduleGravity);
         }
 
         private void GameOver()

@@ -53,7 +53,7 @@
             this.Name = "YellowForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Yellow";
-            this.Load += new System.EventHandler(this.YellowForm_Load);
+            this.Load += new System.EventHandler(this.HandleFormLoad);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.HandleKeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.HandleKeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.canvas)).EndInit();
