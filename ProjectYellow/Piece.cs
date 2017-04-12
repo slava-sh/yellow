@@ -2,7 +2,7 @@
 
 namespace ProjectYellow
 {
-    public struct Piece
+    internal struct Piece
     {
         private readonly Tetromino tetromino;
         private readonly Rotation rotation;
@@ -12,7 +12,8 @@ namespace ProjectYellow
         /// </summary>
         private readonly Cell pivot;
 
-        public Piece(Cell pivot, Tetromino tetromino) : this(pivot, tetromino, new Rotation())
+        public Piece(Cell pivot, Tetromino tetromino) :
+            this(pivot, tetromino, new Rotation())
         {
         }
 
@@ -30,23 +31,28 @@ namespace ProjectYellow
 
         public Piece MoveDown()
         {
-            return new Piece(new Cell(pivot.X, pivot.Y + 1), tetromino, rotation);
+            return new Piece(new Cell(pivot.X, pivot.Y + 1), tetromino,
+                rotation);
         }
 
         public Piece MoveLeft()
         {
-            return new Piece(new Cell(pivot.X - 1, pivot.Y), tetromino, rotation);
+            return new Piece(new Cell(pivot.X - 1, pivot.Y), tetromino,
+                rotation);
         }
 
         public Piece MoveRight()
         {
-            return new Piece(new Cell(pivot.X + 1, pivot.Y), tetromino, rotation);
+            return new Piece(new Cell(pivot.X + 1, pivot.Y), tetromino,
+                rotation);
         }
 
         public IEnumerable<Cell> GetCells()
         {
             var cells = new List<Cell>();
-            var origin = new Cell(pivot.X - tetromino.Pivot.X, pivot.Y - tetromino.Pivot.Y);
+            var origin = new Cell(
+                pivot.X - tetromino.Pivot.X,
+                pivot.Y - tetromino.Pivot.Y);
             var rotationMask = tetromino.GetRotationMask(rotation);
             var width = rotationMask.GetLength(0);
             var height = rotationMask.GetLength(1);

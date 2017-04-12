@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ProjectYellow;
+using static ProjectYellow.Utils;
 
 namespace ProjectYellowTests
 {
@@ -390,17 +391,22 @@ namespace ProjectYellowTests
                 {
                     exception = e;
                 }
-                Assert.IsInstanceOfType(exception, typeof(InvalidOperationException));
+                Assert.IsInstanceOfType(exception,
+                    typeof(InvalidOperationException));
             }
         }
 
-        private static void AssertFieldMask(Game game, params string[] verboseFieldMaskLines)
+        private static void AssertFieldMask(Game game,
+            params string[] verboseFieldMaskLines)
         {
-            var verboseFieldMask = string.Join(Environment.NewLine, verboseFieldMaskLines);
-            var fieldMask = Regex.Replace(verboseFieldMask, @"[^.\s]", "#");
+            var verboseFieldMask =
+                string.Join(Environment.NewLine, verboseFieldMaskLines);
+            var expectedFieldMask =
+                Regex.Replace(verboseFieldMask, @"[^.\s]", "#");
+            var fieldMask = MaskToString(game.GetFieldMask());
             Assert.AreEqual(
-                Environment.NewLine + fieldMask + Environment.NewLine,
-                Environment.NewLine + Utils.MaskToString(game.GetFieldMask()) + Environment.NewLine);
+                Environment.NewLine + expectedFieldMask + Environment.NewLine,
+                Environment.NewLine + fieldMask + Environment.NewLine);
         }
     }
 }

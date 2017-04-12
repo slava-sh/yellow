@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using ProjectYellow.Properties;
+using static ProjectYellow.Utils;
 
 namespace ProjectYellow
 {
@@ -10,22 +10,26 @@ namespace ProjectYellow
         private const int FieldWidth = 10;
         private const int FieldHeight = 20;
 
-        private static readonly Dictionary<Keys, int> KeyRepeatDelayFrames = new Dictionary<Keys, int>
-        {
-            [Keys.Left] = GameBoy.ShiftDelayFrames,
-            [Keys.Right] = GameBoy.ShiftDelayFrames,
-            [Keys.Down] = GameBoy.SoftDropIntervalFrames
-        };
+        private static readonly Dictionary<Keys, int> KeyRepeatDelayFrames =
+            new Dictionary<Keys, int>
+            {
+                [Keys.Left] = GameBoy.ShiftDelayFrames,
+                [Keys.Right] = GameBoy.ShiftDelayFrames,
+                [Keys.Down] = GameBoy.SoftDropIntervalFrames
+            };
 
-        private static readonly Dictionary<Keys, int> KeyRepeatIntervalFrames = new Dictionary<Keys, int>
-        {
-            [Keys.Left] = GameBoy.ShiftIntervalFrames,
-            [Keys.Right] = GameBoy.ShiftIntervalFrames,
-            [Keys.Down] = GameBoy.SoftDropIntervalFrames
-        };
+        private static readonly Dictionary<Keys, int> KeyRepeatIntervalFrames =
+            new Dictionary<Keys, int>
+            {
+                [Keys.Left] = GameBoy.ShiftIntervalFrames,
+                [Keys.Right] = GameBoy.ShiftIntervalFrames,
+                [Keys.Down] = GameBoy.SoftDropIntervalFrames
+            };
 
         private readonly Dictionary<Keys, Action> keyPressHandlers;
-        private readonly Dictionary<Keys, Timer> keyPressTimers = new Dictionary<Keys, Timer>();
+
+        private readonly Dictionary<Keys, Timer> keyPressTimers =
+            new Dictionary<Keys, Timer>();
 
         private Game game;
         private Timer gravityTimer;
@@ -33,8 +37,8 @@ namespace ProjectYellow
         public GameForm()
         {
             InitializeComponent();
+            ClientSize = gameView.Size;
             keyPressHandlers = GetKeyPressHandlers();
-            ClientSize = Resources.Background.Size;
         }
 
         private Dictionary<Keys, Action> GetKeyPressHandlers()
@@ -69,7 +73,9 @@ namespace ProjectYellow
         private void NewGame()
         {
             var randomSeed = new Random().Next();
-            var tetrominoGenerator = new PeekableTetrominoGenerator(new RandomBagTetrominoGenerator(randomSeed));
+            var tetrominoGenerator =
+                new PeekableTetrominoGenerator(
+                    new RandomBagTetrominoGenerator(randomSeed));
             game = new Game(FieldWidth, FieldHeight, tetrominoGenerator);
             gameView.Game = game;
             gameView.GetNextTetromino = tetrominoGenerator.Peek;
@@ -90,8 +96,9 @@ namespace ProjectYellow
         private void RescheduleGravity()
         {
             gravityTimer?.Stop();
-            var delay = Utils.FramesToMilliseconds(GameBoy.LevelSpeed[game.Stats.Level]);
-            gravityTimer = Utils.SetTimeout(delay, () =>
+            var delay =
+                FramesToMilliseconds(GameBoy.LevelSpeed[game.Stats.Level]);
+            gravityTimer = SetTimeout(delay, () =>
             {
                 ApplyGravity();
                 RescheduleGravity();
@@ -108,7 +115,8 @@ namespace ProjectYellow
             keyPressTimers.Clear();
 
             // TODO: Add a funny icon.
-            var result = MessageBox.Show("Game over. Try again?", "Game Over", MessageBoxButtons.YesNo,
+            var result = MessageBox.Show("Game over. Try again?", "Game Over",
+                MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
             if (result == DialogResult.No)
             {
@@ -131,7 +139,8 @@ namespace ProjectYellow
         private void HandleKeyDown(object sender, KeyEventArgs e)
         {
             var key = e.KeyData;
-            if (!keyPressHandlers.ContainsKey(key) || keyPressTimers.ContainsKey(key))
+            if (!keyPressHandlers.ContainsKey(key) ||
+                keyPressTimers.ContainsKey(key))
             {
                 return;
             }
@@ -140,11 +149,15 @@ namespace ProjectYellow
 
             if (KeyRepeatDelayFrames.ContainsKey(key))
             {
-                var delay = Utils.FramesToMilliseconds(KeyRepeatDelayFrames[key]);
-                keyPressTimers[key] = Utils.SetTimeout(delay, () =>
+                var delay = FramesToMilliseconds(KeyRepeatDelayFrames[key]);
+                keyPressTimers[key] = SetTimeout(delay, () =>
                 {
-                    var interval = Utils.FramesToMilliseconds(KeyRepeatIntervalFrames[key]);
-                    keyPressTimers[key] = Utils.SetIntervalAndFire(interval, () => OnKeyPress(key));
+                    OnKeyPress(key);
+
+                    var interval =
+                        FramesToMilliseconds(KeyRepeatIntervalFrames[key]);
+                    keyPressTimers[key] =
+                        SetInterval(interval, () => OnKeyPress(key));
                 });
             }
             else

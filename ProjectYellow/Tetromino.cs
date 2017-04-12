@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using static ProjectYellow.Utils;
 
 namespace ProjectYellow
 {
@@ -207,17 +208,17 @@ namespace ProjectYellow
         /// <summary>
         ///     Left-middle cell of the first rotation.
         /// </summary>
-        public readonly Cell Pivot;
+        internal readonly Cell Pivot;
 
         private readonly bool[][,] rotationMasks;
 
         private Tetromino(Cell pivot, IEnumerable<string[]> rotations)
         {
             Pivot = pivot;
-            rotationMasks = rotations.Select(Utils.ParseMask).ToArray();
+            rotationMasks = rotations.Select(ParseMask).ToArray();
         }
 
-        public bool[,] GetRotationMask(Rotation rotation)
+        internal bool[,] GetRotationMask(Rotation rotation)
         {
             return rotationMasks[rotation.Number % rotationMasks.Length];
         }

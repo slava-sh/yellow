@@ -5,13 +5,13 @@ using System.Drawing.Drawing2D;
 namespace ProjectYellow
 {
     /// <summary>
-    ///     Wrapper for `Graphics.BeginContainer` and `Graphics.EndContainer`
-    ///     for use in a `using` statement.
+    ///     Wrapper for <see cref="Graphics.TranslateTransform(float,float)" />
+    ///     for use in a <c>using</c> statement.
     /// </summary>
-    internal struct Translate : IDisposable
+    internal class Translate : IDisposable
     {
-        private readonly Graphics graphics;
         private readonly GraphicsContainer container;
+        private readonly Graphics graphics;
 
         public Translate(Graphics graphics, int dx, int dy)
         {

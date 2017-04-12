@@ -4,7 +4,8 @@ using ProjectYellow;
 
 namespace ProjectYellowTests
 {
-    internal class MockTetrominoGenerator : ITetrominoGenerator, IEnumerable<Tetromino>
+    internal class MockTetrominoGenerator : ITetrominoGenerator,
+        IEnumerable<Tetromino>
     {
         private readonly Queue<Tetromino> next = new Queue<Tetromino>();
 

@@ -42,10 +42,10 @@ namespace ProjectYellow
             return string.Join(Environment.NewLine, lines);
         }
 
-        // Fisher-Yates shuffle.
-        // See http://stackoverflow.com/a/1287572/559031
-        public static IEnumerable<T> Shuffle<T>(IEnumerable<T> source, Random random)
+        public static IEnumerable<T> Shuffle<T>(IEnumerable<T> source,
+            Random random)
         {
+            // Fisher-Yates shuffle from http://stackoverflow.com/a/1287572/559031
             var elements = source.ToArray();
             for (var i = elements.Length - 1; i >= 0; i--)
             {
@@ -63,13 +63,6 @@ namespace ProjectYellow
             };
             timer.Tick += (sender, e) => tick();
             timer.Start();
-            return timer;
-        }
-
-        public static Timer SetIntervalAndFire(int milliseconds, Action tick)
-        {
-            var timer = SetInterval(milliseconds, tick);
-            tick();
             return timer;
         }
 
@@ -105,7 +98,8 @@ namespace ProjectYellow
             return newMask;
         }
 
-        public static int FramesToMilliseconds(int frames, int framesPerSecond = 60)
+        public static int FramesToMilliseconds(int frames,
+            int framesPerSecond = 60)
         {
             return frames * 1000 / framesPerSecond;
         }

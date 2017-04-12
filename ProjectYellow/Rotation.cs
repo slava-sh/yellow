@@ -2,7 +2,7 @@
 
 namespace ProjectYellow
 {
-    public struct Rotation
+    internal struct Rotation
     {
         public readonly int Number;
 

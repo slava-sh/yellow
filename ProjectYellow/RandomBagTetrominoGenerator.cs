@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using static ProjectYellow.Utils;
 
 namespace ProjectYellow
 {
@@ -30,7 +31,7 @@ namespace ProjectYellow
             {
                 return;
             }
-            foreach (var tetromino in Utils.Shuffle(Tetromino.All, random))
+            foreach (var tetromino in Shuffle(Tetromino.All, random))
             {
                 bag.Enqueue(tetromino);
             }

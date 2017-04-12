@@ -23,20 +23,21 @@ namespace ProjectYellow
 
         public bool Contains(Cell cell)
         {
-            return 0 <= cell.X && cell.X < Width && 0 <= cell.Y && cell.Y < Height;
+            return 0 <= cell.X && cell.X < Width &&
+                   0 <= cell.Y && cell.Y < Height;
         }
 
-        public bool Contains(Piece piece)
+        internal bool Contains(Piece piece)
         {
             return piece.GetCells().All(Contains);
         }
 
-        public bool CanPlace(Piece piece)
+        internal bool CanPlace(Piece piece)
         {
             return piece.GetCells().All(cell => !IsOccupied(cell));
         }
 
-        public void Place(Piece piece)
+        internal void Place(Piece piece)
         {
             foreach (var cell in piece.GetCells())
             {
@@ -44,14 +45,15 @@ namespace ProjectYellow
                 {
                     if (cells[cell.X, cell.Y])
                     {
-                        throw new ArgumentException("The cell is already occupied.");
+                        throw new ArgumentException(
+                            "The cell is already occupied.");
                     }
                     cells[cell.X, cell.Y] = true;
                 }
             }
         }
 
-        public int ClearLines()
+        internal int ClearLines()
         {
             var numClearedLines = 0;
             for (var y = Height - 1; y >= 0; --y)
