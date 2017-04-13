@@ -88,7 +88,7 @@ namespace ProjectYellow
                 return;
             }
             var nextTetromino = GetNextTetromino();
-            var mask = nextTetromino.GetRotationMask(new Rotation());
+            var mask = nextTetromino.GetMask(Rotation.Default);
             DrawMask(Crop(mask, 4, 2));
         }
 

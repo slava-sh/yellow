@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using static ProjectYellow.Utils;
 
 namespace ProjectYellow
 {
+    [Pure]
     public sealed class Tetromino
     {
         // Rotations according to the Super Rotation System.
@@ -218,7 +220,7 @@ namespace ProjectYellow
             rotationMasks = rotations.Select(ParseMask).ToArray();
         }
 
-        internal bool[,] GetRotationMask(Rotation rotation)
+        public bool[,] GetMask(Rotation rotation)
         {
             return rotationMasks[rotation.Number % rotationMasks.Length];
         }
