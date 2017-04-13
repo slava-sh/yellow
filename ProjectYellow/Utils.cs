@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Windows.Forms;
 
 [assembly: InternalsVisibleTo("ProjectYellowTests")]
 
@@ -55,31 +54,6 @@ namespace ProjectYellow
             }
         }
 
-        private static Timer SetInterval(int milliseconds, Action<Timer> tick)
-        {
-            var timer = new Timer
-            {
-                Interval = milliseconds
-            };
-            timer.Tick += (sender, e) => tick(timer);
-            timer.Start();
-            return timer;
-        }
-
-        public static Timer SetInterval(int milliseconds, Action tick)
-        {
-            return SetInterval(milliseconds, timer => tick());
-        }
-
-        public static Timer SetTimeout(int milliseconds, Action action)
-        {
-            return SetInterval(milliseconds, timer =>
-            {
-                timer.Stop();
-                action();
-            });
-        }
-
         public static bool[,] Crop(bool[,] mask, int newWidth, int newHeight)
         {
             var newMask = new bool[newWidth, newHeight];
@@ -95,12 +69,6 @@ namespace ProjectYellow
                 }
             }
             return newMask;
-        }
-
-        public static int FramesToMilliseconds(int frames,
-            int framesPerSecond = 60)
-        {
-            return frames * 1000 / framesPerSecond;
         }
     }
 }

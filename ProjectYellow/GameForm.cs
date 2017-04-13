@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using static ProjectYellow.Utils;
 
 namespace ProjectYellow
 {
@@ -9,6 +8,7 @@ namespace ProjectYellow
     {
         private const int FieldWidth = 10;
         private const int FieldHeight = 20;
+        private const int FramesPerSecond = 60;
 
         private static readonly Dictionary<Keys, int> KeyRepeatDelayFrames =
             new Dictionary<Keys, int>
@@ -28,11 +28,13 @@ namespace ProjectYellow
 
         private readonly Dictionary<Keys, Action> keyPressHandlers;
 
-        private readonly Dictionary<Keys, Timer> keyPressTimers =
-            new Dictionary<Keys, Timer>();
+        private readonly Dictionary<Keys, Scheduler.Task> keyPressTasks =
+            new Dictionary<Keys, Scheduler.Task>();
 
         private Game game;
-        private Timer gravityTimer;
+        private Scheduler.Task gravityTask;
+
+        private Scheduler scheduler;
 
         public GameForm()
         {
@@ -79,6 +81,7 @@ namespace ProjectYellow
             game = new Game(FieldWidth, FieldHeight, tetrominoGenerator);
             gameView.Game = game;
             gameView.GetNextTetromino = tetrominoGenerator.Peek;
+            scheduler = new Scheduler(FramesPerSecond);
             ScheduleRepaint();
             RescheduleGravity();
         }
@@ -95,10 +98,9 @@ namespace ProjectYellow
 
         private void RescheduleGravity()
         {
-            gravityTimer?.Stop();
-            var delay =
-                FramesToMilliseconds(GameBoy.LevelSpeed[game.Stats.Level]);
-            gravityTimer = SetTimeout(delay, () =>
+            gravityTask?.Cancel();
+            var delay = GameBoy.LevelSpeed[game.Stats.Level];
+            gravityTask = scheduler.SetTimeout(delay, () =>
             {
                 ApplyGravity();
                 RescheduleGravity();
@@ -107,12 +109,12 @@ namespace ProjectYellow
 
         private void GameOver()
         {
-            gravityTimer.Stop();
-            foreach (var timer in keyPressTimers.Values)
+            gravityTask.Cancel();
+            foreach (var task in keyPressTasks.Values)
             {
-                timer?.Stop();
+                task?.Cancel();
             }
-            keyPressTimers.Clear();
+            keyPressTasks.Clear();
 
             // TODO: Add a funny icon.
             var result = MessageBox.Show("Game over. Try again?", "Game Over",
@@ -140,7 +142,7 @@ namespace ProjectYellow
         {
             var key = e.KeyData;
             if (!keyPressHandlers.ContainsKey(key) ||
-                keyPressTimers.ContainsKey(key))
+                keyPressTasks.ContainsKey(key))
             {
                 return;
             }
@@ -149,21 +151,19 @@ namespace ProjectYellow
 
             if (KeyRepeatDelayFrames.ContainsKey(key))
             {
-                var delay = FramesToMilliseconds(KeyRepeatDelayFrames[key]);
-                keyPressTimers[key] = SetTimeout(delay, () =>
-                {
-                    OnKeyPress(key);
-
-                    var interval =
-                        FramesToMilliseconds(KeyRepeatIntervalFrames[key]);
-                    keyPressTimers[key] =
-                        SetInterval(interval, () => OnKeyPress(key));
-                });
+                keyPressTasks[key] = scheduler.SetTimeout(
+                    KeyRepeatDelayFrames[key], () =>
+                    {
+                        OnKeyPress(key);
+                        keyPressTasks[key] =
+                            scheduler.SetInterval(KeyRepeatIntervalFrames[key],
+                                () => OnKeyPress(key));
+                    });
             }
             else
             {
                 // Prevent subsequent calls to HandleKeyDown from handling this key.
-                keyPressTimers[key] = null;
+                keyPressTasks[key] = null;
             }
 
             e.SuppressKeyPress = true;
@@ -183,12 +183,12 @@ namespace ProjectYellow
         private void HandleKeyUp(object sender, KeyEventArgs e)
         {
             var key = e.KeyData;
-            if (!keyPressTimers.ContainsKey(key))
+            if (!keyPressTasks.ContainsKey(key))
             {
                 return;
             }
-            keyPressTimers[key]?.Stop();
-            keyPressTimers.Remove(key);
+            keyPressTasks[key]?.Cancel();
+            keyPressTasks.Remove(key);
         }
     }
 }

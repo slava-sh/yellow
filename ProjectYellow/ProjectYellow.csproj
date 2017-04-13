@@ -63,6 +63,7 @@
     <Compile Include="RandomBagTetrominoGenerator.cs" />
     <Compile Include="RandomTetrominoGenerator.cs" />
     <Compile Include="Rotation.cs" />
+    <Compile Include="Scheduler.cs" />
     <Compile Include="Tetromino.cs" />
     <Compile Include="Translate.cs" />
     <Compile Include="Utils.cs" />
