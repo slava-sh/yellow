@@ -55,30 +55,29 @@ namespace ProjectYellow
             }
         }
 
-        public static Timer SetInterval(int milliseconds, Action tick)
+        private static Timer SetInterval(int milliseconds, Action<Timer> tick)
         {
             var timer = new Timer
             {
                 Interval = milliseconds
             };
-            timer.Tick += (sender, e) => tick();
+            timer.Tick += (sender, e) => tick(timer);
             timer.Start();
             return timer;
         }
 
+        public static Timer SetInterval(int milliseconds, Action tick)
+        {
+            return SetInterval(milliseconds, timer => tick());
+        }
+
         public static Timer SetTimeout(int milliseconds, Action action)
         {
-            var timer = new Timer
+            return SetInterval(milliseconds, timer =>
             {
-                Interval = milliseconds
-            };
-            timer.Tick += (sender, e) =>
-            {
-                action();
                 timer.Stop();
-            };
-            timer.Start();
-            return timer;
+                action();
+            });
         }
 
         public static bool[,] Crop(bool[,] mask, int newWidth, int newHeight)
