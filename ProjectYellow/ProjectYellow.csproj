@@ -49,10 +49,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="KeyboardController.cs" />
+    <Compile Include="Game\KeyController.cs" />
     <Compile Include="GameBoy.cs" />
     <Compile Include="Game\ITask.cs" />
     <Compile Include="Game\GameController.cs" />
-    <Compile Include="Game\AbstractScheduler.cs" />
+    <Compile Include="Game\Scheduler.cs" />
+    <Compile Include="Game\RepeatingKeyController.cs" />
     <Compile Include="Views\ButtonView.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -72,7 +75,7 @@
     <Compile Include="Game\RandomBagTetrominoGenerator.cs" />
     <Compile Include="Game\RandomTetrominoGenerator.cs" />
     <Compile Include="Game\Rotation.cs" />
-    <Compile Include="Scheduler.cs" />
+    <Compile Include="TimerBasedScheduler.cs" />
     <Compile Include="Game\Tetromino.cs" />
     <Compile Include="Game\Translate.cs" />
     <Compile Include="Game\Utils.cs" />

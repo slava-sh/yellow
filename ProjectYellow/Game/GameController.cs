@@ -5,10 +5,10 @@ namespace ProjectYellow.Game
     public class GameController
     {
         private readonly Game game;
-        private readonly AbstractScheduler scheduler;
+        private readonly Scheduler scheduler;
         private ITask gravityTask;
 
-        public GameController(Game game, AbstractScheduler scheduler)
+        public GameController(Game game, Scheduler scheduler)
         {
             this.game = game;
             this.scheduler = scheduler;

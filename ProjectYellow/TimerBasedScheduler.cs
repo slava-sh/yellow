@@ -6,7 +6,7 @@ using ProjectYellow.Game;
 
 namespace ProjectYellow
 {
-    internal class TimerBasedScheduler : AbstractScheduler
+    internal class TimerBasedScheduler : Scheduler
     {
         private readonly int framesPerSecond;
         private readonly HashSet<Task> tasks = new HashSet<Task>();

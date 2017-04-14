@@ -56,7 +56,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="GameStateTests.cs" />
+    <Compile Include="GameTests.cs" />
     <Compile Include="MockTetrominoGenerator.cs" />
     <Compile Include="PeekableTetrominoGeneratorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
