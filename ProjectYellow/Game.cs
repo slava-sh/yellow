@@ -5,7 +5,6 @@ namespace ProjectYellow
     public class Game
     {
         public readonly Field Field;
-        private readonly Cell newPieceOrigin;
 
         public readonly GameStatistics Stats = new GameStatistics();
         private readonly ITetrominoGenerator tetrominoGenerator;
@@ -18,10 +17,8 @@ namespace ProjectYellow
             {
                 throw new ArgumentException("fieldWidth must be even.");
             }
-            Field = new Field(fieldWidth, fieldHeight);
-            var centerLeftWidth = (Field.Width - 1) / 2;
-            newPieceOrigin = new Cell(centerLeftWidth, 0);
             this.tetrominoGenerator = tetrominoGenerator;
+            Field = new Field(fieldWidth, fieldHeight);
             activePiece = NewPiece();
         }
 
@@ -29,7 +26,9 @@ namespace ProjectYellow
 
         private Piece NewPiece()
         {
-            return new Piece(newPieceOrigin, tetrominoGenerator.Next());
+            var tetromino = tetrominoGenerator.Next();
+            var origin = new Cell((Field.Width - 1) / 2, 0);
+            return new Piece(origin, tetromino);
         }
 
         public void ApplyGravity()
