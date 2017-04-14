@@ -220,7 +220,7 @@ namespace ProjectYellow
             rotationMasks = rotations.Select(ParseMask).ToArray();
         }
 
-        public bool[,] GetMask(Rotation rotation)
+        public bool[,] GetMaskForRotation(Rotation rotation)
         {
             return rotationMasks[rotation.Number % rotationMasks.Length];
         }

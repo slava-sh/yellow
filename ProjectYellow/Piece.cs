@@ -54,7 +54,7 @@ namespace ProjectYellow
             var origin = new Cell(
                 pivot.X - tetromino.Pivot.X,
                 pivot.Y - tetromino.Pivot.Y);
-            var mask = tetromino.GetMask(rotation);
+            var mask = tetromino.GetMaskForRotation(rotation);
             var width = mask.GetLength(0);
             var height = mask.GetLength(1);
             for (var x = 0; x < width; ++x)
