@@ -11,7 +11,7 @@ using static ProjectYellow.Utils;
 namespace ProjectYellow
 {
     [Designer(typeof(Designer))]
-    internal class GameView : PictureBox
+    internal class GameView : Control
     {
         private const int PixelSize = 2;
         private const int InnerCellSize = 7 * PixelSize;
@@ -30,6 +30,8 @@ namespace ProjectYellow
         public Func<Tetromino> GetNextTetromino;
         private Graphics graphics;
 
+        protected override bool DoubleBuffered => true;
+
         public GameView()
         {
             Size = Resources.Background.Size;
@@ -37,10 +39,6 @@ namespace ProjectYellow
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            if (Game == null)
-            {
-                return;
-            }
             graphics = e.Graphics;
             DrawBackground();
             using (Translate(50, 50))
@@ -144,6 +142,22 @@ namespace ProjectYellow
 
         private class Designer : ControlDesigner
         {
+            public override void Initialize(IComponent component)
+            {
+                var gameView = (GameView) component;
+                base.Initialize(gameView);
+                var tetrominoGenerator =
+                    new PeekableTetrominoGenerator(
+                        new RandomTetrominoGenerator(0));
+                gameView.Game = new Game(10, 20, tetrominoGenerator);
+                gameView.GetNextTetromino = tetrominoGenerator.Peek;
+                gameView.Game.ApplyGravity();
+                gameView.Game.ApplyGravity();
+                gameView.Game.ApplyGravity();
+                gameView.Game.ApplyGravity();
+                gameView.Game.ApplyGravity();
+                gameView.Game.Rotate();
+            }
         }
     }
 }
