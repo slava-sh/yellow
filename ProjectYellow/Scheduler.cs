@@ -12,29 +12,41 @@ namespace ProjectYellow
             this.framesPerSecond = framesPerSecond;
         }
 
-        private Task SetInterval(int frames, Action<Timer> tick)
+        public Task SetInterval(int frames, Action tick)
         {
             var timer = new Timer
             {
                 Interval = FramesToMilliseconds(frames)
             };
-            timer.Tick += (sender, e) => tick(timer);
+            timer.Tick += (sender, e) => tick();
             timer.Start();
             return new Task(timer.Stop);
         }
 
-        public Task SetInterval(int frames, Action tick)
-        {
-            return SetInterval(frames, timer => tick());
-        }
-
         public Task SetTimeout(int frames, Action action)
         {
-            return SetInterval(frames, timer =>
+            Task task = null;
+            task = SetInterval(frames, () =>
             {
-                timer.Stop();
+                // ReSharper disable once AccessToModifiedClosure
+                // ReSharper disable once PossibleNullReferenceException
+                task.Cancel();
                 action();
             });
+            return task;
+        }
+
+        public Task SetInterval(int delayFrames, int intervalFrames,
+            Action tick)
+        {
+            Task task = null;
+            task = SetTimeout(delayFrames, () =>
+            {
+                task = SetInterval(intervalFrames, tick);
+                tick();
+            });
+            // ReSharper disable once ImplicitlyCapturedClosure
+            return new Task(() => task.Cancel());
         }
 
         private int FramesToMilliseconds(int frames)

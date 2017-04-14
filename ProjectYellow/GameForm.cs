@@ -151,14 +151,11 @@ namespace ProjectYellow
 
             if (KeyRepeatDelayFrames.ContainsKey(key))
             {
-                keyPressTasks[key] = scheduler.SetTimeout(
-                    KeyRepeatDelayFrames[key], () =>
-                    {
-                        OnKeyPress(key);
-                        keyPressTasks[key] =
-                            scheduler.SetInterval(KeyRepeatIntervalFrames[key],
-                                () => OnKeyPress(key));
-                    });
+                keyPressTasks[key] =
+                    scheduler.SetInterval(
+                        KeyRepeatDelayFrames[key],
+                        KeyRepeatIntervalFrames[key],
+                        () => OnKeyPress(key));
             }
             else
             {
