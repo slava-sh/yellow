@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using ProjectYellow.Game;
+using ProjectYellow.Views;
 
 namespace ProjectYellow
 {
@@ -46,9 +47,22 @@ namespace ProjectYellow
             keyboard.SoftDrop.KeyPress += gameController.HandleSoftDrop;
             keyboard.HardDrop.KeyPress += gameController.HandleHardDrop;
 
+            Connect(rotateButton, keyboard.Rotate);
+            Connect(shiftLeftButton, keyboard.ShiftLeft);
+            Connect(shiftRightButton, keyboard.ShiftRight);
+            Connect(softDropButton, keyboard.SoftDrop);
+            Connect(hardDropButton, keyboard.HardDrop);
+
             gameView.Game = game;
             gameView.GetNextTetromino = tetrominoGenerator.Peek;
             ScheduleRepaint();
+        }
+
+        private void Connect(ButtonView button, Key key)
+        {
+            button.Key = key;
+            key.KeyDown += button.Invalidate;
+            key.KeyUp += button.Invalidate;
         }
 
         private void GameOver()

@@ -50,12 +50,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="KeyboardController.cs" />
-    <Compile Include="Game\KeyController.cs" />
+    <Compile Include="Game\Key.cs" />
     <Compile Include="GameBoy.cs" />
     <Compile Include="Game\ITask.cs" />
     <Compile Include="Game\GameController.cs" />
     <Compile Include="Game\Scheduler.cs" />
-    <Compile Include="Game\RepeatingKeyController.cs" />
+    <Compile Include="Game\RepeatingKey.cs" />
     <Compile Include="Views\ButtonView.cs">
       <SubType>Component</SubType>
     </Compile>

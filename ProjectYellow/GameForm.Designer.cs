@@ -30,9 +30,17 @@ namespace ProjectYellow
         /// </summary>
         private void InitializeComponent()
         {
-            this.gameView = new GameView();
-            this.button1 = new ButtonView();
-            ((System.ComponentModel.ISupportInitialize)(this.button1)).BeginInit();
+            this.gameView = new ProjectYellow.Views.GameView();
+            this.hardDropButton = new ProjectYellow.Views.ButtonView();
+            this.shiftRightButton = new ProjectYellow.Views.ButtonView();
+            this.shiftLeftButton = new ProjectYellow.Views.ButtonView();
+            this.softDropButton = new ProjectYellow.Views.ButtonView();
+            this.rotateButton = new ProjectYellow.Views.ButtonView();
+            ((System.ComponentModel.ISupportInitialize)(this.hardDropButton)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.shiftRightButton)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.shiftLeftButton)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.softDropButton)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rotateButton)).BeginInit();
             this.SuspendLayout();
             // 
             // gameView
@@ -43,20 +51,56 @@ namespace ProjectYellow
             this.gameView.TabIndex = 0;
             this.gameView.TabStop = false;
             // 
-            // button1
+            // hardDropButton
             // 
-            this.button1.Location = new System.Drawing.Point(323, 578);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(100, 100);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "button1";
+            this.hardDropButton.Location = new System.Drawing.Point(323, 578);
+            this.hardDropButton.Name = "hardDropButton";
+            this.hardDropButton.Size = new System.Drawing.Size(100, 100);
+            this.hardDropButton.TabIndex = 3;
+            this.hardDropButton.Text = "hardDropButton";
+            // 
+            // shiftRightButton
+            // 
+            this.shiftRightButton.Location = new System.Drawing.Point(153, 601);
+            this.shiftRightButton.Name = "shiftRightButton";
+            this.shiftRightButton.Size = new System.Drawing.Size(60, 60);
+            this.shiftRightButton.TabIndex = 5;
+            this.shiftRightButton.Text = "shiftRightButton";
+            // 
+            // shiftLeftButton
+            // 
+            this.shiftLeftButton.Location = new System.Drawing.Point(21, 601);
+            this.shiftLeftButton.Name = "shiftLeftButton";
+            this.shiftLeftButton.Size = new System.Drawing.Size(60, 60);
+            this.shiftLeftButton.TabIndex = 6;
+            this.shiftLeftButton.Text = "shiftLeftButton";
+            // 
+            // softDropButton
+            // 
+            this.softDropButton.Location = new System.Drawing.Point(87, 667);
+            this.softDropButton.Name = "softDropButton";
+            this.softDropButton.Size = new System.Drawing.Size(60, 60);
+            this.softDropButton.TabIndex = 7;
+            this.softDropButton.Text = "softDropButton";
+            // 
+            // rotateButton
+            // 
+            this.rotateButton.Location = new System.Drawing.Point(87, 535);
+            this.rotateButton.Name = "rotateButton";
+            this.rotateButton.Size = new System.Drawing.Size(60, 60);
+            this.rotateButton.TabIndex = 8;
+            this.rotateButton.Text = "rotateButton";
             // 
             // GameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(514, 740);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.rotateButton);
+            this.Controls.Add(this.softDropButton);
+            this.Controls.Add(this.shiftLeftButton);
+            this.Controls.Add(this.shiftRightButton);
+            this.Controls.Add(this.hardDropButton);
             this.Controls.Add(this.gameView);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
@@ -67,7 +111,11 @@ namespace ProjectYellow
             this.Load += new System.EventHandler(this.HandleFormLoad);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.HandleKeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.HandleKeyUp);
-            ((System.ComponentModel.ISupportInitialize)(this.button1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.hardDropButton)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.shiftRightButton)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.shiftLeftButton)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.softDropButton)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rotateButton)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -75,7 +123,11 @@ namespace ProjectYellow
         #endregion
 
         private GameView gameView;
-        private ButtonView button1;
+        private ButtonView hardDropButton;
+        private ButtonView shiftRightButton;
+        private ButtonView shiftLeftButton;
+        private ButtonView softDropButton;
+        private ButtonView rotateButton;
     }
 }
 

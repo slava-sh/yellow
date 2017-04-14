@@ -1,13 +1,13 @@
 ﻿namespace ProjectYellow.Game
 {
-    internal class RepeatingKeyController : KeyController
+    internal class RepeatingKey : Key
     {
         private readonly int delayFrames;
         private readonly int intervalFrames;
         private readonly Scheduler scheduler;
         private ITask task;
 
-        public RepeatingKeyController(Scheduler scheduler, int delayFrames,
+        public RepeatingKey(Scheduler scheduler, int delayFrames,
             int intervalFrames)
         {
             this.scheduler = scheduler;
@@ -28,6 +28,10 @@
 
         public override void HandleKeyUp()
         {
+            if (!IsPressed)
+            {
+                return;
+            }
             task?.Cancel();
             base.HandleKeyUp();
         }

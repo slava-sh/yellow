@@ -3,13 +3,14 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
+using ProjectYellow.Game;
 
 namespace ProjectYellow.Views
 {
     [Designer(typeof(Designer))]
     internal class ButtonView : CustomView, ISupportInitialize
     {
-        private bool pressed;
+        public Key Key;
         private Rectangle rectangle;
 
         public void BeginInit()
@@ -27,26 +28,29 @@ namespace ProjectYellow.Views
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            Graphics.FillEllipse(pressed ? Brushes.Red : Brushes.Blue,
+            Graphics.FillEllipse(Key.IsPressed ? Brushes.Red : Brushes.Blue,
                 rectangle);
         }
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
-            pressed = true;
-            Invalidate();
+            Key.HandleKeyDown();
             base.OnMouseDown(e);
         }
 
         protected override void OnMouseUp(MouseEventArgs e)
         {
-            pressed = false;
-            Invalidate();
+            Key.HandleKeyUp();
             base.OnMouseUp(e);
         }
 
         private class Designer : ControlDesigner
         {
+            public override void Initialize(IComponent component)
+            {
+                var buttonView = (ButtonView) component;
+                buttonView.Key = new Key();
+            }
         }
     }
 }

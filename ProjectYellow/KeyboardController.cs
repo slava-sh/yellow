@@ -6,25 +6,25 @@ namespace ProjectYellow
 {
     internal class KeyboardController
     {
-        public readonly KeyController HardDrop;
-        public readonly KeyController Rotate;
-        public readonly KeyController ShiftLeft;
-        public readonly KeyController ShiftRight;
-        public readonly KeyController SoftDrop;
+        public readonly Key HardDrop;
+        public readonly Key Rotate;
+        public readonly Key ShiftLeft;
+        public readonly Key ShiftRight;
+        public readonly Key SoftDrop;
 
-        private readonly Dictionary<Keys, KeyController> keyMap;
+        private readonly Dictionary<Keys, Key> keyMap;
         
         public KeyboardController(Scheduler scheduler)
         {
-            Rotate = new KeyController();
-            ShiftLeft = new RepeatingKeyController(scheduler,
+            Rotate = new Key();
+            ShiftLeft = new RepeatingKey(scheduler,
                 GameBoy.ShiftDelayFrames, GameBoy.ShiftIntervalFrames);
-            ShiftRight = new RepeatingKeyController(scheduler,
+            ShiftRight = new RepeatingKey(scheduler,
                 GameBoy.ShiftDelayFrames, GameBoy.ShiftIntervalFrames);
-            SoftDrop = new RepeatingKeyController(scheduler,
+            SoftDrop = new RepeatingKey(scheduler,
                 GameBoy.SoftDropIntervalFrames, GameBoy.SoftDropIntervalFrames);
-            HardDrop = new KeyController();
-            keyMap = new Dictionary<Keys, KeyController>
+            HardDrop = new Key();
+            keyMap = new Dictionary<Keys, Key>
             {
                 [Keys.Up] = Rotate,
                 [Keys.Left] = ShiftLeft,
