@@ -80,7 +80,13 @@ namespace ProjectYellow
                     }
                 }
             }
-            Array.Clear(cells, 0, Width * numClearedLines);
+            for (var y = 0; y < numClearedLines; ++y)
+            {
+                for (var x = 0; x < Width; ++x)
+                {
+                    cells[x, y] = false;
+                }
+            }
             return numClearedLines;
         }
     }

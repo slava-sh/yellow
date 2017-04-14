@@ -151,12 +151,13 @@ namespace ProjectYellowTests
                 Tetromino.O,
                 Tetromino.O,
                 Tetromino.O,
+                Tetromino.O,
                 Tetromino.O
             });
             game.ApplyGravity();
             AssertFieldMask(game,
-                "..##..",
-                "..##..",
+                "..OO..",
+                "..OO..",
                 "......",
                 "......");
             game.ShiftLeft();
@@ -166,8 +167,8 @@ namespace ProjectYellowTests
             game.ApplyGravity();
             game.ApplyGravity();
             AssertFieldMask(game,
-                "..##..",
-                "..##..",
+                "..OO..",
+                "..OO..",
                 "##....",
                 "##....");
             game.ShiftRight();
@@ -177,23 +178,32 @@ namespace ProjectYellowTests
             game.ApplyGravity();
             game.ApplyGravity();
             AssertFieldMask(game,
-                "..##..",
-                "..##..",
+                "..OO..",
+                "..OO..",
+                "##..##",
+                "##..##");
+            game.ShiftRight();
+            game.ShiftRight();
+            game.ApplyGravity();
+            game.ApplyGravity();
+            AssertFieldMask(game,
+                "..OO##",
+                "..OO##",
                 "##..##",
                 "##..##");
             game.ApplyGravity();
             game.ApplyGravity();
             AssertFieldMask(game,
-                "......",
-                "......",
-                "######",
-                "######");
+                "....##",
+                "....##",
+                "##OO##",
+                "##OO##");
             game.ApplyGravity();
             AssertFieldMask(game,
-                "..##..",
+                "..OO..",
                 "......",
-                "......",
-                "......");
+                "....##",
+                "....##");
         }
 
         [TestMethod]
