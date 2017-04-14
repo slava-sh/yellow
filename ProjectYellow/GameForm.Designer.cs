@@ -36,6 +36,7 @@ namespace ProjectYellow
             this.shiftLeftButton = new ProjectYellow.Views.ButtonView();
             this.softDropButton = new ProjectYellow.Views.ButtonView();
             this.rotateButton = new ProjectYellow.Views.ButtonView();
+            ((System.ComponentModel.ISupportInitialize)(this.gameView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.hardDropButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.shiftRightButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.shiftLeftButton)).BeginInit();
@@ -61,7 +62,7 @@ namespace ProjectYellow
             // 
             // shiftRightButton
             // 
-            this.shiftRightButton.Location = new System.Drawing.Point(153, 601);
+            this.shiftRightButton.Location = new System.Drawing.Point(140, 618);
             this.shiftRightButton.Name = "shiftRightButton";
             this.shiftRightButton.Size = new System.Drawing.Size(60, 60);
             this.shiftRightButton.TabIndex = 5;
@@ -69,7 +70,7 @@ namespace ProjectYellow
             // 
             // shiftLeftButton
             // 
-            this.shiftLeftButton.Location = new System.Drawing.Point(21, 601);
+            this.shiftLeftButton.Location = new System.Drawing.Point(39, 618);
             this.shiftLeftButton.Name = "shiftLeftButton";
             this.shiftLeftButton.Size = new System.Drawing.Size(60, 60);
             this.shiftLeftButton.TabIndex = 6;
@@ -77,7 +78,7 @@ namespace ProjectYellow
             // 
             // softDropButton
             // 
-            this.softDropButton.Location = new System.Drawing.Point(87, 667);
+            this.softDropButton.Location = new System.Drawing.Point(89, 661);
             this.softDropButton.Name = "softDropButton";
             this.softDropButton.Size = new System.Drawing.Size(60, 60);
             this.softDropButton.TabIndex = 7;
@@ -85,7 +86,7 @@ namespace ProjectYellow
             // 
             // rotateButton
             // 
-            this.rotateButton.Location = new System.Drawing.Point(87, 535);
+            this.rotateButton.Location = new System.Drawing.Point(89, 565);
             this.rotateButton.Name = "rotateButton";
             this.rotateButton.Size = new System.Drawing.Size(60, 60);
             this.rotateButton.TabIndex = 8;
@@ -95,7 +96,7 @@ namespace ProjectYellow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(514, 740);
+            this.ClientSize = new System.Drawing.Size(524, 846);
             this.Controls.Add(this.rotateButton);
             this.Controls.Add(this.softDropButton);
             this.Controls.Add(this.shiftLeftButton);
@@ -108,9 +109,7 @@ namespace ProjectYellow
             this.Name = "GameForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Yellow";
-            this.Load += new System.EventHandler(this.HandleFormLoad);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.HandleKeyDown);
-            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.HandleKeyUp);
+            ((System.ComponentModel.ISupportInitialize)(this.gameView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.hardDropButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.shiftRightButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.shiftLeftButton)).EndInit();

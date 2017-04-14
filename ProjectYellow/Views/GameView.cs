@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using ProjectYellow.Game;
 using ProjectYellow.Properties;
+using static System.Drawing.ColorTranslator;
 
 namespace ProjectYellow.Views
 {
@@ -17,10 +18,10 @@ namespace ProjectYellow.Views
         private const int CellSize = InnerCellSize + 4 * PixelSize;
         private const int GridStep = CellSize + PixelSize;
 
-        private static readonly Color InactiveCellColor = ColorTranslator.FromHtml("#879372");
+        private static readonly Color InactiveCellColor = FromHtml("#879372");
         private static readonly Color ActiveCellColor = Color.Black;
-        private static readonly Color BackgroundColor = ColorTranslator.FromHtml("#9ead86");
-        private static readonly Color WindowColor = ColorTranslator.FromHtml("#efcc19");
+        private static readonly Color BackgroundColor = FromHtml("#9ead86");
+        private static readonly Color WindowColor = FromHtml("#efcc19");
 
         private new static readonly Font Font =
             new Font("Consolas", 16, FontStyle.Bold);
@@ -134,8 +135,8 @@ namespace ProjectYellow.Views
         {
             public override void Initialize(IComponent component)
             {
+                base.Initialize(component);
                 var gameView = (GameView) component;
-                base.Initialize(gameView);
                 var tetrominoGenerator =
                     new PeekableTetrominoGenerator(
                         new RandomTetrominoGenerator(0));

@@ -1,9 +1,10 @@
-﻿using System.Drawing;
+﻿using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace ProjectYellow.Views
 {
-    internal abstract class CustomView : Control
+    internal abstract class CustomView : Control, ISupportInitialize
     {
         protected Graphics Graphics;
 
@@ -25,6 +26,14 @@ namespace ProjectYellow.Views
             int height)
         {
             Graphics.FillRectangle(new SolidBrush(color), x, y, width, height);
+        }
+
+        public virtual void BeginInit()
+        {
+        }
+
+        public virtual void EndInit()
+        {
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
 using ProjectYellow.Game;
-using ProjectYellow.Views;
 
 namespace ProjectYellow
 {
@@ -19,11 +18,7 @@ namespace ProjectYellow
         {
             InitializeComponent();
             ClientSize = gameView.Size;
-        }
-
-        private void HandleFormLoad(object sender, EventArgs e)
-        {
-            NewGame();
+            Load += (sender, e) => NewGame();
         }
 
         private void NewGame()
@@ -37,7 +32,7 @@ namespace ProjectYellow
             scheduler = new TimerBasedScheduler(FramesPerSecond);
 
             gameController = new GameController(game, scheduler);
-            gameController.Update += ScheduleRepaint;
+            gameController.Update += gameView.Invalidate;
             gameController.GameOver += GameOver;
 
             keyboard = new KeyboardController(scheduler);
@@ -47,22 +42,18 @@ namespace ProjectYellow
             keyboard.SoftDrop.KeyPress += gameController.HandleSoftDrop;
             keyboard.HardDrop.KeyPress += gameController.HandleHardDrop;
 
-            Connect(rotateButton, keyboard.Rotate);
-            Connect(shiftLeftButton, keyboard.ShiftLeft);
-            Connect(shiftRightButton, keyboard.ShiftRight);
-            Connect(softDropButton, keyboard.SoftDrop);
-            Connect(hardDropButton, keyboard.HardDrop);
+            rotateButton.Key = keyboard.Rotate;
+            shiftLeftButton.Key = keyboard.ShiftLeft;
+            shiftRightButton.Key = keyboard.ShiftRight;
+            softDropButton.Key = keyboard.SoftDrop;
+            hardDropButton.Key = keyboard.HardDrop;
+
+            KeyDown += (sender, e) => keyboard.HandleKeyDown(e.KeyData);
+            KeyUp += (sender, e) => keyboard.HandleKeyUp(e.KeyData);
 
             gameView.Game = game;
             gameView.GetNextTetromino = tetrominoGenerator.Peek;
-            ScheduleRepaint();
-        }
-
-        private void Connect(ButtonView button, Key key)
-        {
-            button.Key = key;
-            key.KeyDown += button.Invalidate;
-            key.KeyUp += button.Invalidate;
+            gameView.Invalidate();
         }
 
         private void GameOver()
@@ -80,26 +71,5 @@ namespace ProjectYellow
 
             NewGame();
         }
-
-        private void ScheduleRepaint()
-        {
-            gameView.Invalidate();
-        }
-
-        protected override bool IsInputKey(Keys key)
-        {
-            return true;
-        }
-
-        private void HandleKeyDown(object sender, KeyEventArgs e)
-        {
-            keyboard.HandleKeyDown(e.KeyData);
-        }
-
-        private void HandleKeyUp(object sender, KeyEventArgs e)
-        {
-            keyboard.HandleKeyUp(e.KeyData);
-        }
     }
 }
-

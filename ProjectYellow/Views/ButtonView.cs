@@ -8,16 +8,26 @@ using ProjectYellow.Game;
 namespace ProjectYellow.Views
 {
     [Designer(typeof(Designer))]
-    internal class ButtonView : CustomView, ISupportInitialize
+    internal class ButtonView : CustomView
     {
-        public Key Key;
+        private Key key;
+
         private Rectangle rectangle;
 
-        public void BeginInit()
+        public Key Key
         {
+            get => key;
+            set
+            {
+                key = value;
+                key.KeyDown += Invalidate;
+                key.KeyUp += Invalidate;
+                MouseDown += (sender, e) => key.HandleKeyDown();
+                MouseUp += (sender, e) => key.HandleKeyUp();
+            }
         }
 
-        public void EndInit()
+        public override void EndInit()
         {
             rectangle = new Rectangle(0, 0, Size.Width, Size.Height);
             var path = new GraphicsPath();
@@ -32,22 +42,11 @@ namespace ProjectYellow.Views
                 rectangle);
         }
 
-        protected override void OnMouseDown(MouseEventArgs e)
-        {
-            Key.HandleKeyDown();
-            base.OnMouseDown(e);
-        }
-
-        protected override void OnMouseUp(MouseEventArgs e)
-        {
-            Key.HandleKeyUp();
-            base.OnMouseUp(e);
-        }
-
         private class Designer : ControlDesigner
         {
             public override void Initialize(IComponent component)
             {
+                base.Initialize(component);
                 var buttonView = (ButtonView) component;
                 buttonView.Key = new Key();
             }
