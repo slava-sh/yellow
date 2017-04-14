@@ -5,6 +5,7 @@ using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using ProjectYellow.Properties;
+using static System.Drawing.ColorTranslator;
 using static ProjectYellow.Utils;
 
 namespace ProjectYellow
@@ -17,16 +18,13 @@ namespace ProjectYellow
         private const int CellSize = InnerCellSize + 4 * PixelSize;
         private const int GridStep = CellSize + PixelSize;
 
-        private static readonly Color InactiveCellColor =
-            ColorTranslator.FromHtml("#879372");
-
+        private static readonly Color InactiveCellColor = FromHtml("#879372");
         private static readonly Color ActiveCellColor = Color.Black;
+        private static readonly Color BackgroundColor = FromHtml("#9ead86");
+        private static readonly Color WindowColor = FromHtml("#efcc19");
 
-        private static readonly Color BackgroundColor =
-            ColorTranslator.FromHtml("#9ead86");
-
-        private static readonly Color WindowColor =
-            ColorTranslator.FromHtml("#efcc19");
+        private new static readonly Font Font =
+            new Font("Consolas", 16, FontStyle.Bold);
 
         public Game Game;
         public Func<Tetromino> GetNextTetromino;
@@ -94,13 +92,12 @@ namespace ProjectYellow
 
         private void DrawStats(GameStatistics stats)
         {
-            var font = new Font("Consolas", 16, FontStyle.Bold);
             var brush = Brushes.Black;
-            graphics.DrawString($"Score\n{stats.Score,5:00000}", font, brush,
+            graphics.DrawString($"Score\n{stats.Score,5:00000}", Font, brush,
                 0, 5 * GridStep);
-            graphics.DrawString($"Level\n{stats.Level,5:00}", font, brush,
+            graphics.DrawString($"Level\n{stats.Level,5:00}", Font, brush,
                 0, 8 * GridStep);
-            graphics.DrawString($"Lines\n{stats.LinesCleared,5:000}", font,
+            graphics.DrawString($"Lines\n{stats.LinesCleared,5:000}", Font,
                 brush, 0, 11 * GridStep);
         }
 
