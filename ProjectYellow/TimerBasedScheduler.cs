@@ -6,12 +6,12 @@ using ProjectYellow.Game;
 
 namespace ProjectYellow
 {
-    internal class Scheduler : AbstractScheduler
+    internal class TimerBasedScheduler : AbstractScheduler
     {
         private readonly int framesPerSecond;
         private readonly HashSet<Task> tasks = new HashSet<Task>();
 
-        public Scheduler(int framesPerSecond)
+        public TimerBasedScheduler(int framesPerSecond)
         {
             this.framesPerSecond = framesPerSecond;
         }

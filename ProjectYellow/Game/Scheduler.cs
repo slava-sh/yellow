@@ -2,7 +2,7 @@
 
 namespace ProjectYellow.Game
 {
-    public abstract class AbstractScheduler
+    public abstract class Scheduler
     {
         public abstract ITask SetInterval(int delayFrames, int intervalFrames,
             Action tick);

@@ -7,7 +7,7 @@ using static ProjectYellow.Game.Utils;
 namespace ProjectYellowTests
 {
     [TestClass]
-    public class GameStateTests
+    public class GameTests
     {
         [TestMethod]
         public void NewGameIsNotOver()
@@ -406,14 +406,14 @@ namespace ProjectYellowTests
             }
         }
 
-        private static void AssertFieldMask(Game state,
+        private static void AssertFieldMask(Game game,
             params string[] verboseFieldMaskLines)
         {
             var verboseFieldMask =
                 string.Join(Environment.NewLine, verboseFieldMaskLines);
             var expectedFieldMask =
                 Regex.Replace(verboseFieldMask, @"[^.\s]", "#");
-            var fieldMask = MaskToString(state.GetFieldMask());
+            var fieldMask = MaskToString(game.GetFieldMask());
             Assert.AreEqual(
                 Environment.NewLine + expectedFieldMask + Environment.NewLine,
                 Environment.NewLine + fieldMask + Environment.NewLine);
