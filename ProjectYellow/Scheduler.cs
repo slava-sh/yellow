@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using ProjectYellow.Game;
 
 namespace ProjectYellow
 {
-    internal class Scheduler
+    internal class Scheduler : AbstractScheduler
     {
         private readonly int framesPerSecond;
         private readonly HashSet<Task> tasks = new HashSet<Task>();
@@ -25,7 +26,7 @@ namespace ProjectYellow
             }
         }
 
-        public Task SetInterval(int frames, Action tick)
+        public override ITask SetInterval(int frames, Action tick)
         {
             var timer = new Timer
             {
@@ -44,23 +45,10 @@ namespace ProjectYellow
             return task;
         }
 
-        public Task SetTimeout(int frames, Action action)
-        {
-            Task task = null;
-            task = SetInterval(frames, () =>
-            {
-                // ReSharper disable once AccessToModifiedClosure
-                // ReSharper disable once PossibleNullReferenceException
-                task.Cancel();
-                action();
-            });
-            return task;
-        }
-
-        public Task SetInterval(int delayFrames, int intervalFrames,
+        public override ITask SetInterval(int delayFrames, int intervalFrames,
             Action tick)
         {
-            Task task = null;
+            ITask task = null;
             task = SetTimeout(delayFrames, () =>
             {
                 task = SetInterval(intervalFrames, tick);
@@ -75,7 +63,7 @@ namespace ProjectYellow
             return frames * 1000 / framesPerSecond;
         }
 
-        public class Task
+        public class Task : ITask
         {
             private readonly Action cancel;
 

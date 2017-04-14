@@ -27,44 +27,29 @@ namespace ProjectYellow
                 [Keys.Down] = GameBoy.SoftDropIntervalFrames
             };
 
-        private readonly Dictionary<Keys, Action> keyPressHandlers;
+        private Dictionary<Keys, Action> keyPressHandlers;
 
-        private readonly Dictionary<Keys, Scheduler.Task> keyPressTasks =
-            new Dictionary<Keys, Scheduler.Task>();
+        private readonly Dictionary<Keys, ITask> keyPressTasks =
+            new Dictionary<Keys, ITask>();
 
-        private GameState game;
-        private Scheduler.Task gravityTask;
-
+        private GameController gameController;
         private Scheduler scheduler;
 
         public GameForm()
         {
             InitializeComponent();
             ClientSize = gameView.Size;
-            keyPressHandlers = GetKeyPressHandlers();
         }
 
         private Dictionary<Keys, Action> GetKeyPressHandlers()
         {
             return new Dictionary<Keys, Action>
             {
-                [Keys.Up] = () => game.Rotate(),
-                [Keys.Left] = () => game.ShiftLeft(),
-                [Keys.Right] = () => game.ShiftRight(),
-                [Keys.Down] = () =>
-                {
-                    if (!game.SoftDrop())
-                    {
-                        ApplyGravity();
-                    }
-                    RescheduleGravity();
-                },
-                [Keys.Space] = () =>
-                {
-                    game.HardDrop();
-                    ApplyGravity();
-                    RescheduleGravity();
-                }
+                [Keys.Up] = gameController.HandleRotate,
+                [Keys.Left] = gameController.HandleShiftLeft,
+                [Keys.Right] = gameController.HandleShiftRight,
+                [Keys.Down] = gameController.HandleSoftDrop,
+                [Keys.Space] = gameController.HandleHardDrop
             };
         }
 
@@ -79,33 +64,18 @@ namespace ProjectYellow
             var tetrominoGenerator =
                 new PeekableTetrominoGenerator(
                     new RandomBagTetrominoGenerator(randomSeed));
-            game = new GameState(FieldWidth, FieldHeight, tetrominoGenerator);
+            var game = new Game.Game(FieldWidth, FieldHeight,
+                tetrominoGenerator);
+            scheduler = new Scheduler(FramesPerSecond);
+
+            gameController = new GameController(game, scheduler);
+            gameController.Update += ScheduleRepaint;
+            gameController.GameOver += GameOver;
+
+            keyPressHandlers = GetKeyPressHandlers();
             gameView.Game = game;
             gameView.GetNextTetromino = tetrominoGenerator.Peek;
-            scheduler = new Scheduler(FramesPerSecond);
             ScheduleRepaint();
-            RescheduleGravity();
-        }
-
-        private void ApplyGravity()
-        {
-            game.ApplyGravity();
-            ScheduleRepaint();
-            if (game.IsOver)
-            {
-                GameOver();
-            }
-        }
-
-        private void RescheduleGravity()
-        {
-            gravityTask?.Cancel();
-            var delay = GameBoy.LevelSpeed[game.Stats.Level];
-            gravityTask = scheduler.SetTimeout(delay, () =>
-            {
-                ApplyGravity();
-                RescheduleGravity();
-            });
         }
 
         private void GameOver()
@@ -166,12 +136,13 @@ namespace ProjectYellow
 
         private void OnKeyPress(Keys key)
         {
+            /* TODO: Handle this.
             if (game.IsOver)
             {
                 return;
             }
+            */
             keyPressHandlers[key]();
-            ScheduleRepaint();
         }
 
         private void HandleKeyUp(object sender, KeyEventArgs e)
@@ -183,16 +154,6 @@ namespace ProjectYellow
             }
             keyPressTasks[key]?.Cancel();
             keyPressTasks.Remove(key);
-        }
-
-        private void gameButton1_MouseDown(object sender, MouseEventArgs e)
-        {
-            HandleKeyDown(sender, new KeyEventArgs(Keys.Right));
-        }
-
-        private void gameButton1_MouseUp(object sender, MouseEventArgs e)
-        {
-            HandleKeyUp(sender, new KeyEventArgs(Keys.Right));
         }
     }
 }
