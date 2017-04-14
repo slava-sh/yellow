@@ -11,7 +11,7 @@ using static ProjectYellow.Utils;
 namespace ProjectYellow
 {
     [Designer(typeof(Designer))]
-    internal class GameView : Control
+    internal class GameView : CustomView
     {
         private const int PixelSize = 2;
         private const int InnerCellSize = 7 * PixelSize;
@@ -28,9 +28,6 @@ namespace ProjectYellow
 
         public Game Game;
         public Func<Tetromino> GetNextTetromino;
-        private Graphics graphics;
-
-        protected override bool DoubleBuffered => true;
 
         public GameView()
         {
@@ -39,7 +36,7 @@ namespace ProjectYellow
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            graphics = e.Graphics;
+            base.OnPaint(e);
             DrawBackground();
             using (Translate(50, 50))
             {
@@ -55,7 +52,7 @@ namespace ProjectYellow
 
         private Translate Translate(int dx, int dy)
         {
-            return new Translate(graphics, dx, dy);
+            return new Translate(Graphics, dx, dy);
         }
 
         private void DrawBackground()
@@ -91,11 +88,11 @@ namespace ProjectYellow
         private void DrawStats(GameStatistics stats)
         {
             var brush = Brushes.Black;
-            graphics.DrawString($"Score\n{stats.Score,5:00000}", Font, brush,
+            Graphics.DrawString($"Score\n{stats.Score,5:00000}", Font, brush,
                 0, 5 * GridStep);
-            graphics.DrawString($"Level\n{stats.Level,5:00}", Font, brush,
+            Graphics.DrawString($"Level\n{stats.Level,5:00}", Font, brush,
                 0, 8 * GridStep);
-            graphics.DrawString($"Lines\n{stats.LinesCleared,5:000}", Font,
+            Graphics.DrawString($"Lines\n{stats.LinesCleared,5:000}", Font,
                 brush, 0, 11 * GridStep);
         }
 
@@ -131,13 +128,7 @@ namespace ProjectYellow
             {
                 Alignment = PenAlignment.Inset
             };
-            graphics.DrawRectangle(pen, x, y, width, height);
-        }
-
-        private void FillRectangle(Color color, int x, int y, int width,
-            int height)
-        {
-            graphics.FillRectangle(new SolidBrush(color), x, y, width, height);
+            Graphics.DrawRectangle(pen, x, y, width, height);
         }
 
         private class Designer : ControlDesigner

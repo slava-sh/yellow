@@ -183,5 +183,15 @@ namespace ProjectYellow
             keyPressTasks[key]?.Cancel();
             keyPressTasks.Remove(key);
         }
+
+        private void gameButton1_MouseDown(object sender, MouseEventArgs e)
+        {
+            HandleKeyDown(sender, new KeyEventArgs(Keys.Right));
+        }
+
+        private void gameButton1_MouseUp(object sender, MouseEventArgs e)
+        {
+            HandleKeyUp(sender, new KeyEventArgs(Keys.Right));
+        }
     }
 }

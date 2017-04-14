@@ -50,6 +50,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameBoy.cs" />
+    <Compile Include="ButtonView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CustomView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="GameView.cs">
       <SubType>Component</SubType>
     </Compile>

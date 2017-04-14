@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.gameView = new ProjectYellow.GameView();
+            this.button1 = new ProjectYellow.ButtonView();
+            ((System.ComponentModel.ISupportInitialize)(this.button1)).BeginInit();
             this.SuspendLayout();
             // 
             // gameView
@@ -39,11 +41,20 @@
             this.gameView.TabIndex = 0;
             this.gameView.TabStop = false;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(323, 578);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(100, 100);
+            this.button1.TabIndex = 3;
+            this.button1.Text = "button1";
+            // 
             // GameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(514, 740);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.gameView);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
@@ -54,6 +65,7 @@
             this.Load += new System.EventHandler(this.HandleFormLoad);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.HandleKeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.HandleKeyUp);
+            ((System.ComponentModel.ISupportInitialize)(this.button1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -61,6 +73,7 @@
         #endregion
 
         private GameView gameView;
+        private ButtonView button1;
     }
 }
 
