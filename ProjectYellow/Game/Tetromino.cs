@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using static ProjectYellow.Utils;
 
-namespace ProjectYellow
+namespace ProjectYellow.Game
 {
     [Pure]
     public sealed class Tetromino
@@ -217,7 +216,7 @@ namespace ProjectYellow
         private Tetromino(Cell pivot, IEnumerable<string[]> rotations)
         {
             Pivot = pivot;
-            rotationMasks = rotations.Select(ParseMask).ToArray();
+            rotationMasks = rotations.Select(Utils.ParseMask).ToArray();
         }
 
         public bool[,] GetMaskForRotation(Rotation rotation)

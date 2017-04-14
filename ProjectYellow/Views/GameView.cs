@@ -4,11 +4,10 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
+using ProjectYellow.Game;
 using ProjectYellow.Properties;
-using static System.Drawing.ColorTranslator;
-using static ProjectYellow.Utils;
 
-namespace ProjectYellow
+namespace ProjectYellow.Views
 {
     [Designer(typeof(Designer))]
     internal class GameView : CustomView
@@ -18,15 +17,15 @@ namespace ProjectYellow
         private const int CellSize = InnerCellSize + 4 * PixelSize;
         private const int GridStep = CellSize + PixelSize;
 
-        private static readonly Color InactiveCellColor = FromHtml("#879372");
+        private static readonly Color InactiveCellColor = ColorTranslator.FromHtml("#879372");
         private static readonly Color ActiveCellColor = Color.Black;
-        private static readonly Color BackgroundColor = FromHtml("#9ead86");
-        private static readonly Color WindowColor = FromHtml("#efcc19");
+        private static readonly Color BackgroundColor = ColorTranslator.FromHtml("#9ead86");
+        private static readonly Color WindowColor = ColorTranslator.FromHtml("#efcc19");
 
         private new static readonly Font Font =
             new Font("Consolas", 16, FontStyle.Bold);
 
-        public Game Game;
+        public Game.Game Game;
         public Func<Tetromino> GetNextTetromino;
 
         public GameView()
@@ -82,10 +81,10 @@ namespace ProjectYellow
             }
             var nextTetromino = GetNextTetromino();
             var mask = nextTetromino.GetMaskForRotation(Rotation.Default);
-            DrawMask(Crop(mask, 4, 2));
+            DrawMask(Utils.Crop(mask, 4, 2));
         }
 
-        private void DrawStats(GameStatistics stats)
+        private void DrawStats(Statistics stats)
         {
             var brush = Brushes.Black;
             Graphics.DrawString($"Score\n{stats.Score,5:00000}", Font, brush,
@@ -140,7 +139,7 @@ namespace ProjectYellow
                 var tetrominoGenerator =
                     new PeekableTetrominoGenerator(
                         new RandomTetrominoGenerator(0));
-                gameView.Game = new Game(10, 20, tetrominoGenerator);
+                gameView.Game = new Game.Game(10, 20, tetrominoGenerator);
                 gameView.GetNextTetromino = tetrominoGenerator.Peek;
                 gameView.Game.ApplyGravity();
                 gameView.Game.ApplyGravity();

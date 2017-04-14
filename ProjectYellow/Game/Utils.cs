@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("ProjectYellowTests")]
 
-namespace ProjectYellow
+namespace ProjectYellow.Game
 {
     internal static class Utils
     {

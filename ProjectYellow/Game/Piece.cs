@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 
-namespace ProjectYellow
+namespace ProjectYellow.Game
 {
     [Pure]
     internal class Piece

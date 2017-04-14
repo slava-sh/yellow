@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using ProjectYellow.Game;
 
 namespace ProjectYellow
 {
@@ -31,7 +32,7 @@ namespace ProjectYellow
         private readonly Dictionary<Keys, Scheduler.Task> keyPressTasks =
             new Dictionary<Keys, Scheduler.Task>();
 
-        private Game game;
+        private GameState game;
         private Scheduler.Task gravityTask;
 
         private Scheduler scheduler;
@@ -78,7 +79,7 @@ namespace ProjectYellow
             var tetrominoGenerator =
                 new PeekableTetrominoGenerator(
                     new RandomBagTetrominoGenerator(randomSeed));
-            game = new Game(FieldWidth, FieldHeight, tetrominoGenerator);
+            game = new GameState(FieldWidth, FieldHeight, tetrominoGenerator);
             gameView.Game = game;
             gameView.GetNextTetromino = tetrominoGenerator.Peek;
             scheduler = new Scheduler(FramesPerSecond);

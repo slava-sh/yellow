@@ -1,4 +1,6 @@
-﻿namespace ProjectYellow
+﻿using ProjectYellow.Views;
+
+namespace ProjectYellow
 {
     partial class GameForm
     {
@@ -28,8 +30,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.gameView = new ProjectYellow.GameView();
-            this.button1 = new ProjectYellow.ButtonView();
+            this.gameView = new GameView();
+            this.button1 = new ButtonView();
             ((System.ComponentModel.ISupportInitialize)(this.button1)).BeginInit();
             this.SuspendLayout();
             // 

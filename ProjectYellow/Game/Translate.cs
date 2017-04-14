@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
-namespace ProjectYellow
+namespace ProjectYellow.Game
 {
     /// <summary>
     ///     Wrapper for <see cref="Graphics.TranslateTransform(float,float)" />

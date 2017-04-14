@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ProjectYellow;
-using static ProjectYellow.Utils;
+using ProjectYellow.Game;
+using static ProjectYellow.Game.Utils;
 
 namespace ProjectYellowTests
 {
     [TestClass]
-    public class GameTests
+    public class GameStateTests
     {
         [TestMethod]
         public void NewGameIsNotOver()
@@ -406,14 +406,14 @@ namespace ProjectYellowTests
             }
         }
 
-        private static void AssertFieldMask(Game game,
+        private static void AssertFieldMask(Game state,
             params string[] verboseFieldMaskLines)
         {
             var verboseFieldMask =
                 string.Join(Environment.NewLine, verboseFieldMaskLines);
             var expectedFieldMask =
                 Regex.Replace(verboseFieldMask, @"[^.\s]", "#");
-            var fieldMask = MaskToString(game.GetFieldMask());
+            var fieldMask = MaskToString(state.GetFieldMask());
             Assert.AreEqual(
                 Environment.NewLine + expectedFieldMask + Environment.NewLine,
                 Environment.NewLine + fieldMask + Environment.NewLine);

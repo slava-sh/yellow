@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace ProjectYellow
+namespace ProjectYellow.Game
 {
-    public class GameStatistics
+    public class Statistics
     {
         private const int MaxLevel = 20;
         private const int LinesPerLevel = 10;

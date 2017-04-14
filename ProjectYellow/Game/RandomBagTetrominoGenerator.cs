@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using static ProjectYellow.Utils;
 
-namespace ProjectYellow
+namespace ProjectYellow.Game
 {
     /// <summary>
     ///     See https://tetris.wiki/Random_Generator
@@ -31,7 +30,7 @@ namespace ProjectYellow
             {
                 return;
             }
-            foreach (var tetromino in Shuffle(Tetromino.All, random))
+            foreach (var tetromino in Utils.Shuffle(Tetromino.All, random))
             {
                 bag.Enqueue(tetromino);
             }

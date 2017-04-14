@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.Contracts;
 
-namespace ProjectYellow
+namespace ProjectYellow.Game
 {
     [Pure]
     public class Rotation

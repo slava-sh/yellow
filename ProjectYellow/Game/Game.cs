@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace ProjectYellow
+namespace ProjectYellow.Game
 {
     public class Game
     {
         public readonly Field Field;
 
-        public readonly GameStatistics Stats = new GameStatistics();
+        public readonly Statistics Stats = new Statistics();
         private readonly ITetrominoGenerator tetrominoGenerator;
         private Piece activePiece;
 

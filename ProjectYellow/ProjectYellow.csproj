@@ -50,29 +50,29 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameBoy.cs" />
-    <Compile Include="ButtonView.cs">
+    <Compile Include="Views\ButtonView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="CustomView.cs">
+    <Compile Include="Views\CustomView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="GameView.cs">
+    <Compile Include="Views\GameView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Field.cs" />
-    <Compile Include="Cell.cs" />
-    <Compile Include="GameStatistics.cs" />
-    <Compile Include="PeekableTetrominoGenerator.cs" />
-    <Compile Include="Piece.cs" />
-    <Compile Include="Game.cs" />
-    <Compile Include="ITetrominoGenerator.cs" />
-    <Compile Include="RandomBagTetrominoGenerator.cs" />
-    <Compile Include="RandomTetrominoGenerator.cs" />
-    <Compile Include="Rotation.cs" />
-    <Compile Include="Scheduler.cs" />
-    <Compile Include="Tetromino.cs" />
-    <Compile Include="Translate.cs" />
-    <Compile Include="Utils.cs" />
+    <Compile Include="Game\Field.cs" />
+    <Compile Include="Game\Cell.cs" />
+    <Compile Include="Game\Statistics.cs" />
+    <Compile Include="Game\PeekableTetrominoGenerator.cs" />
+    <Compile Include="Game\Piece.cs" />
+    <Compile Include="Game\Game.cs" />
+    <Compile Include="Game\ITetrominoGenerator.cs" />
+    <Compile Include="Game\RandomBagTetrominoGenerator.cs" />
+    <Compile Include="Game\RandomTetrominoGenerator.cs" />
+    <Compile Include="Game\Rotation.cs" />
+    <Compile Include="Game\Scheduler.cs" />
+    <Compile Include="Game\Tetromino.cs" />
+    <Compile Include="Game\Translate.cs" />
+    <Compile Include="Game\Utils.cs" />
     <Compile Include="GameForm.cs">
       <SubType>Form</SubType>
     </Compile>

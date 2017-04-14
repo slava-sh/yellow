@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ProjectYellow;
-using static ProjectYellow.Utils;
+using ProjectYellow.Game;
+using static ProjectYellow.Game.Utils;
 
 namespace ProjectYellowTests
 {

@@ -1,4 +1,4 @@
-﻿namespace ProjectYellow
+﻿namespace ProjectYellow.Game
 {
     public struct Cell
     {

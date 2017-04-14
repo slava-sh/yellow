@@ -4,7 +4,7 @@ using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 
-namespace ProjectYellow
+namespace ProjectYellow.Views
 {
     [Designer(typeof(Designer))]
     internal class ButtonView : CustomView, ISupportInitialize

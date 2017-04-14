@@ -1,9 +1,9 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace ProjectYellow
+namespace ProjectYellow.Views
 {
-    internal class CustomView : Control
+    internal abstract class CustomView : Control
     {
         protected Graphics Graphics;
 

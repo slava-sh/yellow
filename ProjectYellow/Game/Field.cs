@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace ProjectYellow
+namespace ProjectYellow.Game
 {
     public class Field
     {

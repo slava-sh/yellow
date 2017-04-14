@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using ProjectYellow;
+using ProjectYellow.Game;
 
 namespace ProjectYellowTests
 {

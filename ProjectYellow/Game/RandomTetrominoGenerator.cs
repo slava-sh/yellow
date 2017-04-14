@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ProjectYellow
+namespace ProjectYellow.Game
 {
     public class RandomTetrominoGenerator : ITetrominoGenerator
     {
