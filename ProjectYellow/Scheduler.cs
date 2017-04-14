@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace ProjectYellow
@@ -6,10 +8,21 @@ namespace ProjectYellow
     internal class Scheduler
     {
         private readonly int framesPerSecond;
+        private readonly HashSet<Task> tasks = new HashSet<Task>();
 
         public Scheduler(int framesPerSecond)
         {
             this.framesPerSecond = framesPerSecond;
+        }
+
+        public void Stop()
+        {
+            var tasksToCancel = tasks.ToArray();
+            tasks.Clear();
+            foreach (var task in tasksToCancel)
+            {
+                task.Cancel();
+            }
         }
 
         public Task SetInterval(int frames, Action tick)
@@ -20,7 +33,15 @@ namespace ProjectYellow
             };
             timer.Tick += (sender, e) => tick();
             timer.Start();
-            return new Task(timer.Stop);
+            Task task = null;
+            task = new Task(() =>
+            {
+                timer.Stop();
+                // ReSharper disable once AccessToModifiedClosure
+                tasks.Remove(task);
+            });
+            tasks.Add(task);
+            return task;
         }
 
         public Task SetTimeout(int frames, Action action)

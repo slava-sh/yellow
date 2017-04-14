@@ -109,11 +109,7 @@ namespace ProjectYellow
 
         private void GameOver()
         {
-            gravityTask.Cancel();
-            foreach (var task in keyPressTasks.Values)
-            {
-                task?.Cancel();
-            }
+            scheduler.Stop();
             keyPressTasks.Clear();
 
             // TODO: Add a funny icon.
