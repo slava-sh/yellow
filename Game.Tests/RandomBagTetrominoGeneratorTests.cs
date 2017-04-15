@@ -1,13 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Game.Tests
 {
-    [TestClass]
     public class RandomBagTetrominoGeneratorTests
     {
-        [TestMethod]
+        private static int CompareTetrominoes(Tetromino a, Tetromino b)
+        {
+            return a.GetHashCode() - b.GetHashCode();
+        }
+
+        [Fact]
         public void ServesAllTetrominoes()
         {
             var generator = new RandomBagTetrominoGenerator(4);
@@ -21,13 +25,8 @@ namespace Game.Tests
                     output.Add(generator.Next());
                 }
                 output.Sort(CompareTetrominoes);
-                CollectionAssert.AreEqual(expectedOutput, output);
+                Assert.Equal(expectedOutput, output);
             }
-        }
-
-        private static int CompareTetrominoes(Tetromino a, Tetromino b)
-        {
-            return a.GetHashCode() - b.GetHashCode();
         }
     }
 }

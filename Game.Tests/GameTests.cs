@@ -1,49 +1,39 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using static Game.Utils;
+using Xunit;
 
 namespace Game.Tests
 {
-    [TestClass]
     public class GameTests
     {
-        [TestMethod]
-        public void NewGameIsNotOver()
+        private static void AssertFieldMask(Game game,
+            params string[] verboseLines)
         {
-            var game = new Game(6, 6, new MockTetrominoGenerator
-            {
-                Tetromino.Z
-            });
-            Assert.IsFalse(game.IsOver);
+            var expectedLines = verboseLines
+                .Select(line => Regex.Replace(line, @"[^.\s]", "#"))
+                .ToArray();
+            var lines = MaskToLines(game.GetFieldMask()).ToArray();
+            Assert.Equal(expectedLines, lines);
         }
 
-        [TestMethod]
-        public void SimpleGame()
+        private static IEnumerable<string> MaskToLines(bool[,] mask)
         {
-            var game = new Game(8, 6, new MockTetrominoGenerator
+            var width = mask.GetLength(0);
+            var height = mask.GetLength(1);
+            for (var y = 0; y < height; ++y)
             {
-                Tetromino.J,
-                Tetromino.J,
-                Tetromino.J,
-                Tetromino.J
-            });
-            for (var i = 0; i < 12; ++i)
-            {
-                Assert.IsFalse(game.IsOver);
-                game.ApplyGravity();
+                var line = new char[width];
+                for (var x = 0; x < width; ++x)
+                {
+                    line[x] = mask[x, y] ? '#' : '.';
+                }
+                yield return new string(line);
             }
-            Assert.IsTrue(game.IsOver);
-            AssertFieldMask(game,
-                "..c.....",
-                "..ccc...",
-                "..b.....",
-                "..bbb...",
-                "..a.....",
-                "..aaa...");
         }
 
-        [TestMethod]
+        [Fact]
         public void ArrowKeys()
         {
             var game = new Game(8, 6, new MockTetrominoGenerator
@@ -142,7 +132,159 @@ namespace Game.Tests
                 "###.....");
         }
 
-        [TestMethod]
+        [Fact]
+        public void GameOver1()
+        {
+            var game = new Game(4, 4, new MockTetrominoGenerator
+            {
+                Tetromino.I,
+                Tetromino.O
+            });
+            game.Rotate();
+            game.HardDrop();
+            AssertFieldMask(game,
+                "..I.",
+                "..I.",
+                "..I.",
+                "..I.");
+            Assert.False(game.IsOver);
+            game.ApplyGravity();
+            Assert.True(game.IsOver);
+        }
+
+        [Fact]
+        public void GameOver2()
+        {
+            var game = new Game(4, 5, new MockTetrominoGenerator
+            {
+                Tetromino.I,
+                Tetromino.O
+            });
+            game.Rotate();
+            game.HardDrop();
+            AssertFieldMask(game,
+                "....",
+                "..I.",
+                "..I.",
+                "..I.",
+                "..I.");
+            game.ApplyGravity();
+            AssertFieldMask(game,
+                ".OO.",
+                "..I.",
+                "..I.",
+                "..I.",
+                "..I.");
+            Assert.False(game.IsOver);
+            game.ApplyGravity();
+            AssertFieldMask(game,
+                ".OO.",
+                "..I.",
+                "..I.",
+                "..I.",
+                "..I.");
+            Assert.True(game.IsOver);
+        }
+
+        [Fact]
+        public void HardDrop()
+        {
+            var game = new Game(6, 4, new MockTetrominoGenerator
+            {
+                Tetromino.Z
+            });
+            game.ApplyGravity();
+            AssertFieldMask(game,
+                ".##...",
+                "..##..",
+                "......",
+                "......");
+            game.HardDrop();
+            AssertFieldMask(game,
+                "......",
+                "......",
+                ".##...",
+                "..##..");
+        }
+
+        [Fact]
+        public void NewGameIsNotOver()
+        {
+            var game = new Game(6, 6, new MockTetrominoGenerator
+            {
+                Tetromino.Z
+            });
+            Assert.False(game.IsOver);
+        }
+
+        [Fact]
+        public void NoMovesAfterGameOver()
+        {
+            var game = new Game(4, 2, new MockTetrominoGenerator
+            {
+                Tetromino.O,
+                Tetromino.O
+            });
+            game.HardDrop();
+            game.ApplyGravity();
+            Assert.True(game.IsOver);
+            var actions = new Action[]
+            {
+                game.ApplyGravity,
+                () => game.Rotate(),
+                () => game.ShiftLeft(),
+                () => game.ShiftRight(),
+                () => game.SoftDrop(),
+                () => game.HardDrop()
+            };
+            foreach (var action in actions)
+            {
+                Assert.Throws<InvalidOperationException>(action);
+            }
+        }
+
+        [Fact]
+        public void PiecesSpawnInTheCenter()
+        {
+            var game = new Game(10, 20, new MockTetrominoGenerator
+            {
+                Tetromino.I,
+                Tetromino.J,
+                Tetromino.L,
+                Tetromino.T,
+                Tetromino.O,
+                Tetromino.S,
+                Tetromino.Z
+            });
+            for (var i = 0; i < 7; ++i)
+            {
+                game.ApplyGravity();
+                game.HardDrop();
+            }
+            AssertFieldMask(game,
+                "..........",
+                "..........",
+                "..........",
+                "..........",
+                "..........",
+                "..........",
+                "..........",
+                "...ZZ.....",
+                "....ZZ....",
+                "....SS....",
+                "...SS.....",
+                "....OO....",
+                "....OO....",
+                "....T.....",
+                "...TTT....",
+                ".....L....",
+                "...LLL....",
+                "...J......",
+                "...JJJ....",
+                "...IIII...");
+        }
+
+        [Fact]
         public void RemoveFullLines()
         {
             var game = new Game(6, 4, new MockTetrominoGenerator
@@ -205,69 +347,32 @@ namespace Game.Tests
                 "....##");
         }
 
-        [TestMethod]
-        public void HardDrop()
+        [Fact]
+        public void SimpleGame()
         {
-            var game = new Game(6, 4, new MockTetrominoGenerator
+            var game = new Game(8, 6, new MockTetrominoGenerator
             {
-                Tetromino.Z
-            });
-            game.ApplyGravity();
-            AssertFieldMask(game,
-                ".##...",
-                "..##..",
-                "......",
-                "......");
-            game.HardDrop();
-            AssertFieldMask(game,
-                "......",
-                "......",
-                ".##...",
-                "..##..");
-        }
-
-        [TestMethod]
-        public void PiecesSpawnInTheCenter()
-        {
-            var game = new Game(10, 20, new MockTetrominoGenerator
-            {
-                Tetromino.I,
                 Tetromino.J,
-                Tetromino.L,
-                Tetromino.T,
-                Tetromino.O,
-                Tetromino.S,
-                Tetromino.Z
+                Tetromino.J,
+                Tetromino.J,
+                Tetromino.J
             });
-            for (var i = 0; i < 7; ++i)
+            for (var i = 0; i < 12; ++i)
             {
+                Assert.False(game.IsOver);
                 game.ApplyGravity();
-                game.HardDrop();
             }
+            Assert.True(game.IsOver);
             AssertFieldMask(game,
-                "..........",
-                "..........",
-                "..........",
-                "..........",
-                "..........",
-                "..........",
-                "..........",
-                "...ZZ.....",
-                "....ZZ....",
-                "....SS....",
-                "...SS.....",
-                "....OO....",
-                "....OO....",
-                "....T.....",
-                "...TTT....",
-                ".....L....",
-                "...LLL....",
-                "...J......",
-                "...JJJ....",
-                "...IIII...");
+                "..c.....",
+                "..ccc...",
+                "..b.....",
+                "..bbb...",
+                "..a.....",
+                "..aaa...");
         }
 
-        [TestMethod]
+        [Fact]
         public void Spin()
         {
             var game = new Game(8, 6, new MockTetrominoGenerator
@@ -313,109 +418,6 @@ namespace Game.Tests
                 "....ZZ..",
                 "ZZTTTZZ.",
                 ".ZZTIIII");
-        }
-
-        [TestMethod]
-        public void GameOver1()
-        {
-            var game = new Game(4, 4, new MockTetrominoGenerator
-            {
-                Tetromino.I,
-                Tetromino.O
-            });
-            game.Rotate();
-            game.HardDrop();
-            AssertFieldMask(game,
-                "..I.",
-                "..I.",
-                "..I.",
-                "..I.");
-            Assert.IsFalse(game.IsOver);
-            game.ApplyGravity();
-            Assert.IsTrue(game.IsOver);
-        }
-
-        [TestMethod]
-        public void GameOver2()
-        {
-            var game = new Game(4, 5, new MockTetrominoGenerator
-            {
-                Tetromino.I,
-                Tetromino.O
-            });
-            game.Rotate();
-            game.HardDrop();
-            AssertFieldMask(game,
-                "....",
-                "..I.",
-                "..I.",
-                "..I.",
-                "..I.");
-            game.ApplyGravity();
-            AssertFieldMask(game,
-                ".OO.",
-                "..I.",
-                "..I.",
-                "..I.",
-                "..I.");
-            Assert.IsFalse(game.IsOver);
-            game.ApplyGravity();
-            AssertFieldMask(game,
-                ".OO.",
-                "..I.",
-                "..I.",
-                "..I.",
-                "..I.");
-            Assert.IsTrue(game.IsOver);
-        }
-
-        [TestMethod]
-        public void NoMovesAfterGameOver()
-        {
-            var game = new Game(4, 2, new MockTetrominoGenerator
-            {
-                Tetromino.O,
-                Tetromino.O
-            });
-            game.HardDrop();
-            game.ApplyGravity();
-            Assert.IsTrue(game.IsOver);
-            var actions = new Action[]
-            {
-                game.ApplyGravity,
-                () => game.Rotate(),
-                () => game.ShiftLeft(),
-                () => game.ShiftRight(),
-                () => game.SoftDrop(),
-                () => game.HardDrop()
-            };
-            foreach (var action in actions)
-            {
-                Exception exception = null;
-                try
-                {
-                    action();
-                }
-                catch (Exception e)
-                {
-                    exception = e;
-                }
-                Assert.IsInstanceOfType(exception,
-                    typeof(InvalidOperationException));
-            }
-        }
-
-        private static void AssertFieldMask(Game game,
-            params string[] verboseFieldMaskLines)
-        {
-            var verboseFieldMask =
-                string.Join(Environment.NewLine, verboseFieldMaskLines);
-            var expectedFieldMask =
-                Regex.Replace(verboseFieldMask, @"[^.\s]", "#");
-            var fieldMask = MaskToString(game.GetFieldMask());
-            Assert.AreEqual(
-                Environment.NewLine + expectedFieldMask + Environment.NewLine,
-                Environment.NewLine + fieldMask + Environment.NewLine);
         }
     }
 }

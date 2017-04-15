@@ -1,33 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using static Game.Utils;
+﻿using System.Collections.Generic;
+using Xunit;
 
 namespace Game.Tests
 {
-    [TestClass]
     internal class PeekableTetrominoGeneratorTests
     {
-        [TestMethod]
-        public void ProxiesOutput()
-        {
-            var expectedOutput = new List<Tetromino>();
-            expectedOutput.AddRange(Tetromino.All);
-            expectedOutput.AddRange(Tetromino.All);
-            expectedOutput = Shuffle(expectedOutput, new Random(0)).ToList();
-            var generator =
-                new PeekableTetrominoGenerator(
-                    new MockTetrominoGenerator(expectedOutput));
-            var output = new List<Tetromino>();
-            for (var i = 0; i < expectedOutput.Count; ++i)
-            {
-                output.Add(generator.Next());
-            }
-            CollectionAssert.AreEqual(expectedOutput, output);
-        }
-
-        [TestMethod]
+        [Fact]
         public void CanPeek()
         {
             var generator = new PeekableTetrominoGenerator(
@@ -36,9 +14,29 @@ namespace Game.Tests
                     Tetromino.I,
                     Tetromino.T
                 });
-            Assert.AreEqual(Tetromino.I, generator.Peek());
+            Assert.Equal(Tetromino.I, generator.Peek());
             generator.Next();
-            Assert.AreEqual(Tetromino.T, generator.Peek());
+            Assert.Equal(Tetromino.T, generator.Peek());
+        }
+
+        [Fact]
+        public void ProxiesOutput()
+        {
+            var expectedOutput = new[]
+            {
+                Tetromino.I, Tetromino.J, Tetromino.L, Tetromino.O, Tetromino.S,
+                Tetromino.S, Tetromino.O, Tetromino.T, Tetromino.Z, Tetromino.T, 
+                Tetromino.L, Tetromino.Z, Tetromino.T, Tetromino.I, Tetromino.J
+            };
+            var generator =
+                new PeekableTetrominoGenerator(
+                    new MockTetrominoGenerator(expectedOutput));
+            var output = new List<Tetromino>();
+            for (var i = 0; i < expectedOutput.Length; ++i)
+            {
+                output.Add(generator.Next());
+            }
+            Assert.Equal(expectedOutput, output);
         }
     }
 }

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-
-[assembly: InternalsVisibleTo("Game.Tests")]
 
 namespace Game
 {
@@ -22,23 +19,6 @@ namespace Game
                 }
             }
             return mask;
-        }
-
-        public static string MaskToString(bool[,] mask)
-        {
-            var width = mask.GetLength(0);
-            var height = mask.GetLength(1);
-            var lines = new string[height];
-            for (var y = 0; y < height; ++y)
-            {
-                var line = new char[width];
-                for (var x = 0; x < width; ++x)
-                {
-                    line[x] = mask[x, y] ? '#' : '.';
-                }
-                lines[y] = new string(line);
-            }
-            return string.Join(Environment.NewLine, lines);
         }
 
         public static IEnumerable<T> Shuffle<T>(IEnumerable<T> source,
