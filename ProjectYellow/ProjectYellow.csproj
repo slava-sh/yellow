@@ -77,7 +77,6 @@
     <Compile Include="Game\Rotation.cs" />
     <Compile Include="TimerBasedScheduler.cs" />
     <Compile Include="Game\Tetromino.cs" />
-    <Compile Include="Game\Translate.cs" />
     <Compile Include="Game\Utils.cs" />
     <Compile Include="GameForm.cs">
       <SubType>Form</SubType>

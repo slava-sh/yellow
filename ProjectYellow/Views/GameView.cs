@@ -50,11 +50,6 @@ namespace ProjectYellow.Views
             }
         }
 
-        private Translate Translate(int dx, int dy)
-        {
-            return new Translate(Graphics, dx, dy);
-        }
-
         private void DrawBackground()
         {
             FillRectangle(WindowColor, 0, 0, Size.Width, Size.Height);
