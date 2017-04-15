@@ -3,6 +3,9 @@ using System.Diagnostics.Contracts;
 
 namespace Game
 {
+    /// <summary>
+    ///     Represents a particular tetromino on the playing field.
+    /// </summary>
     [Pure]
     internal class Piece
     {

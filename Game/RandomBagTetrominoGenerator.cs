@@ -5,6 +5,8 @@ using System.Linq;
 namespace Game
 {
     /// <summary>
+    ///     Generator that imitates taking a random tetromino from a bag without
+    ///     replacement. The bag is refilled with all tetrominoes when empty.
     ///     See https://tetris.wiki/Random_Generator
     /// </summary>
     public class RandomBagTetrominoGenerator : ITetrominoGenerator
