@@ -10,9 +10,8 @@ namespace ProjectYellow
         private const int FieldHeight = 20;
         private const int FramesPerSecond = 60;
 
-        private GameController gameController;
-        private KeyboardController keyboard;
-        private TimerBasedScheduler scheduler;
+        private readonly TimerBasedScheduler scheduler =
+            new TimerBasedScheduler(FramesPerSecond);
 
         public GameForm()
         {
@@ -29,13 +28,15 @@ namespace ProjectYellow
                     new RandomBagTetrominoGenerator(randomSeed));
             var game = new Game.Game(FieldWidth, FieldHeight,
                 tetrominoGenerator);
-            scheduler = new TimerBasedScheduler(FramesPerSecond);
 
-            gameController = new GameController(game, scheduler);
+            gameView.Game = game;
+            gameView.GetNextTetromino = tetrominoGenerator.Peek;
+
+            var gameController = new GameController(game, scheduler);
             gameController.Update += gameView.Invalidate;
-            gameController.GameOver += GameOver;
+            gameController.GameOver += HandleGameOver;
 
-            keyboard = new KeyboardController(scheduler);
+            var keyboard = new KeyboardController(scheduler);
             keyboard.Rotate.KeyPress += gameController.HandleRotate;
             keyboard.ShiftLeft.KeyPress += gameController.HandleShiftLeft;
             keyboard.ShiftRight.KeyPress += gameController.HandleShiftRight;
@@ -51,12 +52,10 @@ namespace ProjectYellow
             KeyDown += (sender, e) => keyboard.HandleKeyDown(e.KeyData);
             KeyUp += (sender, e) => keyboard.HandleKeyUp(e.KeyData);
 
-            gameView.Game = game;
-            gameView.GetNextTetromino = tetrominoGenerator.Peek;
-            gameView.Invalidate();
+            Invalidate(true);
         }
 
-        private void GameOver()
+        private void HandleGameOver()
         {
             scheduler.Stop();
 
@@ -69,6 +68,7 @@ namespace ProjectYellow
                 Application.Exit();
             }
 
+            // TODO: Clean up reset event handlers.
             NewGame();
         }
     }

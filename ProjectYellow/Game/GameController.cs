@@ -75,6 +75,10 @@ namespace ProjectYellow.Game
         private void RescheduleGravity()
         {
             gravityTask?.Cancel();
+            if (game.IsOver)
+            {
+                return;
+            }
             var delay = GameBoy.LevelSpeed[game.Stats.Level];
             gravityTask = scheduler.SetTimeout(delay, () =>
             {
