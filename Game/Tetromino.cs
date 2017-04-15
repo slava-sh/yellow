@@ -10,6 +10,7 @@ namespace Game
         // Rotations according to the Super Rotation System.
         // See https://tetris.wiki/SRS
         public static readonly Tetromino I = new Tetromino(
+            "I",
             new Cell(1, 1),
             new[]
             {
@@ -44,6 +45,7 @@ namespace Game
             });
 
         public static readonly Tetromino J = new Tetromino(
+            "J",
             new Cell(1, 1),
             new[]
             {
@@ -74,6 +76,7 @@ namespace Game
             });
 
         public static readonly Tetromino L = new Tetromino(
+            "L",
             new Cell(1, 1),
             new[]
             {
@@ -104,6 +107,7 @@ namespace Game
             });
 
         public static readonly Tetromino O = new Tetromino(
+            "O",
             new Cell(1, 1),
             new[]
             {
@@ -115,6 +119,7 @@ namespace Game
             });
 
         public static readonly Tetromino S = new Tetromino(
+            "S",
             new Cell(1, 1),
             new[]
             {
@@ -145,6 +150,7 @@ namespace Game
             });
 
         public static readonly Tetromino T = new Tetromino(
+            "T",
             new Cell(1, 1),
             new[]
             {
@@ -175,6 +181,7 @@ namespace Game
             });
 
         public static readonly Tetromino Z = new Tetromino(
+            "Z",
             new Cell(1, 1),
             new[]
             {
@@ -206,6 +213,8 @@ namespace Game
 
         public static readonly Tetromino[] All = {I, J, L, O, S, T, Z};
 
+        public readonly string Name;
+
         /// <summary>
         ///     Left-middle cell of the first rotation.
         /// </summary>
@@ -213,8 +222,10 @@ namespace Game
 
         private readonly bool[][,] rotationMasks;
 
-        private Tetromino(Cell pivot, IEnumerable<string[]> rotations)
+        private Tetromino(string name, Cell pivot,
+            IEnumerable<string[]> rotations)
         {
+            Name = name;
             Pivot = pivot;
             rotationMasks = rotations.Select(ParseMask).ToArray();
         }
@@ -237,6 +248,11 @@ namespace Game
                 }
             }
             return mask;
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

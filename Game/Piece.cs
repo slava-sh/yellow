@@ -71,5 +71,10 @@ namespace Game
                 }
             }
         }
+
+        public override string ToString()
+        {
+            return $"tetromino={tetromino} rotation={rotation} pivot={pivot}";
+        }
     }
 }

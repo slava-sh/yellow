@@ -15,6 +15,10 @@ namespace Game.Tests
                 .Select(line => Regex.Replace(line, @"[^.\s]", "#"))
                 .ToArray();
             var lines = MaskToLines(game.GetFieldMask()).ToArray();
+            if (lines.Length != expectedLines.Length || lines[0].Length != expectedLines[0].Length)
+            {
+                throw new ArgumentException("field shape mismatch");
+            }
             Assert.Equal(expectedLines, lines);
         }
 
@@ -285,6 +289,42 @@ namespace Game.Tests
         }
 
         [Fact]
+        public void CannotPushSAboveRightWall()
+        {
+            var game = new Game(4, 2, new MockTetrominoGenerator
+            {
+                Tetromino.S
+            });
+            AssertFieldMask(game,
+                "SS..",
+                "....");
+            game.ShiftRight();
+            AssertFieldMask(game,
+                ".SS.",
+                "....");
+            game.ShiftRight();
+            AssertFieldMask(game,
+                ".SS.",
+                "....");
+        }
+
+        [Fact]
+        public void CannotPushZAboveLeftWall()
+        {
+            var game = new Game(4, 2, new MockTetrominoGenerator
+            {
+                Tetromino.Z
+            });
+            AssertFieldMask(game,
+                ".ZZ.",
+                "....");
+            game.ShiftLeft();
+            AssertFieldMask(game,
+                ".ZZ.",
+                "....");
+        }
+
+        [Fact]
         public void RemoveFullLines()
         {
             var game = new Game(6, 4, new MockTetrominoGenerator
@@ -373,7 +413,7 @@ namespace Game.Tests
         }
 
         [Fact]
-        public void Spin()
+        public void T_Spin()
         {
             var game = new Game(8, 6, new MockTetrominoGenerator
             {

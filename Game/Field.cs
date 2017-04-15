@@ -18,7 +18,11 @@ namespace Game
 
         public bool IsOccupied(Cell cell)
         {
-            return Contains(cell) ? cells[cell.X, cell.Y] : cell.Y >= 0;
+            if (Contains(cell))
+            {
+                return cells[cell.X, cell.Y];
+            }
+            return !(0 <= cell.X && cell.X < Width && cell.Y < Height);
         }
 
         public bool Contains(Cell cell)

@@ -18,5 +18,10 @@ namespace Game
         {
             return new Rotation(Number + 1);
         }
+
+        public override string ToString()
+        {
+            return Number.ToString();
+        }
     }
 }
