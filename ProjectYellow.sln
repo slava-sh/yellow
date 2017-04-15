@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.Tests", "Game.Tests\Ga
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormsApp", "WindowsFormsApp\WindowsFormsApp.csproj", "{CCDFB86B-41AA-4B55-B863-123A25C247F9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{0EDEF844-65FA-44E3-8B64-E9F29B4D4138}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{CCDFB86B-41AA-4B55-B863-123A25C247F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CCDFB86B-41AA-4B55-B863-123A25C247F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CCDFB86B-41AA-4B55-B863-123A25C247F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EDEF844-65FA-44E3-8B64-E9F29B4D4138}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EDEF844-65FA-44E3-8B64-E9F29B4D4138}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EDEF844-65FA-44E3-8B64-E9F29B4D4138}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EDEF844-65FA-44E3-8B64-E9F29B4D4138}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
