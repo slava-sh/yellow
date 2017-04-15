@@ -216,12 +216,27 @@ namespace Game
         private Tetromino(Cell pivot, IEnumerable<string[]> rotations)
         {
             Pivot = pivot;
-            rotationMasks = rotations.Select(Utils.ParseMask).ToArray();
+            rotationMasks = rotations.Select(ParseMask).ToArray();
         }
 
         public bool[,] GetMaskForRotation(Rotation rotation)
         {
             return rotationMasks[rotation.Number % rotationMasks.Length];
+        }
+
+        private static bool[,] ParseMask(string[] lines)
+        {
+            var width = lines[0].Length;
+            var height = lines.Length;
+            var mask = new bool[width, height];
+            for (var x = 0; x < width; ++x)
+            {
+                for (var y = 0; y < height; ++y)
+                {
+                    mask[x, y] = lines[y][x] != '.';
+                }
+            }
+            return mask;
         }
     }
 }
