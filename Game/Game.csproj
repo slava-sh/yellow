@@ -44,6 +44,7 @@
     <Compile Include="Interaction\GameController.cs" />
     <Compile Include="Interaction\ITask.cs" />
     <Compile Include="Interaction\Key.cs" />
+    <Compile Include="Interaction\Keyboard.cs" />
     <Compile Include="Interaction\RepeatingKey.cs" />
     <Compile Include="Interaction\Scheduler.cs" />
     <Compile Include="Cell.cs" />

@@ -47,7 +47,6 @@ namespace WindowsFormsApp.Views
         private void DrawBackground()
         {
             FillRectangle(WindowColor, 0, 0, Size.Width, Size.Height);
-            //graphics.DrawImage(new Bitmap(Resources.Background), 0, 0);
         }
 
         private void DrawField()

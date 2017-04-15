@@ -10,22 +10,8 @@ namespace WindowsFormsApp.Views
     [Designer(typeof(Designer))]
     internal class ButtonView : CustomView
     {
-        private Key key;
-
+        public Key Key;
         private Rectangle rectangle;
-
-        public Key Key
-        {
-            get => key;
-            set
-            {
-                key = value;
-                key.KeyDown += Invalidate;
-                key.KeyUp += Invalidate;
-                MouseDown += (sender, e) => key.HandleKeyDown();
-                MouseUp += (sender, e) => key.HandleKeyUp();
-            }
-        }
 
         public override void EndInit()
         {

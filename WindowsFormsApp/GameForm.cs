@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
+using WindowsFormsApp.Views;
 using Game;
 using Game.Interaction;
 
@@ -14,11 +16,15 @@ namespace WindowsFormsApp
         private readonly TimerBasedScheduler scheduler =
             new TimerBasedScheduler(FramesPerSecond);
 
+        private Dictionary<Keys, Key> keyMap;
+
         public GameForm()
         {
             InitializeComponent();
             ClientSize = gameView.Size;
             Load += (sender, e) => NewGame();
+            KeyDown += HandleKeyDown;
+            KeyUp += HandleKeyUp;
         }
 
         private void NewGame()
@@ -37,23 +43,50 @@ namespace WindowsFormsApp
             gameController.Update += gameView.Invalidate;
             gameController.GameOver += HandleGameOver;
 
-            var keyboard = new KeyboardController(scheduler);
-            keyboard.Rotate.KeyPress += gameController.HandleRotate;
-            keyboard.ShiftLeft.KeyPress += gameController.HandleShiftLeft;
-            keyboard.ShiftRight.KeyPress += gameController.HandleShiftRight;
-            keyboard.SoftDrop.KeyPress += gameController.HandleSoftDrop;
-            keyboard.HardDrop.KeyPress += gameController.HandleHardDrop;
-
-            rotateButton.Key = keyboard.Rotate;
-            shiftLeftButton.Key = keyboard.ShiftLeft;
-            shiftRightButton.Key = keyboard.ShiftRight;
-            softDropButton.Key = keyboard.SoftDrop;
-            hardDropButton.Key = keyboard.HardDrop;
-
-            KeyDown += (sender, e) => keyboard.HandleKeyDown(e.KeyData);
-            KeyUp += (sender, e) => keyboard.HandleKeyUp(e.KeyData);
+            var keyboard = new Keyboard(scheduler);
+            keyMap = new Dictionary<Keys, Key>();
+            Bind(Keys.Up, rotateButton, keyboard.Rotate,
+                gameController.HandleRotate);
+            Bind(Keys.Left, shiftLeftButton, keyboard.ShiftLeft,
+                gameController.HandleShiftLeft);
+            Bind(Keys.Right, shiftRightButton, keyboard.ShiftRight,
+                gameController.HandleShiftRight);
+            Bind(Keys.Down, softDropButton, keyboard.SoftDrop,
+                gameController.HandleSoftDrop);
+            Bind(Keys.Space, hardDropButton, keyboard.HardDrop,
+                gameController.HandleHardDrop);
 
             Invalidate(true);
+        }
+
+        private void Bind(Keys keyCode, ButtonView button, Key key,
+            Action keyPressHandler)
+        {
+            keyMap[keyCode] = key;
+            button.Key = key;
+            button.MouseDown += (sender, e) => key.HandleKeyDown();
+            button.MouseUp += (sender, e) => key.HandleKeyUp();
+            key.KeyDown += button.Invalidate;
+            key.KeyPress += keyPressHandler;
+            key.KeyUp += button.Invalidate;
+        }
+
+        private void HandleKeyDown(object sender, KeyEventArgs e)
+        {
+            var key = e.KeyData;
+            if (keyMap.ContainsKey(key))
+            {
+                keyMap[key].HandleKeyDown();
+            }
+        }
+
+        private void HandleKeyUp(object sender, KeyEventArgs e)
+        {
+            var key = e.KeyData;
+            if (keyMap.ContainsKey(key))
+            {
+                keyMap[key].HandleKeyUp();
+            }
         }
 
         private void HandleGameOver()
