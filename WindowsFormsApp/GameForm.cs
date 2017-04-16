@@ -43,31 +43,24 @@ namespace WindowsFormsApp
             gameController.Update += gameView.Invalidate;
             gameController.GameOver += HandleGameOver;
 
-            var keyboard = new Keyboard(scheduler);
+            var keyboard = new Keyboard(gameController, scheduler);
             keyMap = new Dictionary<Keys, Key>();
-            Bind(Keys.Up, rotateButton, keyboard.Rotate,
-                gameController.HandleRotate);
-            Bind(Keys.Left, shiftLeftButton, keyboard.ShiftLeft,
-                gameController.HandleShiftLeft);
-            Bind(Keys.Right, shiftRightButton, keyboard.ShiftRight,
-                gameController.HandleShiftRight);
-            Bind(Keys.Down, softDropButton, keyboard.SoftDrop,
-                gameController.HandleSoftDrop);
-            Bind(Keys.Space, hardDropButton, keyboard.HardDrop,
-                gameController.HandleHardDrop);
+            Bind(Keys.Up, rotateButton, keyboard.Rotate);
+            Bind(Keys.Left, shiftLeftButton, keyboard.ShiftLeft);
+            Bind(Keys.Right, shiftRightButton, keyboard.ShiftRight);
+            Bind(Keys.Down, softDropButton, keyboard.SoftDrop);
+            Bind(Keys.Space, hardDropButton, keyboard.HardDrop);
 
             Invalidate(true);
         }
 
-        private void Bind(Keys keyCode, ButtonView button, Key key,
-            Action keyPressHandler)
+        private void Bind(Keys keyCode, ButtonView button, Key key)
         {
             keyMap[keyCode] = key;
             button.Key = key;
             button.MouseDown += (sender, e) => key.HandleKeyDown();
             button.MouseUp += (sender, e) => key.HandleKeyUp();
             key.KeyDown += button.Invalidate;
-            key.KeyPress += keyPressHandler;
             key.KeyUp += button.Invalidate;
         }
 

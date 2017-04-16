@@ -34,7 +34,7 @@ namespace ConsoleApp
             gameController.Update += RequestRender;
             gameController.GameOver += scheduler.Stop;
 
-            var keyboard = new Keyboard(scheduler);
+            var keyboard = new Keyboard(gameController, scheduler);
             keyMap = new Dictionary<ConsoleKey, Key>
             {
                 [ConsoleKey.UpArrow] = keyboard.Rotate,
@@ -47,12 +47,6 @@ namespace ConsoleApp
                 [ConsoleKey.D] = keyboard.ShiftRight,
                 [ConsoleKey.S] = keyboard.SoftDrop
             };
-
-            keyboard.Rotate.KeyPress += gameController.HandleRotate;
-            keyboard.ShiftLeft.KeyPress += gameController.HandleShiftLeft;
-            keyboard.ShiftRight.KeyPress += gameController.HandleShiftRight;
-            keyboard.SoftDrop.KeyPress += gameController.HandleSoftDrop;
-            keyboard.HardDrop.KeyPress += gameController.HandleHardDrop;
 
             scheduler.SetInterval(1, HandleInput);
             scheduler.SetInterval(1, MaybeRender);
