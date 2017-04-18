@@ -12,6 +12,7 @@ namespace WindowsFormsApp.Views
     internal class ButtonView : CustomView
     {
         private const int BorderSize = 2;
+        private const int SmoothingMargin = 1;
         private static readonly Color BorderColor = Color.Black;
         private static readonly Color NormalColor = FromHtml("#399bef");
         private static readonly Color PressedColor = FromHtml("#2b7ccf");
@@ -32,13 +33,18 @@ namespace WindowsFormsApp.Views
         {
             base.OnPaint(e);
             Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-            Graphics.FillEllipse(new SolidBrush(BorderColor), rectangle);
+            Graphics.FillEllipse(new SolidBrush(BorderColor),
+                SmoothingMargin,
+                SmoothingMargin,
+                rectangle.Width - 2 * SmoothingMargin,
+                rectangle.Height - 2 * SmoothingMargin);
+            const int margin = BorderSize + SmoothingMargin;
             Graphics.FillEllipse(
                 new SolidBrush(Key.IsPressed ? PressedColor : NormalColor),
-                BorderSize,
-                BorderSize,
-                rectangle.Width - 2 * BorderSize,
-                rectangle.Height - 2 * BorderSize);
+                margin,
+                margin,
+                rectangle.Width - 2 * margin,
+                rectangle.Height - 2 * margin);
         }
 
         private class Designer : ControlDesigner
