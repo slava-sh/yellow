@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using WindowsFormsApp.Views;
 using Game;
 using Game.Interaction;
+using static System.Drawing.ColorTranslator;
 
 namespace WindowsFormsApp
 {
@@ -21,6 +22,7 @@ namespace WindowsFormsApp
         public GameForm()
         {
             InitializeComponent();
+            BackColor = FromHtml("#efcc19");
             Load += (sender, e) => NewGame();
             KeyDown += HandleKeyDown;
             KeyUp += HandleKeyUp;

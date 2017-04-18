@@ -17,14 +17,14 @@ namespace WindowsFormsApp.Views
         private const int CellSize = InnerCellSize + 4 * PixelSize;
         private const int GridStep = CellSize + PixelSize;
 
-        private const int ScreenFrameSize = 3;
+        private const int ScreenFrameSize = 2;
         private const int ScreenWidth = 380 + ScreenFrameSize * 2;
         private const int ScreenWeight = 500 + ScreenFrameSize * 2;
 
         private static readonly Color InactiveCellColor = FromHtml("#879372");
         private static readonly Color ActiveCellColor = Color.Black;
         private static readonly Color BackgroundColor = FromHtml("#9ead86");
-        private static readonly Color ScreenFrameColor = Color.DarkOliveGreen;
+        private static readonly Color ScreenFrameColor = Color.Black;
 
         private new static readonly Font Font =
             new Font("Consolas", 16, FontStyle.Bold);
