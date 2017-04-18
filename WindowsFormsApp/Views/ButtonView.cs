@@ -4,13 +4,20 @@ using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using Game.Interaction;
+using static System.Drawing.ColorTranslator;
 
 namespace WindowsFormsApp.Views
 {
     [Designer(typeof(Designer))]
     internal class ButtonView : CustomView
     {
+        private const int BorderSize = 2;
+        private static readonly Color BorderColor = Color.Black;
+        private static readonly Color NormalColor = FromHtml("#399bef");
+        private static readonly Color PressedColor = FromHtml("#2b7ccf");
+
         public Key Key;
+
         private Rectangle rectangle;
 
         public override void EndInit()
@@ -24,8 +31,14 @@ namespace WindowsFormsApp.Views
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            Graphics.FillEllipse(Key.IsPressed ? Brushes.Red : Brushes.Blue,
-                rectangle);
+            Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            Graphics.FillEllipse(new SolidBrush(BorderColor), rectangle);
+            Graphics.FillEllipse(
+                new SolidBrush(Key.IsPressed ? PressedColor : NormalColor),
+                BorderSize,
+                BorderSize,
+                rectangle.Width - 2 * BorderSize,
+                rectangle.Height - 2 * BorderSize);
         }
 
         private class Designer : ControlDesigner
