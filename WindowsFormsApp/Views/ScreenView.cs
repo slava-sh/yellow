@@ -30,12 +30,15 @@ namespace WindowsFormsApp.Views
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            FillRectangle(BackgroundColor, -5, -5, 380, 500);
-            DrawField();
-            using (Translate(270, 50))
+            FillRectangle(BackgroundColor, 0, 0, 380, 500);
+            using (Translate(8, 6))
             {
-                DrawPreview();
-                DrawStats(Game.Stats);
+                DrawField();
+                using (Translate(270, 50))
+                {
+                    DrawPreview();
+                    DrawStats(Game.Stats);
+                }
             }
         }
 
