@@ -63,7 +63,12 @@ namespace WindowsFormsApp.Views
             }
             var nextTetromino = GetNextTetromino();
             var mask = nextTetromino.GetMaskForRotation(Rotation.Default);
-            DrawMask(Crop(mask, 4, 2));
+            var brush = Brushes.Black;
+            Graphics.DrawString("Next", Font, brush, 0, 16);
+            using (Translate(0, 2 * GridStep))
+            {
+                DrawMask(Crop(mask, 4, 2));
+            }
         }
 
         private static bool[,] Crop(bool[,] mask, int newWidth, int newHeight)
