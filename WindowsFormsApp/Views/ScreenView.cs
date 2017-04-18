@@ -17,9 +17,14 @@ namespace WindowsFormsApp.Views
         private const int CellSize = InnerCellSize + 4 * PixelSize;
         private const int GridStep = CellSize + PixelSize;
 
+        private const int ScreenFrameSize = 3;
+        private const int ScreenWidth = 380 + ScreenFrameSize * 2;
+        private const int ScreenWeight = 500 + ScreenFrameSize * 2;
+
         private static readonly Color InactiveCellColor = FromHtml("#879372");
         private static readonly Color ActiveCellColor = Color.Black;
         private static readonly Color BackgroundColor = FromHtml("#9ead86");
+        private static readonly Color ScreenFrameColor = Color.DarkOliveGreen;
 
         private new static readonly Font Font =
             new Font("Consolas", 16, FontStyle.Bold);
@@ -30,11 +35,13 @@ namespace WindowsFormsApp.Views
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            FillRectangle(BackgroundColor, 0, 0, 380, 500);
-            using (Translate(8, 6))
+            FillRectangle(BackgroundColor, 0, 0, ScreenWidth, ScreenWeight);
+            DrawFrame(ScreenFrameSize, ScreenFrameColor, 0, 0, ScreenWidth,
+                ScreenWeight);
+            using (Translate(8 + ScreenFrameSize, 6 + ScreenFrameSize))
             {
                 DrawField();
-                using (Translate(270, 50))
+                using (Translate(264, 50))
                 {
                     DrawPreview();
                     DrawStats(Game.Stats);
@@ -46,7 +53,7 @@ namespace WindowsFormsApp.Views
         {
             const int margin = PixelSize * 3 / 2;
             const int outer = PixelSize + margin;
-            DrawFrame(ActiveCellColor, 0, 0,
+            DrawFrame(PixelSize, ActiveCellColor, 0, 0,
                 outer + Game.Field.Width * GridStep - PixelSize + outer,
                 outer + Game.Field.Height * GridStep - PixelSize + outer);
             using (Translate(outer, outer))
@@ -117,7 +124,7 @@ namespace WindowsFormsApp.Views
 
         private void DrawCell(Color color, int x, int y)
         {
-            DrawFrame(color, x, y, CellSize, CellSize);
+            DrawFrame(PixelSize, color, x, y, CellSize, CellSize);
             FillRectangle(color,
                 x + 2 * PixelSize,
                 y + 2 * PixelSize,
@@ -125,9 +132,10 @@ namespace WindowsFormsApp.Views
                 InnerCellSize);
         }
 
-        private void DrawFrame(Color color, int x, int y, int width, int height)
+        private void DrawFrame(int size, Color color, int x, int y, int width,
+            int height)
         {
-            var pen = new Pen(color, PixelSize)
+            var pen = new Pen(color, size)
             {
                 Alignment = PenAlignment.Inset
             };

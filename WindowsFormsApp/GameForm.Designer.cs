@@ -51,7 +51,7 @@ namespace WindowsFormsApp
             // 
             // screenView
             // 
-            this.screenView.Location = new System.Drawing.Point(54, 34);
+            this.screenView.Location = new System.Drawing.Point(53, 26);
             this.screenView.Name = "screenView";
             this.screenView.Size = new System.Drawing.Size(390, 509);
             this.screenView.TabIndex = 0;
