@@ -21,7 +21,6 @@ namespace WindowsFormsApp
         public GameForm()
         {
             InitializeComponent();
-            ClientSize = gameView.Size;
             Load += (sender, e) => NewGame();
             KeyDown += HandleKeyDown;
             KeyUp += HandleKeyUp;
@@ -36,11 +35,11 @@ namespace WindowsFormsApp
             var game = new Game.Game(FieldWidth, FieldHeight,
                 tetrominoGenerator);
 
-            gameView.Game = game;
-            gameView.GetNextTetromino = tetrominoGenerator.Peek;
+            screenView.Game = game;
+            screenView.GetNextTetromino = tetrominoGenerator.Peek;
 
             var gameController = new GameController(game, scheduler);
-            gameController.Update += gameView.Invalidate;
+            gameController.Update += screenView.Invalidate;
             gameController.GameOver += HandleGameOver;
 
             var keyboard = new Keyboard(gameController, scheduler);

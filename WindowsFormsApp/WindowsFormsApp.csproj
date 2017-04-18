@@ -61,7 +61,7 @@
     <Compile Include="Views\CustomView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Views\GameView.cs">
+    <Compile Include="Views\ScreenView.cs">
       <SubType>Component</SubType>
     </Compile>
     <EmbeddedResource Include="GameForm.resx">

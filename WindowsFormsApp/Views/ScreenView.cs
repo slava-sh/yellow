@@ -10,7 +10,7 @@ using static System.Drawing.ColorTranslator;
 namespace WindowsFormsApp.Views
 {
     [Designer(typeof(Designer))]
-    internal class GameView : CustomView
+    internal class ScreenView : CustomView
     {
         private const int PixelSize = 2;
         private const int InnerCellSize = 7 * PixelSize;
@@ -20,7 +20,6 @@ namespace WindowsFormsApp.Views
         private static readonly Color InactiveCellColor = FromHtml("#879372");
         private static readonly Color ActiveCellColor = Color.Black;
         private static readonly Color BackgroundColor = FromHtml("#9ead86");
-        private static readonly Color WindowColor = FromHtml("#efcc19");
 
         private new static readonly Font Font =
             new Font("Consolas", 16, FontStyle.Bold);
@@ -31,22 +30,13 @@ namespace WindowsFormsApp.Views
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            DrawBackground();
-            using (Translate(50, 50))
+            FillRectangle(BackgroundColor, -5, -5, 380, 500);
+            DrawField();
+            using (Translate(270, 50))
             {
-                FillRectangle(BackgroundColor, -5, -5, 380, 500);
-                DrawField();
-                using (Translate(270, 50))
-                {
-                    DrawPreview();
-                    DrawStats(Game.Stats);
-                }
+                DrawPreview();
+                DrawStats(Game.Stats);
             }
-        }
-
-        private void DrawBackground()
-        {
-            FillRectangle(WindowColor, 0, 0, Size.Width, Size.Height);
         }
 
         private void DrawField()
@@ -141,7 +131,7 @@ namespace WindowsFormsApp.Views
             public override void Initialize(IComponent component)
             {
                 base.Initialize(component);
-                var gameView = (GameView) component;
+                var gameView = (ScreenView) component;
                 var tetrominoGenerator =
                     new PeekableTetrominoGenerator(
                         new RandomTetrominoGenerator(0));
