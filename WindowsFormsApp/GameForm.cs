@@ -22,6 +22,7 @@ namespace WindowsFormsApp
         public GameForm()
         {
             InitializeComponent();
+            // ReSharper disable once VirtualMemberCallInConstructor
             BackColor = FromHtml("#efcc19");
             Load += (sender, e) => NewGame();
             KeyDown += HandleKeyDown;
@@ -51,6 +52,10 @@ namespace WindowsFormsApp
             Bind(Keys.Right, shiftRightButton, keyboard.ShiftRight);
             Bind(Keys.Down, softDropButton, keyboard.SoftDrop);
             Bind(Keys.Space, hardDropButton, keyboard.HardDrop);
+
+            var levelUpKey = new Key();
+            keyMap[Keys.U] = levelUpKey;
+            levelUpKey.KeyPress += gameController.HandleForceLevelUp;
 
             Invalidate(true);
         }

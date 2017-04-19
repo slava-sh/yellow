@@ -62,6 +62,12 @@ namespace Game.Interaction
             RescheduleGravity();
         }
 
+        public void HandleForceLevelUp()
+        {
+            game.Stats.ForceLevelUp();
+            OnUpdate();
+        }
+
         private void ApplyGravity()
         {
             game.ApplyGravity();

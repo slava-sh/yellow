@@ -7,8 +7,10 @@ namespace Game
         private const int MaxLevel = 20;
         private const int LinesPerLevel = 10;
 
+        private int baseLevel = 1;
+
         public int Level =>
-            Math.Min(MaxLevel, 1 + LinesCleared / LinesPerLevel);
+            Math.Min(MaxLevel, baseLevel + LinesCleared / LinesPerLevel);
 
         /// <summary>
         ///     Score according to https://tetris.wiki/Tetris_DS#Scoring_tables
@@ -46,6 +48,11 @@ namespace Game
         internal void HardDrop(int numLines)
         {
             Score += 2 * numLines;
+        }
+
+        public void ForceLevelUp()
+        {
+            ++baseLevel;
         }
     }
 }
